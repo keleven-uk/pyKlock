@@ -1,11 +1,14 @@
 import datetime
 import time
-
+import math
 
 class SelectTime:
 
-    __types = ("Fuzzy Time", "GMT Time", "Local Time", "UTC Time")
+    __types = ("Fuzzy Time", "Time in Words", "GMT Time", "Local Time", "UTC Time")
 
+    __hours = ("twelve", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",  "eleven", "twelve")
+    __units = ("zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve")
+    __tens = ("zero", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty")
 
     @property
     def timeTypes(self):
@@ -36,9 +39,6 @@ class SelectTime:
     def getFuzzyTime(self):
         """ Returns current time as Fuzzy Time."""
 
-        hours = {0: "twelve", 1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six",
-                 7: "seven", 8: "eight", 9: "nine", 10: "ten", 11: "eleven", 12: "twelve"}
-
         minsText = {0: "", 5: "five past", 10: "ten past", 15: "quarter past", 20: "twenty past",
                    25: "twenty-five past", 30: "half past", 35: "twenty-five to", 35: "twenty-five to",
                    40: "twenty to", 45: "quarter to", 50: "ten to", 55: "five to", 60: ""}
@@ -61,7 +61,6 @@ class SelectTime:
             __hour += 1
 
         # generate output string according to the hour of the day.
-        #   This looks more complicated then it should be, maybe separate if then's would be better.
 
         #   if the hour is 0 or 24 and no minutes - it must be midnight.
         #   if the hour is 12 and no minutes - it must be noon.
@@ -79,16 +78,62 @@ class SelectTime:
                 __hour -= 12
                 __ampm = "in the evening" if __hour > 5 else "in the afternoon"
             if __sRtn == "":
-                __fuzzyTime = "about {0}'ish {1}".format(hours[__hour], __ampm)
+                __fuzzyTime = "about {0}'ish {1}".format(self.__hours[__hour], __ampm)
             else:
-                __fuzzyTime = "{0} {1} {2}".format(__sRtn, hours[__hour], __ampm)
+                __fuzzyTime = "{0} {1} {2}".format(__sRtn, self.__hours[__hour], __ampm)
 
         return __fuzzyTime
 
+    def getWordsTime(self):
+        """ Returns current time in words."""
+
+        now = datetime.datetime.now()
+
+        __hour = now.hour
+        __mins = now.minute
+        __pasTo = "past"
+
+        __ampm = "in the morning" if __hour < 12 else "pm"
+
+        if __mins > 30:                                         # past the half hour - minutes to the hour.
+            __hour += 1
+            __pasTo = "to"
+            __mins = 60 - __mins
+
+        # generate output string according to the hour of the day.
+
+        # if "pm" then afternoon, subtract 12 - only use 12 hour clock.
+
+        if __ampm == "pm":
+            __hour -= 12
+            __ampm = "in the evening" if __hour >= 5 else "in the afternoon"
+
+        if __mins == 0:
+            __minsStr = "{0} o'clock {1}".format(self.__hours[__hour], __ampm)
+        elif 1 < __mins < 9:
+            __minsStr = "{0} minutes {1} {2} {3}".format(self.__units[__mins], __pasTo, self.__hours[__hour], __ampm)
+        elif 10 < __mins < 20:
+            __minsStr = "{0} minutes {1} {2} {3}".format(self.__tens[__mins-9], __pasTo, self.__hours[__hour], __ampm)
+        elif 21 < __mins < 29:
+            __minsTens = math.floor(__mins / 10)
+            __minsUnit = __mins - (__minsTens * 10)
+            __minsStr = "twenty{0} minutes {1} {2} {3}".format(self.__units[__minsUnit], __pasTo, self.__hours[__hour], __ampm)
+        else:
+            __minsStr = "thirty minutes past {0} {1}".format(self.__hours[__hour], __ampm)
+
+        return __minsStr
+
+
+
     # Dictionary that holds references to all the time functions.
-    __funcs = {"Fuzzy Time": getFuzzyTime, "GMT Time": getGMTTime, "Local Time": getLocalTime, "UTC Time": getUTCTime}
+    __funcs = {"Fuzzy Time": getFuzzyTime,
+               "Time in Words": getWordsTime,
+               "GMT Time": getGMTTime,
+               "Local Time": getLocalTime,
+               "UTC Time": getUTCTime}
 
 
+# ----------------------------------------------------- called to test, if run as main (nit imported) ------------------
 if __name__ == "__main__":
     import tkinter as tk
     import tkinter.ttk as ttk
