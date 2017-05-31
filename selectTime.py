@@ -3,58 +3,44 @@ import time
 
 class SelectTime:
 
+    @property
+    def timeTypes(self):
+        """ Retruns a list(tuple) of available Time types."""
+        return ("GMT", "Fuzzy Time")
+        
+    @property      
     def getGMTTime(self):
-
+        """ returns curent time as GMT."""
         return time.strftime("%H:%M:%S", time.gmtime())
 
-
-
+    @property 
     def getFuzzyTime(self):
-
+        """ Returns current time as Fuzzy Time."""
+        
         hours = {0: "twelve", 1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six", \
                  7: "seven", 8: "eight", 9: "nine", 10: "ten", 11: "eleven", 12: "twelve"}
 
+        minsText = {0: "", 5: "five past", 10: "ten past", 15: "quarter past",   \
+                    20: "twenty past", 25: "twenty-five past", 30: "half past",  \
+                    35: "twenty-five to", 35: "twenty-five to", 40: "twenty to", \
+                    45: "quarter to", 50: "ten to", 55: "five to", 60: ""}
+        
         now = datetime.datetime.now()
 
-        hour = now.hour
-        mins = now.minute
-        nrms = mins - (mins % 5)					#	gets nearest five minutes
-        sRtn = ""
+        __hour = now.hour
+        __mins = now.minute
+        __nrms = __mins - (__mins % 5)          # gets nearest five minutes
+        __sRtn = ""
 
-        ampm = "in the morning" if hour < 12 else "pm"
+        __ampm = "in the morning" if __hour < 12 else "pm"
 
-        if (mins % 5) > 2:
-            nrms += 5								#	closer to next five minutes, go to next
+        if (__mins % 5) > 2:
+            __nrms += 5               # closer to next five minutes, go to next
+            
+        __sRtn = minsText[__nrms]     #  look up text for minutes.
 
-        if nrms == 0:
-            sRtn = ""
-        elif nrms == 5:
-            sRtn = "five past"
-        elif nrms == 10:
-            sRtn = "ten past"
-        elif nrms == 15:
-            sRtn = "quarter past"
-        elif nrms == 20:
-            sRtn = "twenty past"
-        elif nrms == 25:
-            sRtn = "twenty-five past"
-        elif nrms == 30:
-            sRtn = "half past"
-        elif nrms == 35:
-            sRtn = "twenty-five to"
-        elif nrms == 40:
-            sRtn = "twenty to"
-        elif nrms == 45:
-            sRtn = "quarter to"
-        elif nrms == 50:
-            sRtn = "ten to"
-        elif nrms == 55:
-            sRtn = "five to"
-        elif nrms == 60:
-            sRtn = ""
-
-        if nrms > 30:
-            hour += 1
+        if __nrms > 30:
+            __hour += 1
 
         #   generate output string according to the hour of the day.
         #   This looks more complicated then it should be, maybe separate if then's would be better.
@@ -64,22 +50,24 @@ class SelectTime:
 
         #   if "pm" then afternoon, subtract 12 - only use 12 hour clock.
 
-        if hour == 12 and sRtn == "":
-            fuzzyTime = "about Noon"
-        elif hour == 0 and sRtn == "":
-            fuzzyTime = "about Midnight"
-        elif hour == 24 and sRtn == "":
-            fuzzyTime = "about Midnight"
+        if __hour == 12 and __sRtn == "":
+            __fuzzyTime = "about Noon"
+        elif __hour == 0 and __sRtn == "":
+            __fuzzyTime = "about Midnight"
+        elif __hour == 24 and __sRtn == "":
+            __fuzzyTime = "about Midnight"
         else:
-            if ampm == "pm":
-                hour -= 12
-                ampm = "in the evening" if hour > 5 else "in the afternoon"
-            if sRtn == "":
-                fuzzyTime = "about {0} ish {1}".format(hours[hour], ampm)
+            if __ampm == "pm":
+                __hour -= 12
+                __ampm = "in the evening" if __hour > 5 else "in the afternoon"
+            if __sRtn == "":
+                __fuzzyTime = "about {0}'ish {1}".format(hours[__hour], __ampm)
             else:
-                fuzzyTime = "{0} {1} {2}".format(sRtn, hours[hour], ampm)
+                __fuzzyTime = "{0} {1} {2}".format(__sRtn, hours[__hour], __ampm)
 
-        return fuzzyTime
+        return __fuzzyTime
+
+
 
 
 if __name__ == "__main__":
@@ -88,7 +76,7 @@ if __name__ == "__main__":
 
     def update_timeText():
         # Get the current time
-        current = s.getGMTTime()
+        current = s.getFuzzyTime
 
         # Update the timeText label box with flexi time.
         timeText.configure(text=current)
@@ -97,18 +85,18 @@ if __name__ == "__main__":
         root.after(1000, update_timeText)
 
     s = SelectTime()
-    timeList = ("1", "2")
 
     root = tk.Tk()
-    root.wm_title("SelectTime")
+    root.wm_title("SelectTime Test")
 
     # create a conbo box
     timevar = tk.StringVar()
-    timeCombo = ttk.Combobox(root, textvariable=timevar, values=timeList)
+    timeCombo = ttk.Combobox(root, textvariable=timevar, values=s.timeTypes)
+    timeCombo.current(0)
     timeCombo.pack()
 
     # create a timeText label (a text box)
-    timeText = tk.Label(root, text="", font=("Helvetica", 20))
+    timeText = ttk.Label(root, text="", font=("Helvetica", 20))
     timeText.pack()
 
     update_timeText()
