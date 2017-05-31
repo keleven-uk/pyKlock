@@ -5,7 +5,8 @@ import math
 class SelectTime:
 
     #  GLOBAL variables used in several fimction
-    __types = ("Fuzzy Time", "Time in Words", "GMT Time", "Local Time", "UTC Time", "Swatch Time", "NET Time")
+    __types = ("Fuzzy Time", "Time in Words", "GMT Time", "Local Time", "UTC Time", "Swatch Time", "New Earth Time",
+               "Julian Time", "Decimal Time", "True Hex Time", "Hex Time", "Oct Time", "Binary Time")
 
     __hours = ("twelve", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",  "eleven", "twelve")
     __units = ("zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve")
@@ -29,6 +30,11 @@ class SelectTime:
 #
 # The time functions can't be made property's, this seems to upset the dictionary of functions - there not callable.
 #
+    def __getNowTime(self):
+        """  returns now as hour, munutes and seconds"""
+        now = datetime.datetime.now()
+
+        return now.hour, now.minute, now.second
 # ------------------------------------------------------------------------------------- getGMTTime --------------------
     def getGMTTime(self):
         """ returns current time as GMT."""
@@ -52,10 +58,7 @@ class SelectTime:
                    25: "twenty-five past", 30: "half past", 35: "twenty-five to", 35: "twenty-five to",
                    40: "twenty to", 45: "quarter to", 50: "ten to", 55: "five to", 60: ""}
 
-        now = datetime.datetime.now()
-
-        __hour = now.hour
-        __mins = now.minute
+        __hour, __mins, __secs = self.__getNowTime()
         __nrms = __mins - (__mins % 5)  # gets nearest five minutes
         __sRtn = ""
 
@@ -97,10 +100,7 @@ class SelectTime:
     def getWordsTime(self):
         """ Returns current time in words."""
 
-        now = datetime.datetime.now()
-
-        __hour = now.hour
-        __mins = now.minute
+        __hour, __mins, __secs = self.__getNowTime()
         __pasTo = "past"
 
         __ampm = "in the morning" if __hour < 12 else "pm"
@@ -146,28 +146,106 @@ class SelectTime:
         __noOfSeconds = (__utcPlus1.hour * 3600) + (__utcPlus1.minute * 60) + __utcPlus1.second
         __noOfBeats = __noOfSeconds / 86.4
 
-        return "@ {0:.2f} BMT".format(__noOfBeats)
+        return "@ {0::.2f} BMT".format(__noOfBeats)
 
-    def getNETTime(selfself):
+# ------------------------------------------------------------------------------------- getNETTime ---------------------
+    def getNETTime(self):
         """    Returns UTC time as New Earth Time.
-        New Earth Time [or NET] splits the day into 260 degrees. each degree is
+        New Earth Time [or NET] splits the day into 360 degrees. each degree is
         further split into 60 minutes and further into 60 seconds.
 
         Only shows degrees and minutes - at the moment.
 
         see http://en.wikipedia.org/wiki/New_Earth_Time"""
 
-        now = datetime.datetime.now()
+        __utcNow = datetime.datetime.utcnow()
 
-        __hour = now.hour
-        __mins = now.minute
-        __secs = now.second
+        __hour = __utcNow.hour
+        __mins = __utcNow.minute
+        __secs = __utcNow.second
 
         __deg = __hour * 15 + (__mins // 4)
         __min = __mins - ((__mins // 4) * 4)
-        __sec = (__secs + (__min * 60)) / 4
+        __sec = math.floor((__secs + (__min * 60)) / 4)
 
-        return "{0} deg {1} mins".format(__deg, int(__sec))
+        return "{0} deg {1:0>2} mins".format(__deg, __sec)
+
+# ------------------------------------------------------------------------------------- getJulianTime ------------------
+    def getJulianTime(self):
+        """   returns UTC time as a Julian Date Time.
+        Formulae pinched from http://en.wikipedia.org/wiki/Julian_day"""
+
+        now = datetime.datetime.utcnow()
+
+        a = (14 - now.month) / 12
+        y = now.year + 4800 - a
+        m = now.month + (12 * a) - 3
+
+        jt = now.day + ((153 * m + 2) / 5) + (365 * y) + (y / 4) + (y / 100) - 32045
+        jt = jt + ((now.hour - 12) / 24) + (now.minute / 1440) + (now.second / 86400)
+
+        return "{0:.5f}".format(jt)
+
+# ------------------------------------------------------------------------------------- getDecimalTime -----------------
+    def getDecimalTime(self):
+        """   Returns the current [local] time in decimal notation.
+        The day is divided into 10 hours, each hour is then split into 100 minutes of 100 seconds.
+
+        see http://en.wikipedia.org/wiki/Decimal_time"""
+
+        __hour, __mins, __secs = self.__getNowTime()
+
+        __noOfSeconds = (__hour * 3600) + (__mins * 60) + __secs
+        __noOfDecimalSeconds = __noOfSeconds / 0.864
+
+        __hour = math.floor(__noOfDecimalSeconds / 10000)
+        __mins = math.floor((__noOfDecimalSeconds - (__hour * 10000)) / 100)
+        __secs = math.floor(__noOfDecimalSeconds - (__hour * 10000) - (__mins * 100))
+        return "{0:0>2}h {1:0>2}m {2:0>2}s".format(__hour, __mins, __secs)
+
+# ------------------------------------------------------------------------------------- getTrueHexTime -----------------
+    def getTrueHexTime(self):
+        """   Returns the current [local] time in Hexadecimal time.
+        The day is divided in 10 (sixteen) hexadecimal hours, each hour in 100 (two hundred and fifty-six)
+        hexadecimal minutes and each minute in 10 (sixteen) hexadecimal seconds.
+
+        see http://en.wikipedia.org/wiki/Hexadecimal_time"""
+
+        __hour, __mins, __secs = self.__getNowTime()
+
+        __noOfSeconds = (__hour * 3600) + (__mins * 60) + __secs
+        __noOfHexSeconds = math.floor(__noOfSeconds * (65536 / 84600))
+
+        __hour = math.floor(__noOfHexSeconds / 4096)
+        __mins = math.floor((__noOfHexSeconds - (__hour * 4096)) / 16)
+        __secs = __noOfHexSeconds % 16
+        return "{0:0>2X}_{1:0>2X}_{2:0>2X}".format(__hour, __mins, __secs)
+
+#   0> - pads a string with 0's from the left.
+# ------------------------------------------------------------------------------------- getHexTime ---------------------
+    def getHexTime(self):
+        """   Returns current [local] time in hex [base 16] format.
+        This is only a hex representation of the current time"""
+
+        __hour, __mins, __secs = self.__getNowTime()
+        return "{0:0>2X}:{1:0>2X}:{2:0>2X}".format(__hour, __mins, __secs)
+
+# ------------------------------------------------------------------------------------- getOctTime ---------------------
+    def getOctTime(self):
+        """   Returns current [local] time in oct [base 8] format.
+        This is only a hex representation of the current time"""
+
+        __hour, __mins, __secs = self.__getNowTime()
+        return "{0:0>2o}:{1:0>2o}:{2:0>2o}".format(__hour, __mins, __secs)
+
+# ------------------------------------------------------------------------------------- getBinTime ---------------------
+    def getBinTime(self):
+        """   Returns current [local] time in Binary [base 2] format.
+        This is only a hex representation of the current time"""
+
+        __hour, __mins, __secs = self.__getNowTime()
+        return "{0:0>6b}:{1:0>6b}:{2:0>6b}".format(__hour, __mins, __secs)
+
 
 
     # GLOBAL Dictionary that holds references to all the time functions.
@@ -177,11 +255,18 @@ class SelectTime:
                "Local Time": getLocalTime,
                "UTC Time": getUTCTime,
                "Swatch Time": getSwatchTime,
-               "NET Time" : getNETTime}
+               "New Earth Time": getNETTime,
+               "Julian Time": getJulianTime,
+               "Decimal Time": getDecimalTime,
+               "True Hex Time": getTrueHexTime,
+               "Hex Time": getHexTime,
+               "Oct Time": getOctTime,
+               "Binary Time": getBinTime,}
 
 
-
+#
 # ----------------------------------------------------- called to test, if run as main (nit imported) ------------------
+#
 if __name__ == "__main__":
     import tkinter as tk
     import tkinter.ttk as ttk
