@@ -1,48 +1,66 @@
 import datetime
 import time
 
+
 class SelectTime:
+
+    __types = ("Fuzzy Time", "GMT Time", "Local Time", "UTC Time")
+
 
     @property
     def timeTypes(self):
-        """ Retruns a list(tuple) of available Time types."""
-        return ("GMT", "Fuzzy Time")
-        
-    @property      
+        """ Returns a tuple of available Time types."""
+        return self.__types
+
+    def timeFuncs(self, position=0):
+        """ Returns a fuction to return the time as position f in timeTypes."""
+        return self.__funcs[position](self)
+
+
+# -------------------------------------------------------------------------------- time functions ----------------------
+#
+# The time functions can't be made property's, this seems to upset the dictionary of functions - there not callable.
+
     def getGMTTime(self):
-        """ returns curent time as GMT."""
+        """ returns current time as GMT."""
         return time.strftime("%H:%M:%S", time.gmtime())
 
-    @property 
+    def getLocalTime(self):
+        """ returns current time as Local time."""
+        return time.strftime("%H:%M:%S", time.localtime())
+
+    def getUTCTime(self):
+        """ returns current time as UTC time."""
+        return "{:%H:%M:%S}".format(datetime.datetime.utcnow())
+
     def getFuzzyTime(self):
         """ Returns current time as Fuzzy Time."""
-        
-        hours = {0: "twelve", 1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six", \
+
+        hours = {0: "twelve", 1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six",
                  7: "seven", 8: "eight", 9: "nine", 10: "ten", 11: "eleven", 12: "twelve"}
 
-        minsText = {0: "", 5: "five past", 10: "ten past", 15: "quarter past",   \
-                    20: "twenty past", 25: "twenty-five past", 30: "half past",  \
-                    35: "twenty-five to", 35: "twenty-five to", 40: "twenty to", \
-                    45: "quarter to", 50: "ten to", 55: "five to", 60: ""}
-        
+        minsText = {0: "", 5: "five past", 10: "ten past", 15: "quarter past", 20: "twenty past",
+                   25: "twenty-five past", 30: "half past", 35: "twenty-five to", 35: "twenty-five to",
+                   40: "twenty to", 45: "quarter to", 50: "ten to", 55: "five to", 60: ""}
+
         now = datetime.datetime.now()
 
         __hour = now.hour
         __mins = now.minute
-        __nrms = __mins - (__mins % 5)          # gets nearest five minutes
+        __nrms = __mins - (__mins % 5)  # gets nearest five minutes
         __sRtn = ""
 
         __ampm = "in the morning" if __hour < 12 else "pm"
 
         if (__mins % 5) > 2:
-            __nrms += 5               # closer to next five minutes, go to next
-            
-        __sRtn = minsText[__nrms]     #  look up text for minutes.
+            __nrms += 5  # closer to next five minutes, go to next
+
+        __sRtn = minsText[__nrms]  # look up text for minutes.
 
         if __nrms > 30:
             __hour += 1
 
-        #   generate output string according to the hour of the day.
+        # generate output string according to the hour of the day.
         #   This looks more complicated then it should be, maybe separate if then's would be better.
 
         #   if the hour is 0 or 24 and no minutes - it must be midnight.
@@ -67,7 +85,8 @@ class SelectTime:
 
         return __fuzzyTime
 
-
+    # Dictionary that holds references to all the time functions.
+    __funcs = {"Fuzzy Time": getFuzzyTime, "GMT Time": getGMTTime, "Local Time": getLocalTime, "UTC Time": getUTCTime}
 
 
 if __name__ == "__main__":
@@ -76,12 +95,12 @@ if __name__ == "__main__":
 
     def update_timeText():
         # Get the current time
-        current = s.getFuzzyTime
+        current = s.timeFuncs(position=timeCombo.get())
 
         # Update the timeText label box with flexi time.
         timeText.configure(text=current)
 
-        #  Call the update_timeText() function every 1 second.
+        # Call the update_timeText() function every 1 second.
         root.after(1000, update_timeText)
 
     s = SelectTime()
@@ -89,9 +108,9 @@ if __name__ == "__main__":
     root = tk.Tk()
     root.wm_title("SelectTime Test")
 
-    # create a conbo box
+    # create a conbobox
     timevar = tk.StringVar()
-    timeCombo = ttk.Combobox(root, textvariable=timevar, values=s.timeTypes)
+    timeCombo = ttk.Combobox(root, textvariable=timevar, values=list(s.timeTypes))
     timeCombo.current(0)
     timeCombo.pack()
 
