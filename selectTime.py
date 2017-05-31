@@ -2,11 +2,15 @@ import datetime
 import time
 import math
 
+import timeCodes
+
+
 class SelectTime:
 
     #  GLOBAL variables used in several fimction
     __types = ("Fuzzy Time", "Time in Words", "GMT Time", "Local Time", "UTC Time", "Swatch Time", "New Earth Time",
-               "Julian Time", "Decimal Time", "True Hex Time", "Hex Time", "Oct Time", "Binary Time")
+               "Julian Time", "Decimal Time", "True Hex Time", "Hex Time", "Oct Time", "Binary Time", "Roman Time",
+               "Morse Time")
 
     __hours = ("twelve", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",  "eleven", "twelve")
     __units = ("zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve")
@@ -246,8 +250,42 @@ class SelectTime:
         __hour, __mins, __secs = self.__getNowTime()
         return "{0:0>6b}:{1:0>6b}:{2:0>6b}".format(__hour, __mins, __secs)
 
+# ------------------------------------------------------------------------------------- getRomanTime -------------------
+    def getRomanTime(self):
+        """   Returns the current [local] time in Roman numerals."""
 
+        __hour, __mins, __secs = self.__getNowTime()
+        
+        __Rhour = timeCodes.romanNumerals[__hour]
+        __Rmins = timeCodes.romanNumerals[__mins]
+        __Rsecs = timeCodes.romanNumerals[__secs]
+        
+        return "{0}:{1}:{2}".format(__Rhour, __Rmins, __Rsecs)
 
+# ------------------------------------------------------------------------------------- getMorseTime -------------------
+    def getMorseTime(self):
+        """   Returns the current [local] time with each digit represented bu a Morse code."""
+
+        __hour, __mins, __secs = self.__getNowTime()
+
+        if __hour < 10:
+            __Mhour = "{0} {1}".format(timeCodes.morseCode[0], timeCodes.morseCode[__hour])
+        else:
+            __Mhour = "{0} {1}".format(timeCodes.morseCode[int(__hour/10)], timeCodes.morseCode[__hour % 10])
+
+        if __mins < 10:
+            __Mmins = "{0} {1}".format(timeCodes.morseCode[0], timeCodes.morseCode[__mins])
+        else:
+            __Mmins = "{0} {1}".format(timeCodes.morseCode[int(__mins/10)], timeCodes.morseCode[__mins % 10])
+
+        if __secs < 10:
+            __Msecs = "{0} {1}".format(timeCodes.morseCode[0], timeCodes.morseCode[__secs])
+        else:
+            __Msecs = "{0} {1}".format(timeCodes.morseCode[int(__secs/10)], timeCodes.morseCode[__secs % 10])
+
+        return "{0}:{1}:{2}".format(__Mhour, __Mmins, __Msecs)
+
+    #
     # GLOBAL Dictionary that holds references to all the time functions.
     __funcs = {"Fuzzy Time": getFuzzyTime,
                "Time in Words": getWordsTime,
@@ -261,7 +299,9 @@ class SelectTime:
                "True Hex Time": getTrueHexTime,
                "Hex Time": getHexTime,
                "Oct Time": getOctTime,
-               "Binary Time": getBinTime,}
+               "Binary Time": getBinTime,
+               "Roman Time": getRomanTime,
+               "Morse Time": getMorseTime}
 
 
 #
