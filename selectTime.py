@@ -4,11 +4,16 @@ import math
 
 class SelectTime:
 
-    __types = ("Fuzzy Time", "Time in Words", "GMT Time", "Local Time", "UTC Time")
+    #  GLOBAL variables used in several fimction
+    __types = ("Fuzzy Time", "Time in Words", "GMT Time", "Local Time", "UTC Time", "Swatch Time", "NET Time")
 
     __hours = ("twelve", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",  "eleven", "twelve")
     __units = ("zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve")
     __tens = ("zero", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty")
+
+#
+#  the class is access bt the following properties only.
+#  timeFuncs can't be made a proper property, this seems to upset the dictionary of functions - there not callable.
 
     @property
     def timeTypes(self):
@@ -16,26 +21,30 @@ class SelectTime:
         return self.__types
 
     def timeFuncs(self, position=0):
-        """ Returns a fuction to return the time as position f in timeTypes."""
+        """ Returns a function to return the time as position f in timeTypes."""
         return self.__funcs[position](self)
 
 
 # -------------------------------------------------------------------------------- time functions ----------------------
 #
 # The time functions can't be made property's, this seems to upset the dictionary of functions - there not callable.
-
+#
+# ------------------------------------------------------------------------------------- getGMTTime --------------------
     def getGMTTime(self):
         """ returns current time as GMT."""
         return time.strftime("%H:%M:%S", time.gmtime())
 
+# ------------------------------------------------------------------------------------- getLocalTime -------------------
     def getLocalTime(self):
         """ returns current time as Local time."""
         return time.strftime("%H:%M:%S", time.localtime())
 
+# ------------------------------------------------------------------------------------- getUTCTim ----------------------
     def getUTCTime(self):
         """ returns current time as UTC time."""
         return "{:%H:%M:%S}".format(datetime.datetime.utcnow())
 
+# ------------------------------------------------------------------------------------- getFuzzyTime -------------------
     def getFuzzyTime(self):
         """ Returns current time as Fuzzy Time."""
 
@@ -84,6 +93,7 @@ class SelectTime:
 
         return __fuzzyTime
 
+# ------------------------------------------------------------------------------------- getWordsTime -------------------
     def getWordsTime(self):
         """ Returns current time in words."""
 
@@ -110,11 +120,11 @@ class SelectTime:
 
         if __mins == 0:
             __minsStr = "{0} o'clock {1}".format(self.__hours[__hour], __ampm)
-        elif 1 < __mins < 9:
+        elif 1 <= __mins <= 9:
             __minsStr = "{0} minutes {1} {2} {3}".format(self.__units[__mins], __pasTo, self.__hours[__hour], __ampm)
-        elif 10 < __mins < 20:
+        elif 10 <= __mins <= 20:
             __minsStr = "{0} minutes {1} {2} {3}".format(self.__tens[__mins-9], __pasTo, self.__hours[__hour], __ampm)
-        elif 21 < __mins < 29:
+        elif 21 <= __mins <= 29:
             __minsTens = math.floor(__mins / 10)
             __minsUnit = __mins - (__minsTens * 10)
             __minsStr = "twenty{0} minutes {1} {2} {3}".format(self.__units[__minsUnit], __pasTo, self.__hours[__hour], __ampm)
@@ -123,14 +133,52 @@ class SelectTime:
 
         return __minsStr
 
+# ------------------------------------------------------------------------------------- getSwatchTime ------------------
+    def getSwatchTime(self):
+        """   returns UTC [+1 hour] time as Swatch Time.
+        Swatch time is made up of 1000 beats per day i.e. 1 beat = 86.4 seconds.
+        This is then encoded into a string.
+
+        see http://en.wikipedia.org/wiki/Swatch_Internet_Time"""
+
+        __utcNow = datetime.datetime.utcnow()
+        __utcPlus1 = __utcNow + datetime.timedelta(hours=+1)
+        __noOfSeconds = (__utcPlus1.hour * 3600) + (__utcPlus1.minute * 60) + __utcPlus1.second
+        __noOfBeats = __noOfSeconds / 86.4
+
+        return "@ {0:.2f} BMT".format(__noOfBeats)
+
+    def getNETTime(selfself):
+        """    Returns UTC time as New Earth Time.
+        New Earth Time [or NET] splits the day into 260 degrees. each degree is
+        further split into 60 minutes and further into 60 seconds.
+
+        Only shows degrees and minutes - at the moment.
+
+        see http://en.wikipedia.org/wiki/New_Earth_Time"""
+
+        now = datetime.datetime.now()
+
+        __hour = now.hour
+        __mins = now.minute
+        __secs = now.second
+
+        __deg = __hour * 15 + (__mins // 4)
+        __min = __mins - ((__mins // 4) * 4)
+        __sec = (__secs + (__min * 60)) / 4
+
+        return "{0} deg {1} mins".format(__deg, int(__sec))
 
 
-    # Dictionary that holds references to all the time functions.
+    # GLOBAL Dictionary that holds references to all the time functions.
     __funcs = {"Fuzzy Time": getFuzzyTime,
                "Time in Words": getWordsTime,
                "GMT Time": getGMTTime,
                "Local Time": getLocalTime,
-               "UTC Time": getUTCTime}
+               "UTC Time": getUTCTime,
+               "Swatch Time": getSwatchTime,
+               "NET Time" : getNETTime}
+
 
 
 # ----------------------------------------------------- called to test, if run as main (nit imported) ------------------
@@ -144,6 +192,8 @@ if __name__ == "__main__":
 
         # Update the timeText label box with flexi time.
         timeText.configure(text=current)
+
+        root.wm_title("SelectTime Test :: " + time.strftime("%H:%M:%S", time.localtime()))
 
         # Call the update_timeText() function every 1 second.
         root.after(1000, update_timeText)
