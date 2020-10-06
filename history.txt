@@ -1,0 +1,62 @@
+V2020.10
+    Changed format of version number - now is year.build number. [first] 7 digit git commit ID
+    Added Eric6 project files.
+    Renamed LICENSE to LICENSE.txt
+    Added logging.
+    Added the ability to display the current time using a MS agent. [Claude from Microsoft has to be installed]
+
+
+V2017.9.5a3911a
+
+    Moved GLOBAL variables to timeCodes.py
+
+
+V2017.8.79a8fa
+
+    Added time displayed as Mars, Flow, Percent, Metric and Unix Time.
+
+
+V2017.7.81f9413
+
+    Added display time as Roman Numerals and Morse code time.
+
+
+V2017.6.a10f2d8
+
+    Added time displayed as Julian, Decimal, True Hex, Hex, Oct and Binary times.
+
+
+V2017.5.86862aa
+
+    Added time displayed as Swatch and Net time.
+
+
+V2017.4.4365298
+
+    Added time displayed as Time in words [time correct to the minute]
+
+
+V2017.3.2b8f6f7
+
+    Added time displayed as GMT, Local and UTC.
+
+    The tkinter routine now changes the time format depended upon the
+    choice in the drop down box.
+
+
+V2017.2.b48c6db
+
+    Modified the fuzzytime function to use Dictionary look instead of nested if's.
+
+
+V2017.1.c35aa2b
+
+    SelectTime.py will be function that will allow the current local time to
+    be display in several formats.
+
+    The first one added is the main one - fuzzytime.  This displays the time
+    rounded to the nearest five minutes, but in words.
+
+    If the module is run by itself, instead of being called, a small tkinter
+    routine will display the time.
+

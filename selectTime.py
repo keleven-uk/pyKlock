@@ -1,13 +1,32 @@
+###############################################################################################################
+#    selectTime.py   Copyright (C) <2020>  <Kevin Scott>                                                      #
+#                                                                                                             #
+#    A class which allows the current time to be displays in various formats.                                 #
+#                                                                                                             #
+#    If the module is run direct [not imported] a small tkinter program is loaded for testing purposes.       #
+#                                                                                                             #
+###############################################################################################################
+#    Copyright (C) <2020>  <Kevin Scott>                                                                      #
+#                                                                                                             #
+#    This program is free software: you can redistribute it and/or modify it under the terms of the           #
+#    GNU General Public License as published by the Free Software Foundation, either Version 3 of the         #
+#    License, or (at your option) any later Version.                                                          #
+#                                                                                                             #
+#    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without        #
+#    even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the               #
+#    GNU General Public License for more details.                                                             #
+#                                                                                                             #
+#    You should have received a copy of the GNU General Public License along with this program.               #
+#    If not, see <http://www.gnu.org/licenses/>.                                                              #
+#                                                                                                             #
+###############################################################################################################
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Mar  4 15:42:00 2015
 
-@author: scottk2
-"""
 
 import datetime
 import time
 import math
+import logging
 
 import timeCodes as tc
 
@@ -33,8 +52,16 @@ class SelectTime:
         return self.__types
 
     def getTime(self, position=0):
-        """ Returns a function to return the time as position f in timeTypes."""
+        """ Returns a function to return the time at position in timeTypes."""
+        logging.debug("Return time at position")
         return self.__funcs[position](self)
+
+    def __init__(self):
+        logging.basicConfig(filename='selectTime.log',
+                            filemode='w',
+                            format='%(name)s - %(levelname)s - %(message)s',
+                            level=logging.DEBUG)
+        logging.debug('init')
 
 
 # -------------------------------------------------------------------------------- time functions ----------------------
@@ -400,10 +427,40 @@ class SelectTime:
 if __name__ == "__main__":
     import tkinter as tk
     import tkinter.ttk as ttk
+    import win32com.client
+
+    def update_agent(text):
+        """  Display the agent and speak the text [time].
+        """
+        name = "dog"
+
+        agent=win32com.client.Dispatch("Agent.Control.2")
+        agent.Connected=True
+        agent.Characters.Load(name, name + ".acs")
+
+        char = agent.Characters(name)
+
+        char.LanguageID = 0x409
+        char.Show()
+        char.Play("Greet")
+        char.Speak(text)
+        char.Hide()
+
+        while char.visible:
+            pass
+
+        agent.Connected=False
+        agent.Characters.Unload(name)
+
 
     def update_timeText():
         # Get the current time
+
         current = s.getTime(position=timeCombo.get())
+
+        if update_timeText.old_current != current:
+            update_timeText.old_current = current  #  Static variable of update_timeText, so it will persists between function calls
+            update_agent(current)
 
         # Update the timeText label box with flexi time.
         timeText.configure(text=current)
@@ -413,12 +470,13 @@ if __name__ == "__main__":
         # Call the update_timeText() function every 1 second.
         root.after(1000, update_timeText)
 
+    update_timeText.old_current = ""  #  Static variable of update_timeText, so it will persists between function calls
     s = SelectTime()
 
     root = tk.Tk()
     root.wm_title("SelectTime Test")
 
-    # create a conbobox
+    # create a combobox
     timevar = tk.StringVar()
     timeCombo = ttk.Combobox(root, textvariable=timevar, values=list(s.timeTypes))
     timeCombo.current(0)
