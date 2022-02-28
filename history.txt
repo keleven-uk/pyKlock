@@ -1,4 +1,13 @@
-V2020.10
+V2022.11
+
+    Now working against Python V3.10.2
+    Correct but in return string in getSwatchTime()
+    Amended all return string to f strings from string.format().
+    Removed Eric IDE project files, we now use kate IDE.
+
+
+V2020.10.c2e2c54
+
     Changed format of version number - now is year.build number. [first] 7 digit git commit ID
     Added Eric6 project files.
     Renamed LICENSE to LICENSE.txt
