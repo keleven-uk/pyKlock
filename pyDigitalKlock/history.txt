@@ -1,0 +1,12 @@
+    History files of sub project - pyDigitalKlock.
+    Version numbers are taken from the main project.
+
+V2022.12
+
+    Added a sub project - pyDigitalKlock.
+    An attempt to re-create a LCD Klock.
+    The gui is built using pygubu-designer.
+    Basically a couple of labels.
+    The main label shows the current time using a digital font.
+    The second label, acting as a status bar, shows the date, the state of the lock
+    keys [caps, scroll & num] and the PC idles time.
