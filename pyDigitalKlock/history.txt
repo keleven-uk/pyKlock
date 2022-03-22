@@ -1,6 +1,17 @@
     History files of sub project - pyDigitalKlock.
     Version numbers are taken from the main project.
 
+V2022.13
+
+    Added directory - bin - holds ant executables
+    Added directory - src - holds the main source code files.
+    Added directory - src\utils - holds any utility source code files [both .py and .ui].
+    Added main.py to top level directory, which is used to start the L.E.D. Klock.
+    Tried to format the status bar label, a bit klunky.
+        There is a formatStaus routine in pyDigitalKlock_utils.py.
+        This attempts to space out the three strings using guess work.
+
+
 V2022.12
 
     Added a sub project - pyDigitalKlock.

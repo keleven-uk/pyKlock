@@ -71,3 +71,36 @@ def get_idle_duration():
     windll.user32.GetLastInputInfo(byref(lastInputInfo))
     millis = windll.kernel32.GetTickCount() - lastInputInfo.dwTime
     return millis / 1000.0
+
+
+def formatSeconds(seconds):
+    """  Formats number of seconds into a human readable form i.e. hours:minutes:seconds
+    """
+    minutes, seconds = divmod(seconds, 60)
+    hours, minutes   = divmod(minutes, 60)
+
+    if hours:
+        return f"{hours}h:{minutes}m:{seconds}s"
+    elif minutes:
+        return f"{minutes}m:{seconds}s"
+    else:
+        return f"{seconds}s"
+
+
+def formatStatus(width, strDate, state, idle):
+
+    no_of_chars     = int(width / 8)         #  Assuming 8 pixels to a character
+    middle_of_chars = int(no_of_chars / 2)
+
+    if idle < 5:
+        strStatus = strDate.ljust(middle_of_chars, " ") + state
+    else:
+        strIdle = f"idle: {formatSeconds(idle)}"
+        strStatus = strDate.ljust(middle_of_chars, " ") + state + strIdle.rjust(middle_of_chars - 4, " ")
+
+    return strStatus
+
+
+
+
+
