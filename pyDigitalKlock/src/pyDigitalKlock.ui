@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <interface version="1.2">
   <object class="tk.Toplevel" id="mainwindow">
-    <property name="background">#ccfd82</property>
+    <property name="background">#80ff80</property>
     <property name="cursor">clock</property>
     <property name="geometry">400x160</property>
     <property name="height">160</property>
@@ -12,15 +12,15 @@
     <child>
       <object class="ttk.Label" id="lblDate">
         <property name="anchor">w</property>
-        <property name="background">#ccfd82</property>
-        <property name="font">{Hack} 10 {}</property>
-        <property name="foreground">#808000</property>
+        <property name="background">#80ff80</property>
+        <property name="font">{Tahoma} 8 {}</property>
+        <property name="foreground">#000000</property>
         <property name="text" translatable="yes">date</property>
         <property name="textvariable">string:today_date</property>
         <layout manager="place">
           <property name="anchor">w</property>
           <property name="height">20</property>
-          <property name="width">400</property>
+          <property name="width">150</property>
           <property name="x">0</property>
           <property name="y">150</property>
         </layout>
@@ -28,9 +28,9 @@
     </child>
     <child>
       <object class="ttk.Label" id="lblTime">
-        <property name="background">#ccfd82</property>
-        <property name="font">{DS-Digital} 84 {}</property>
-        <property name="foreground">#808000</property>
+        <property name="background">#80ff80</property>
+        <property name="font">{Pixel LCD7} 48 {}</property>
+        <property name="foreground">#000000</property>
         <property name="takefocus">true</property>
         <property name="text" translatable="yes">00:00:00</property>
         <property name="textvariable">string:current_time</property>
@@ -40,6 +40,37 @@
           <property name="width">400</property>
           <property name="x">10</property>
           <property name="y">10</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Label" id="label1">
+        <property name="background">#80ff80</property>
+        <property name="font">{Tahoma} 8 {}</property>
+        <property name="foreground">#000000</property>
+        <property name="text" translatable="yes">State</property>
+        <property name="textvariable">string:current_state</property>
+        <layout manager="place">
+          <property name="height">20</property>
+          <property name="width">30</property>
+          <property name="x">185</property>
+          <property name="y">140</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Label" id="label2">
+        <property name="background">#80ff80</property>
+        <property name="font">{Tahoma} 8 {}</property>
+        <property name="foreground">#000000</property>
+        <property name="text" translatable="yes">idle</property>
+        <property name="textvariable">string:idle_time</property>
+        <layout manager="place">
+          <property name="anchor">e</property>
+          <property name="height">20</property>
+          <property name="width">170</property>
+          <property name="x">400</property>
+          <property name="y">150</property>
         </layout>
       </object>
     </child>

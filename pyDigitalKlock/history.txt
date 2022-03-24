@@ -3,12 +3,12 @@
 
 V2022.13
 
-    Added directory - bin - holds ant executables
+    Added directory - bin - holds any executables.
     Added directory - src - holds the main source code files.
     Added directory - src\utils - holds any utility source code files [both .py and .ui].
     Added main.py to top level directory, which is used to start the L.E.D. Klock.
     Tried to format the status bar label, a bit klunky.
-        There is a formatStaus routine in pyDigitalKlock_utils.py.
+        There is a formatStatus routine in pyDigitalKlock_utils.py.
         This attempts to space out the three strings using guess work.
 
 

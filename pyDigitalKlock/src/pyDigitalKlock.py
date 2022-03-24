@@ -59,23 +59,33 @@ class FirstApp:
 
     def set_time_date(self):
         strNow  = datetime.datetime.now()
-        state   = utils.get_state()
-        idle    = int(utils.get_idle_duration())
 
         #  Set the time.
-        varname = 'current_time'
-        var = self.builder.get_variable(varname)
-        strDate = strNow.strftime("%H:%M:%S")
-        var.set(f"{strDate}")
-
-        strDate   = strNow.strftime("%A %d %B %Y")
-        strStatus = utils.formatStatus(self.width, strDate, state, idle)
+        strTime = strNow.strftime("%H:%M:%S")
+        var     = self.builder.get_variable('current_time')
+        var.set(f"{strTime}")
 
         #  Set the date
-        varname = 'today_date'
-        var = self.builder.get_variable(varname)
+        strDate = strNow.strftime("%A %d %B %Y")
+        var     = self.builder.get_variable("today_date")
+        var.set(f"{strDate}")
 
-        var.set(f"{strStatus}")
+        #  Set the state
+        state = utils.get_state()
+        var   = self.builder.get_variable('current_state')
+        var.set(f"{state}")
+
+        #  Set the state
+        idle    = int(utils.get_idle_duration())
+        if idle > 5:                                                #  Only print idles time if greater then 5 seconds.
+            strIdle = f"idle : {utils.formatSeconds(idle)}"
+            length  = len(strIdle)
+            strIdle = strIdle.rjust(58-length, " ")                 #  Guess at 58 characters for right justification.
+        else:
+            strIdle = ""
+
+        var     = self.builder.get_variable('idle_time')        #  This could change if the font is changed.
+        var.set(f"{strIdle}")
 
 
         # Call the set_time_date() function every 1 second.

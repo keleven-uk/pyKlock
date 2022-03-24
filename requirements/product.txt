@@ -1,0 +1,5 @@
+appdirs==1.4.4
+Mako==1.2.0
+MarkupSafe==2.1.1
+pygubu==0.20
+pywin32==303

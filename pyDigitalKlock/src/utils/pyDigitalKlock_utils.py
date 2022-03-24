@@ -87,18 +87,7 @@ def formatSeconds(seconds):
         return f"{seconds}s"
 
 
-def formatStatus(width, strDate, state, idle):
 
-    no_of_chars     = int(width / 8)         #  Assuming 8 pixels to a character
-    middle_of_chars = int(no_of_chars / 2)
-
-    if idle < 5:
-        strStatus = strDate.ljust(middle_of_chars, " ") + state
-    else:
-        strIdle = f"idle: {formatSeconds(idle)}"
-        strStatus = strDate.ljust(middle_of_chars, " ") + state + strIdle.rjust(middle_of_chars - 4, " ")
-
-    return strStatus
 
 
 
