@@ -28,17 +28,20 @@ import pygubu
 
 import datetime
 
+import src.Config as Config
+import src.Logger as Logger
 import src.utils.pyDigitalKlock_utils as utils
-
 
 PROJECT_PATH  = pathlib.Path(__file__).parent
 MAIN_PATH     = pathlib.Path(__file__).parent.parent
 PROJECT_UI    = PROJECT_PATH / "pyDigitalKlock.ui"
 RESOURCE_PATH = MAIN_PATH / "resources"
-
+CONFIG_PATH   = MAIN_PATH / "config.toml"
+LOGGER_PATH   = MAIN_PATH / "pyDigitalKlock.log"
 
 class FirstApp:
     def __init__(self, master=None):
+
         # 1: Create a builder and setup resources path (if you have images)
         self.builder = builder = pygubu.Builder()
         builder.add_resource_path(RESOURCE_PATH)
@@ -112,8 +115,18 @@ class FirstApp:
 def main():
     """  Main function to run the thing.
     """
+    logger   = Logger.get_logger(str(LOGGER_PATH))          # Create the logger.
+    myConfig = Config.Config(CONFIG_PATH,logger)            # Create the config.
+
+
+    logger.info("-" * 100)
+    logger.info(f"  Running {myConfig.NAME} Version {myConfig.VERSION} ")
+
     app = FirstApp()
     app.run()
+
+    logger.info(f"  Ending {myConfig.NAME} Version {myConfig.VERSION} ")
+    logger.info("-" * 100)
 
 
 if __name__ == '__main__':

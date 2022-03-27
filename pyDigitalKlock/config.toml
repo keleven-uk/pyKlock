@@ -1,0 +1,13 @@
+#   Configure files for pyDigitalKlock.py 
+#
+#   true and false are lower case 
+#   location needs double \ i.e. c:\tmp\music - well, on windows any way. 
+#
+#   March 2022    (c) Kevin Scott 
+
+[INFO]
+myVERSION = "2022.15"
+myNAME = "pyDigitalKlock"
+
+[APPLICATION]
+notification = true

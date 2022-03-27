@@ -1,6 +1,28 @@
     History files of sub project - pyDigitalKlock.
     Version numbers are taken from the main project.
 
+
+V2022.15
+
+    [pyKlock]
+        Added fonts directory, added fonts DS-DIGI & Pixel LCD-7
+
+    [pyDigitalKlock]
+        Added to src - config.py, License.py & Logger.py
+        Amended to use config and logger files.
+
+
+V2022.14
+
+    [pyKlock]
+        Moved requirements.txt to requirements\product.txt
+        Moved requirements_dev to requirements\development.txt
+
+    [pyDigitalKlock]
+	Simplified the status bar formatting.
+           This was achieved by using three labels - date, state & idle time.
+
+
 V2022.13
 
     Added directory - bin - holds any executables.
