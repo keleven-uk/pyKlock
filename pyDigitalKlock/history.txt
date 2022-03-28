@@ -2,6 +2,13 @@
     Version numbers are taken from the main project.
 
 
+V2022.16
+
+    [pyDigitalKlock]
+        Started build of the menus.
+            Added File/Quit & File/Help.
+            Implemented simple action for each.
+
 V2022.15
 
     [pyKlock]

@@ -20,24 +20,28 @@
 #                                                                                                             #
 ###############################################################################################################
 
-import pathlib
 import tkinter as tk
-from tkinter import font
 import tkinter.ttk as ttk
+from tkinter import font
+from tkinter import messagebox
+
 import pygubu
 
+import pathlib
 import datetime
 
 import src.Config as Config
 import src.Logger as Logger
 import src.utils.pyDigitalKlock_utils as utils
 
+
 PROJECT_PATH  = pathlib.Path(__file__).parent
 MAIN_PATH     = pathlib.Path(__file__).parent.parent
 PROJECT_UI    = PROJECT_PATH / "pyDigitalKlock.ui"
 RESOURCE_PATH = MAIN_PATH / "resources"
 CONFIG_PATH   = MAIN_PATH / "config.toml"
-LOGGER_PATH   = MAIN_PATH / "pyDigitalKlock.log"
+LOGGER_PATH   = MAIN_PATH / "logs/pyDigitalKlock.log"
+
 
 class FirstApp:
     def __init__(self, master=None):
@@ -53,11 +57,23 @@ class FirstApp:
         self.mainwindow = builder.get_object('mainwindow', master)
         self.width      = self.mainwindow.cget("width")
 
+        # Set main menu
+        self.mainmenu = mainmenu = builder.get_object('mainmenu', self.mainwindow)
+        self.mainwindow.configure(menu=mainmenu)
+
         # 4: Connect callbacks
         builder.connect_callbacks(self)
 
         self.check_font()
         self.set_time_date()
+
+
+    def on_mfile_item_clicked(self, itemid):
+        if itemid == 'mfile_quit':
+            self.mainwindow.quit()
+
+    def on_about_clicked(self, itemid):
+        messagebox.showinfo('About', 'You clicked About menuitem')
 
 
     def set_time_date(self):
