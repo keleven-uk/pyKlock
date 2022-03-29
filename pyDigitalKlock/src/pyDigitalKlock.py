@@ -27,33 +27,35 @@ from tkinter import messagebox
 
 import pygubu
 
-import pathlib
 import datetime
 
 import src.Config as Config
 import src.Logger as Logger
+import src.About as About
 import src.utils.pyDigitalKlock_utils as utils
 
+from src.projectPaths import *
 
-PROJECT_PATH  = pathlib.Path(__file__).parent
-MAIN_PATH     = pathlib.Path(__file__).parent.parent
-PROJECT_UI    = PROJECT_PATH / "pyDigitalKlock.ui"
-RESOURCE_PATH = MAIN_PATH / "resources"
-CONFIG_PATH   = MAIN_PATH / "config.toml"
-LOGGER_PATH   = MAIN_PATH / "logs/pyDigitalKlock.log"
 
 
 class FirstApp:
-    def __init__(self, master=None):
+    """  Support logic for the GUI of pyDigitalKlock.
 
-        # 1: Create a builder and setup resources path (if you have images)
+         GUI elements held in pyDigitalKlock.ui, created using pygubu-designer.
+    """
+    def __init__(self, myConfig, logger, master=None):
+
+        self.myAbout = About.About(self.mainwindow, myConfig)
+        self.logger  = logger
+
+        # Create a builder and setup resources path (if you have images)
         self.builder = builder = pygubu.Builder()
         builder.add_resource_path(RESOURCE_PATH)
 
-        # 2: Load an ui file
+        # Load an ui file
         builder.add_from_file(PROJECT_UI)
 
-        # 3: Create the mainwindow
+        # Create the mainwindow
         self.mainwindow = builder.get_object('mainwindow', master)
         self.width      = self.mainwindow.cget("width")
 
@@ -61,22 +63,38 @@ class FirstApp:
         self.mainmenu = mainmenu = builder.get_object('mainmenu', self.mainwindow)
         self.mainwindow.configure(menu=mainmenu)
 
-        # 4: Connect callbacks
+        # Connect to Delete event
+        self.mainwindow.protocol("WM_DELETE_WINDOW", self.quit)
+
+        # Connect callbacks
         builder.connect_callbacks(self)
 
         self.check_font()
         self.set_time_date()
 
 
-    def on_mfile_item_clicked(self, itemid):
+    def on_items_clicked(self, itemid):
+        """  Handle the menu options.
+        """
         if itemid == 'mfile_quit':
-            self.mainwindow.quit()
+            self.quit()
+        if itemid == 'mhelp_about':
+            self.logger.info(f"  Running About Dialog ")
+            self.show_about_dialog()
+            self.logger.info(f"  Closing About Dialog ")
 
-    def on_about_clicked(self, itemid):
-        messagebox.showinfo('About', 'You clicked About menuitem')
+
+    def show_about_dialog(self):
+        """  Call the about dialog.
+        """
+        self.myAbout.show_about_dialog()
 
 
     def set_time_date(self):
+        """  Update the screen, current time, date & idle time.
+
+             TODO Stop guessing at length of idle time and try and use ttk measure function.
+        """
         strNow  = datetime.datetime.now()
 
         #  Set the time.
@@ -90,9 +108,8 @@ class FirstApp:
         var.set(f"{strDate}")
 
         #  Set the state
-        state = utils.get_state()
         var   = self.builder.get_variable('current_state')
-        var.set(f"{state}")
+        var.set(f"{utils.get_state()}")
 
         #  Set the state
         idle    = int(utils.get_idle_duration())
@@ -103,9 +120,8 @@ class FirstApp:
         else:
             strIdle = ""
 
-        var     = self.builder.get_variable('idle_time')        #  This could change if the font is changed.
+        var     = self.builder.get_variable('idle_time')            #  This could change if the font is changed.
         var.set(f"{strIdle}")
-
 
         # Call the set_time_date() function every 1 second.
         self.mainwindow.after(1000, self.set_time_date)
@@ -124,6 +140,9 @@ class FirstApp:
             print("Hack not found, Please install")
 
 
+    def quit(self, event=None):
+        self.mainwindow.quit()
+
     def run(self):
         self.mainwindow.mainloop()
 
@@ -138,7 +157,7 @@ def main():
     logger.info("-" * 100)
     logger.info(f"  Running {myConfig.NAME} Version {myConfig.VERSION} ")
 
-    app = FirstApp()
+    app = FirstApp(myConfig, logger)
     app.run()
 
     logger.info(f"  Ending {myConfig.NAME} Version {myConfig.VERSION} ")

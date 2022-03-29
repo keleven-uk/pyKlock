@@ -2,6 +2,14 @@
     Version numbers are taken from the main project.
 
 
+V2022.17
+
+    [pyDigitalKlock]
+        Created an about dialog - in src\about.py.
+            Amended menus to call new about dialog.
+        Created src\projectPaths to hold relevant paths used throw-out the project.
+
+
 V2022.16
 
     [pyDigitalKlock]
@@ -10,7 +18,7 @@ V2022.16
             Implemented simple action for each.
 
 V2022.15
-
+git add .
     [pyKlock]
         Added fonts directory, added fonts DS-DIGI & Pixel LCD-7
 

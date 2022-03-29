@@ -6,8 +6,6 @@
 #   March 2022    (c) Kevin Scott 
 
 [INFO]
-myVERSION = "2022.16"
+myVERSION = "2022.17"
 myNAME = "pyDigitalKlock"
 
-[APPLICATION]
-notification = true
