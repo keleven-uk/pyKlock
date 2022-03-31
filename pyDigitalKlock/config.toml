@@ -6,6 +6,13 @@
 #   March 2022    (c) Kevin Scott 
 
 [INFO]
-myVERSION = "2022.17"
+myVERSION = "2022.18"
 myNAME = "pyDigitalKlock"
 
+[COLOUR]
+foreground = "#ff0000"
+background = "#80ff80"
+
+[POSITION]
+x_pos = 0
+y_pos = 0

@@ -3,30 +3,12 @@
   <object class="tk.Toplevel" id="mainwindow">
     <property name="background">#80ff80</property>
     <property name="container">false</property>
-    <property name="cursor">clock</property>
-    <property name="geometry">400x180</property>
-    <property name="height">180</property>
+    <property name="geometry">400x145</property>
+    <property name="height">145</property>
     <property name="iconbitmap">klock.ico</property>
     <property name="resizable">none</property>
     <property name="title" translatable="yes">L.E.D. Klock</property>
     <property name="width">400</property>
-    <child>
-      <object class="ttk.Label" id="lblDate">
-        <property name="anchor">w</property>
-        <property name="background">#80ff80</property>
-        <property name="font">{Tahoma} 8 {}</property>
-        <property name="foreground">#000000</property>
-        <property name="text" translatable="yes">date</property>
-        <property name="textvariable">string:today_date</property>
-        <layout manager="place">
-          <property name="anchor">w</property>
-          <property name="height">20</property>
-          <property name="width">150</property>
-          <property name="x">0</property>
-          <property name="y">150</property>
-        </layout>
-      </object>
-    </child>
     <child>
       <object class="ttk.Label" id="lblTime">
         <property name="background">#80ff80</property>
@@ -45,22 +27,41 @@
       </object>
     </child>
     <child>
-      <object class="ttk.Label" id="label1">
+      <object class="ttk.Label" id="lblDate">
+        <property name="anchor">w</property>
+        <property name="background">#80ff80</property>
+        <property name="font">{Tahoma} 8 {}</property>
+        <property name="foreground">#000000</property>
+        <property name="justify">right</property>
+        <property name="text" translatable="yes">date</property>
+        <property name="textvariable">string:today_date</property>
+        <layout manager="place">
+          <property name="anchor">w</property>
+          <property name="height">20</property>
+          <property name="width">150</property>
+          <property name="x">0</property>
+          <property name="y">120</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Label" id="lblState">
         <property name="background">#80ff80</property>
         <property name="font">{Tahoma} 8 {}</property>
         <property name="foreground">#000000</property>
         <property name="text" translatable="yes">State</property>
         <property name="textvariable">string:current_state</property>
         <layout manager="place">
+          <property name="anchor">center</property>
           <property name="height">20</property>
           <property name="width">30</property>
           <property name="x">185</property>
-          <property name="y">140</property>
+          <property name="y">120</property>
         </layout>
       </object>
     </child>
     <child>
-      <object class="ttk.Label" id="label2">
+      <object class="ttk.Label" id="lblIdle">
         <property name="background">#80ff80</property>
         <property name="font">{Tahoma} 8 {}</property>
         <property name="foreground">#000000</property>
@@ -71,17 +72,21 @@
           <property name="height">20</property>
           <property name="width">170</property>
           <property name="x">400</property>
-          <property name="y">150</property>
+          <property name="y">120</property>
         </layout>
       </object>
     </child>
   </object>
   <object class="tk.Menu" id="mainmenu">
+    <property name="tearoff">false</property>
     <child>
       <object class="tk.Menuitem.Submenu" id="mfile">
+        <property name="columnbreak">false</property>
         <property name="label" translatable="yes">File</property>
+        <property name="takefocus">true</property>
         <child>
           <object class="tk.Menuitem.Command" id="mfile_quit">
+            <property name="accelerator">"&lt;Control-h&gt;"</property>
             <property name="command" type="command" cbtype="with_wid">on_items_clicked</property>
             <property name="label" translatable="yes">Quit</property>
           </object>
@@ -89,7 +94,41 @@
       </object>
     </child>
     <child>
+      <object class="tk.Menuitem.Submenu" id="mColour">
+        <property name="columnbreak">false</property>
+        <property name="hidemargin">false</property>
+        <property name="label" translatable="yes">Colour</property>
+        <property name="state">normal</property>
+        <property name="takefocus">true</property>
+        <child>
+          <object class="tk.Menuitem.Command" id="mColour_foreground">
+            <property name="command" type="command" cbtype="with_wid">on_items_clicked</property>
+            <property name="label" translatable="yes">Foreground</property>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Menuitem.Command" id="mColour_background">
+            <property name="command" type="command" cbtype="with_wid">on_items_clicked</property>
+            <property name="label" translatable="yes">background</property>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Menuitem.Checkbutton" id="mcolour_transparent">
+            <property name="command" type="command" cbtype="with_wid">on_items_clicked</property>
+            <property name="font">TkTextFont</property>
+            <property name="indicatoron">true</property>
+            <property name="label" translatable="yes">Transparent</property>
+            <property name="offvalue">0</property>
+            <property name="onvalue">1</property>
+            <property name="state">normal</property>
+            <property name="variable">boolean:mcolour_transparent_clicked</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
       <object class="tk.Menuitem.Submenu" id="mhelp">
+        <property name="columnbreak">false</property>
         <property name="label" translatable="yes">Help</property>
         <property name="takefocus">true</property>
         <child>

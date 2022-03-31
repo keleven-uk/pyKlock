@@ -29,14 +29,14 @@ class About():
     """  A Simple about dialog.
          Just displays the product name and version and a copyright notice.
 
-         Create with:  myAbout = About.About(self.mainwindow, myConfig)
+         Create with:  myAbout = About.About(self.mainwindow, NAME, VERSION)
          Display with: myAbout.show_about_dialog()
     """
 
-    def __init__(self, parent, myConfig):
-        self.parent = parent
-        self.NAME = myConfig.NAME
-        self.VERSION = myConfig.VERSION
+    def __init__(self, parent, NAME, VERSION):
+        self.parent  = parent
+        self.NAME    = NAME
+        self.VERSION = VERSION
         self.about_dialog = None
 
         self.builder = builder = pygubu.Builder()

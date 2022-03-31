@@ -2,7 +2,33 @@
    All entries to main project - unless stated.
 
 
-V2022.14
+V2022.17.93ccf3e
+
+    [pyDigitalKlock]
+        Created an about dialog - in src\about.py.
+            Amended menus to call new about dialog.
+        Created src\projectPaths to hold relevant paths used throw-out the project.
+
+
+V2022.16.1d7e07d
+
+    [pyDigitalKlock]
+        Started build of the menus.
+            Added File/Quit & File/Help.
+            Implemented simple action for each.
+
+
+V2022.15.a879173
+
+    [pyKlock]
+        Added fonts directory, added fonts DS-DIGI & Pixel LCD-7
+
+    [pyDigitalKlock]
+        Added to src - config.py, License.py & Logger.py
+        Amended to use config and logger files.
+
+
+V2022.14.9ed795a
 
     [pyKlock]
         Moved requirements.txt to requirements\product.txt
@@ -13,31 +39,29 @@ V2022.14
            This was achieved by using three labels - date, state & idle time.
 
 
-V2022.13
+V2022.13.3643d9a
 
-    [pyDigitalKlock]
-    	Added directory - bin - holds any executables.
-    	Added directory - src - holds the main source code files.
-    	Added directory - src\utils - holds any utility source code files [both .py and .ui].
-    	Added main.py to top level directory, which is used to start the L.E.D. Klock.
-    	Tried to format the status bar label, a bit klunky.
-        	There is a formatStatus routine in pyDigitalKlock_utils.py.
-        	This attempts to space out the three strings using guess work.
-
-
-V2022.12
-
-    [pyDigitalKlock]
-    	Added a sub project - pyDigitalKlock.
-    	An attempt to re-create a LCD Klock.
-    	The gui is built using pygubu-designer.
-    	Basically a couple of labels.
-    	The main label shows the current time using a digital font.
-    	The second label, acting as a status bar, shows the date, the state of the lock
-    	keys [caps, scroll & num] and the PC idles time.
+    Added directory - bin - holds any executables.
+    Added directory - src - holds the main source code files.
+    Added directory - src\utils - holds any utility source code files [both .py and .ui].
+    Added main.py to top level directory, which is used to start the L.E.D. Klock.
+    Tried to format the status bar label, a bit klunky.
+        There is a formatStatus routine in pyDigitalKlock_utils.py.
+        This attempts to space out the three strings using guess work.
 
 
-V2022.11
+V2022.12.71f7527
+
+    Added a sub project - pyDigitalKlock.
+    An attempt to re-create a LCD Klock.
+    The gui is built using pygubu-designer.
+    Basically a couple of labels.
+    The main label shows the current time using a digital font.
+    The second label, acting as a status bar, shows the date, the state of the lock
+    keys [caps, scroll & num] and the PC idles time.
+
+
+V2022.11.cdfa0df
 
     Now working against Python V3.10.2
     Correct but in return string in getSwatchTime()

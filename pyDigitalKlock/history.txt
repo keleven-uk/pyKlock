@@ -2,7 +2,20 @@
     Version numbers are taken from the main project.
 
 
-V2022.17
+V202.18
+
+    [pyDigitalKlock]
+        Added the ability to choose the colour of both foreground and background.
+            Added menu option which load colour chooser for both foreground and background.
+            Added logic to set the colour for both foreground and background
+        Added the ability to have the background transparent.
+            Added both menu and logic to achieve transparency.
+        Removed the top level header i.e. title, close and minimise icons.
+            Added logic to move the app via the mouse, using left click to drag.
+        Set meu accelerator to quit menu - can now close app with <Control-1>.
+
+
+V2022.17.93ccf3e
 
     [pyDigitalKlock]
         Created an about dialog - in src\about.py.
@@ -10,15 +23,16 @@ V2022.17
         Created src\projectPaths to hold relevant paths used throw-out the project.
 
 
-V2022.16
+V2022.16.1d7e07d
 
     [pyDigitalKlock]
         Started build of the menus.
             Added File/Quit & File/Help.
             Implemented simple action for each.
 
-V2022.15
-git add .
+
+V2022.15.a879173
+
     [pyKlock]
         Added fonts directory, added fonts DS-DIGI & Pixel LCD-7
 
@@ -27,7 +41,7 @@ git add .
         Amended to use config and logger files.
 
 
-V2022.14
+V2022.14.9ed795a
 
     [pyKlock]
         Moved requirements.txt to requirements\product.txt
@@ -38,7 +52,7 @@ V2022.14
            This was achieved by using three labels - date, state & idle time.
 
 
-V2022.13
+V2022.13.3643d9a
 
     Added directory - bin - holds any executables.
     Added directory - src - holds the main source code files.
@@ -49,7 +63,7 @@ V2022.13
         This attempts to space out the three strings using guess work.
 
 
-V2022.12
+V2022.12.71f7527
 
     Added a sub project - pyDigitalKlock.
     An attempt to re-create a LCD Klock.

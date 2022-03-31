@@ -24,6 +24,7 @@ import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import font
 from tkinter import messagebox
+from tkinter.colorchooser import askcolor
 
 import pygubu
 
@@ -45,8 +46,10 @@ class FirstApp:
     """
     def __init__(self, myConfig, logger, master=None):
 
-        self.myAbout = About.About(self.mainwindow, myConfig)
         self.logger  = logger
+        self.foreground = "#ff0000"
+        self.background = "#80ff80"
+        self.transparent = False
 
         # Create a builder and setup resources path (if you have images)
         self.builder = builder = pygubu.Builder()
@@ -58,10 +61,25 @@ class FirstApp:
         # Create the mainwindow
         self.mainwindow = builder.get_object('mainwindow', master)
         self.width      = self.mainwindow.cget("width")
+        self.mainwindow.overrideredirect(True)
+        # Create transparent window
+        #self.mainwindow.attributes('-alpha',0.1)
+
+        self.mainwindow.wm_attributes("-topmost", True)
+        self.mainwindow.wm_attributes("-transparentcolor", 'gray')
+        self.mainwindow.wait_visibility()
+
+        self.myAbout = About.About(self.mainwindow, myConfig.NAME, myConfig.VERSION)
+
+        self.lbl_current_time  = builder.get_object("lblTime", master)
+        self.lbl_today_date    = builder.get_object("lblDate", master)
+        self.lbl_current_state = builder.get_object("lblState", master)
+        self.lbl_idle_time     = builder.get_object("lblIdle", master)
 
         # Set main menu
         self.mainmenu = mainmenu = builder.get_object('mainmenu', self.mainwindow)
         self.mainwindow.configure(menu=mainmenu)
+        self.mainmenu.bind_all("<Control-q>", self.quit)        #  Bind menu quit option to self.quit.
 
         # Connect to Delete event
         self.mainwindow.protocol("WM_DELETE_WINDOW", self.quit)
@@ -69,7 +87,13 @@ class FirstApp:
         # Connect callbacks
         builder.connect_callbacks(self)
 
+        #  Bind mouse, so app can be moved.
+        self.mainwindow.bind("<Button-1>", self.startMove)
+        self.mainwindow.bind("<ButtonRelease-1>", self.stopMove)
+        self.mainwindow.bind("<B1-Motion>", self.moving)
+
         self.check_font()
+        self.set_colours()
         self.set_time_date()
 
 
@@ -82,6 +106,16 @@ class FirstApp:
             self.logger.info(f"  Running About Dialog ")
             self.show_about_dialog()
             self.logger.info(f"  Closing About Dialog ")
+        if itemid == 'mColour_foreground':
+            colours = askcolor(title="Choose colour of foreground")
+            self.foreground = colours[1]
+            self.set_colours()
+        if itemid == 'mColour_background':
+            colors = askcolor(title="Choose colour of background")
+            self.background = colors[1]
+            self.set_colours()
+        if itemid == 'mcolour_transparent':
+            self.set_colours()
 
 
     def show_about_dialog(self):
@@ -95,11 +129,12 @@ class FirstApp:
 
              TODO Stop guessing at length of idle time and try and use ttk measure function.
         """
+
         strNow  = datetime.datetime.now()
 
         #  Set the time.
         strTime = strNow.strftime("%H:%M:%S")
-        var     = self.builder.get_variable('current_time')
+        var     = self.builder.get_variable("current_time")
         var.set(f"{strTime}")
 
         #  Set the date
@@ -108,7 +143,7 @@ class FirstApp:
         var.set(f"{strDate}")
 
         #  Set the state
-        var   = self.builder.get_variable('current_state')
+        var   = self.builder.get_variable("current_state")
         var.set(f"{utils.get_state()}")
 
         #  Set the state
@@ -120,11 +155,28 @@ class FirstApp:
         else:
             strIdle = ""
 
-        var     = self.builder.get_variable('idle_time')            #  This could change if the font is changed.
+        var     = self.builder.get_variable("idle_time")            #  This could change if the font is changed.
         var.set(f"{strIdle}")
 
         # Call the set_time_date() function every 1 second.
         self.mainwindow.after(1000, self.set_time_date)
+
+
+    def set_colours(self):
+        variable = self.builder.get_variable("mcolour_transparent_clicked")
+        self.transparent = variable.get()
+
+        if self.transparent:
+            big = "grey"
+        else:
+            big = self.background
+
+        self.mainwindow.configure(background=big)
+        self.mainmenu.configure(background=big,  foreground=self.foreground)
+        self.lbl_current_time.configure(background=big,  foreground=self.foreground)
+        self.lbl_today_date.configure(background=big,    foreground=self.foreground)
+        self.lbl_current_state.configure(background=big, foreground=self.foreground)
+        self.lbl_idle_time.configure(background=big,     foreground=self.foreground)
 
 
     def check_font(self):
@@ -139,6 +191,20 @@ class FirstApp:
         else:
             print("Hack not found, Please install")
 
+
+    #  Used to move the app.
+    def startMove(self,event):
+        self.x = event.x
+        self.y = event.y
+
+    def stopMove(self,event):
+        self.x = None
+        self.y = None
+
+    def moving(self,event):
+        x = (event.x_root - self.x)
+        y = (event.y_root - self.y)
+        self.mainwindow.geometry("+%s+%s" % (x, y))
 
     def quit(self, event=None):
         self.mainwindow.quit()
