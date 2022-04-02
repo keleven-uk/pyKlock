@@ -2,52 +2,52 @@
     Version numbers are taken from the main project.
 
 
-V202.18
+V2022.19
 
-    [pyDigitalKlock]
-        Added the ability to choose the colour of both foreground and background.
-            Added menu option which load colour chooser for both foreground and background.
-            Added logic to set the colour for both foreground and background
-        Added the ability to have the background transparent.
-            Added both menu and logic to achieve transparency.
-        Removed the top level header i.e. title, close and minimise icons.
-            Added logic to move the app via the mouse, using left click to drag.
-        Set meu accelerator to quit menu - can now close app with <Control-1>.
+    Now working against Python V3.10.4
+
+    Added extra properties to config.py & config.toml.
+        Added FOREGROUND, BACKGROUND, TRANSPARENT, X_POS & YPOS.
+        These properties have both setters and getters.
+    Added the ability to save the current stats of the config settings.
+    Now when the app quits, it save the current setting, so position, colours
+        and transparency are seven between sessions.
+
+
+V2022.18
+
+    Added the ability to choose the colour of both foreground and background.
+        Added menu option which load colour chooser for both foreground and background.
+        Added logic to set the colour for both foreground and background
+    Added the ability to have the background transparent.
+        Added both menu and logic to achieve transparency.
+    Removed the top level header i.e. title, close and minimise icons.
+        Added logic to move the app via the mouse, using left click to drag.
+    Set meu accelerator to quit menu - can now close app with <Control-q>.
 
 
 V2022.17.93ccf3e
 
-    [pyDigitalKlock]
-        Created an about dialog - in src\about.py.
-            Amended menus to call new about dialog.
-        Created src\projectPaths to hold relevant paths used throw-out the project.
+    Created an about dialog - in src\about.py.
+        Amended menus to call new about dialog.
+    Created src\projectPaths to hold relevant paths used throw-out the project.
 
 
 V2022.16.1d7e07d
 
-    [pyDigitalKlock]
-        Started build of the menus.
-            Added File/Quit & File/Help.
-            Implemented simple action for each.
+    Started build of the menus.
+        Added File/Quit & File/Help.
+        Implemented simple action for each.
 
 
 V2022.15.a879173
 
-    [pyKlock]
-        Added fonts directory, added fonts DS-DIGI & Pixel LCD-7
-
-    [pyDigitalKlock]
-        Added to src - config.py, License.py & Logger.py
-        Amended to use config and logger files.
+    Added to src - config.py, License.py & Logger.py
+    Amended to use config and logger files.
 
 
 V2022.14.9ed795a
 
-    [pyKlock]
-        Moved requirements.txt to requirements\product.txt
-        Moved requirements_dev to requirements\development.txt
-
-    [pyDigitalKlock]
 	Simplified the status bar formatting.
            This was achieved by using three labels - date, state & idle time.
 

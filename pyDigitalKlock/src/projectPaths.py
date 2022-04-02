@@ -1,6 +1,7 @@
 ###############################################################################################################
 #    projectPaths.py   Copyright (C) <2022>  <Kevin Scott>                                                    #                                                                                                             #                                                                                                             #
 #    Holds common directory paths for the project.                                                            #
+#        Must sit in src directory                                                                            #
 #                                                                                                             #
 #     For changes see history.txt                                                                             #
 #                                                                                                             #

@@ -47,8 +47,9 @@ class FirstApp:
     def __init__(self, myConfig, logger, master=None):
 
         self.logger  = logger
-        self.foreground = "#ff0000"
-        self.background = "#80ff80"
+        self.config  = myConfig
+        self.foreground = self.config.FOREGROUND
+        self.background = self.config.BACKGROUND
         self.transparent = False
 
         # Create a builder and setup resources path (if you have images)
@@ -62,14 +63,13 @@ class FirstApp:
         self.mainwindow = builder.get_object('mainwindow', master)
         self.width      = self.mainwindow.cget("width")
         self.mainwindow.overrideredirect(True)
-        # Create transparent window
-        #self.mainwindow.attributes('-alpha',0.1)
 
+        # Create transparent window
         self.mainwindow.wm_attributes("-topmost", True)
         self.mainwindow.wm_attributes("-transparentcolor", 'gray')
         self.mainwindow.wait_visibility()
 
-        self.myAbout = About.About(self.mainwindow, myConfig.NAME, myConfig.VERSION)
+        self.myAbout = About.About(self.mainwindow, self.config.NAME, self.config.VERSION)
 
         self.lbl_current_time  = builder.get_object("lblTime", master)
         self.lbl_today_date    = builder.get_object("lblDate", master)
@@ -92,7 +92,10 @@ class FirstApp:
         self.mainwindow.bind("<ButtonRelease-1>", self.stopMove)
         self.mainwindow.bind("<B1-Motion>", self.moving)
 
+        self.mainwindow.geometry("+%s+%s" % (self.config.X_POS, self.config.Y_POS))
+
         self.check_font()
+        self.set_check()
         self.set_colours()
         self.set_time_date()
 
@@ -162,14 +165,20 @@ class FirstApp:
         self.mainwindow.after(1000, self.set_time_date)
 
 
+    def set_check(self):
+        variable = self.builder.get_variable("mcolour_transparent_clicked")
+        variable.set(self.config.TRANSPARENT)
+
     def set_colours(self):
         variable = self.builder.get_variable("mcolour_transparent_clicked")
         self.transparent = variable.get()
 
         if self.transparent:
             big = "grey"
+            self.config.TRANSPARENT = True
         else:
             big = self.background
+            self.config.TRANSPARENT = False
 
         self.mainwindow.configure(background=big)
         self.mainmenu.configure(background=big,  foreground=self.foreground)
@@ -204,9 +213,15 @@ class FirstApp:
     def moving(self,event):
         x = (event.x_root - self.x)
         y = (event.y_root - self.y)
+        self.config.X_POS = x
+        self.config.Y_POS = y
         self.mainwindow.geometry("+%s+%s" % (x, y))
 
     def quit(self, event=None):
+        self.config.FOREGROUND = self.foreground
+        self.config.BACKGROUND = self.background
+        self.config.writeConfig()
+
         self.mainwindow.quit()
 
     def run(self):
