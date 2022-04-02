@@ -42,21 +42,22 @@ class Config():
 
     def __init__(self, CONFIG_PATH, logger):
 
-        self.FILE_NAME= CONFIG_PATH
+        self.FILE_NAME = CONFIG_PATH
+        self.logger    = logger
 
         try:
             with open(self.FILE_NAME, "r") as configFile:       # In context manager.
                 self.config = toml.load(configFile)             # Load the configure file, in toml.
         except FileNotFoundError:
-            logger.debug(f"Configure file not found.")
-            logger.debug(f"Writing default configure file.")
+            self.logger.debug(f"Configure file not found.")
+            self.logger.debug(f"Writing default configure file.")
             self._writeDefaultConfig()
-            logger.debug(f"Running program with default configure settings.")
+            self. logger.debug(f"Running program with default configure settings.")
         except toml.TomlDecodeError:
-            logger.debug(f"Error reading configure file.")
-            logger.debug(f"Writing default configure file.")
+            self.logger.debug(f"Error reading configure file.")
+            self.logger.debug(f"Writing default configure file.")
             self._writeDefaultConfig()
-            logger.debug(f"Running program with default configure settings.")
+            self.logger.debug(f"Running program with default configure settings.")
 
 
     @property
@@ -166,7 +167,7 @@ class Config():
 
         config["COLOUR"] = {"foreground":"#ff0000",
                             "background":"#80ff80",
-                            "transparent":false}
+                            "transparent":"false"}
 
         config["POSITION"] = {"x_pos":0,
                               "y_pos":0}

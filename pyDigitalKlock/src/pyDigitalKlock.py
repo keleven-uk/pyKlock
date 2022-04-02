@@ -28,6 +28,8 @@ from tkinter.colorchooser import askcolor
 
 import pygubu
 
+import sys
+import platform
 import datetime
 
 import src.Config as Config
@@ -231,12 +233,20 @@ class FirstApp:
 def main():
     """  Main function to run the thing.
     """
+
     logger   = Logger.get_logger(str(LOGGER_PATH))          # Create the logger.
     myConfig = Config.Config(CONFIG_PATH,logger)            # Create the config.
 
-
     logger.info("-" * 100)
     logger.info(f"  Running {myConfig.NAME} Version {myConfig.VERSION} ")
+    logger.debug(platform.uname())
+    logger.debug(" ")
+    logger.debug(f"Python Verion {platform.python_version()}")
+
+    if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+        logger.debug("Running in a PyInstaller bundle")
+    else:
+        logger.debug("Running in a normal Python process")
 
     app = FirstApp(myConfig, logger)
     app.run()

@@ -21,12 +21,24 @@
 #                                                                                                             #
 ###############################################################################################################
 
-
+import sys
 import pathlib
 
-PROJECT_PATH  = pathlib.Path(__file__).parent
-MAIN_PATH     = pathlib.Path(__file__).parent.parent
-PROJECT_UI    = PROJECT_PATH / "pyDigitalKlock.ui"
-RESOURCE_PATH = MAIN_PATH / "resources"
-CONFIG_PATH   = MAIN_PATH / "config.toml"
-LOGGER_PATH   = MAIN_PATH / "logs/pyDigitalKlock.log"
+
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+
+    PROJECT_PATH  = pathlib.Path(__file__).parent
+    MAIN_PATH     = pathlib.Path(__file__).parent.parent
+    PROJECT_UI    = PROJECT_PATH / "pyDigitalKlock.ui"
+    RESOURCE_PATH = MAIN_PATH / "resources"
+    CONFIG_PATH   = "config.toml"
+    LOGGER_PATH   = "pyDigitalKlock.log"
+
+else:
+
+    PROJECT_PATH  = pathlib.Path(__file__).parent
+    MAIN_PATH     = pathlib.Path(__file__).parent.parent
+    PROJECT_UI    = PROJECT_PATH / "pyDigitalKlock.ui"
+    RESOURCE_PATH = MAIN_PATH / "resources"
+    CONFIG_PATH   = MAIN_PATH / "config.toml"
+    LOGGER_PATH   = MAIN_PATH / "logs/pyDigitalKlock.log"

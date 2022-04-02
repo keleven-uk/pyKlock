@@ -4,7 +4,14 @@
 
 V2022.19
 
-    Now working against Python V3.10.4
+    Changes so that auto-py-to-ese [pyinstaller] would work.
+        Main changes to projectPaths, comfig.tmol and log files now live
+        in same directory as the executable.
+
+
+V2022.19
+
+    Now working against Python V3.10.4git commit
 
     Added extra properties to config.py & config.toml.
         Added FOREGROUND, BACKGROUND, TRANSPARENT, X_POS & YPOS.
