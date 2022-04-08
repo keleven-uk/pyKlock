@@ -35,7 +35,9 @@ import datetime
 import src.Config as Config
 import src.Logger as Logger
 import src.About as About
+import src.Fonts as Fonts
 import src.utils.pyDigitalKlock_utils as utils
+import src.utils.fonts_utils as fu
 
 from src.projectPaths import *
 
@@ -53,6 +55,9 @@ class FirstApp:
         self.foreground = self.config.FOREGROUND
         self.background = self.config.BACKGROUND
         self.transparent = False
+
+        self.row1 = 0
+        self.new_font = None
 
         # Create a builder and setup resources path (if you have images)
         self.builder = builder = pygubu.Builder()
@@ -72,6 +77,7 @@ class FirstApp:
         self.mainwindow.wait_visibility()
 
         self.myAbout = About.About(self.mainwindow, self.config.NAME, self.config.VERSION)
+        self.myFont  = Fonts.Font(self.mainwindow, logger)
 
         self.lbl_current_time  = builder.get_object("lblTime", master)
         self.lbl_today_date    = builder.get_object("lblDate", master)
@@ -96,7 +102,6 @@ class FirstApp:
 
         self.mainwindow.geometry("+%s+%s" % (self.config.X_POS, self.config.Y_POS))
 
-        self.check_font()
         self.set_check()
         self.set_colours()
         self.set_time_date()
@@ -108,9 +113,9 @@ class FirstApp:
         if itemid == 'mfile_quit':
             self.quit()
         if itemid == 'mhelp_about':
-            self.logger.info(f"  Running About Dialog ")
             self.show_about_dialog()
-            self.logger.info(f"  Closing About Dialog ")
+        if itemid == 'mFonts_fonts':
+            self.show_font_dialog()
         if itemid == 'mColour_foreground':
             colours = askcolor(title="Choose colour of foreground")
             self.foreground = colours[1]
@@ -126,8 +131,16 @@ class FirstApp:
     def show_about_dialog(self):
         """  Call the about dialog.
         """
+        self.logger.info(f"    Running About Dialog ")
         self.myAbout.show_about_dialog()
+        self.logger.info(f"    Closing About Dialog ")
 
+    def show_font_dialog(self):
+        """  Call the font dialog.
+        """
+        self.logger.info(f"    Running Font Dialog ")
+        self.myFont.show_font_dialog()
+        self.logger.info(f"    Closing Font Dialog ")
 
     def set_time_date(self):
         """  Update the screen, current time, date & idle time.
@@ -138,21 +151,19 @@ class FirstApp:
         strNow  = datetime.datetime.now()
 
         #  Set the time.
-        strTime = strNow.strftime("%H:%M:%S")
-        var     = self.builder.get_variable("current_time")
-        var.set(f"{strTime}")
+        var = self.builder.get_variable("current_time")
+        var.set(f"{strNow:%H:%M:%S}")
 
         #  Set the date
-        strDate = strNow.strftime("%A %d %B %Y")
-        var     = self.builder.get_variable("today_date")
-        var.set(f"{strDate}")
+        var = self.builder.get_variable("today_date")
+        var.set(f"{ strNow:%A %d %B %Y}")
 
         #  Set the state
-        var   = self.builder.get_variable("current_state")
+        var = self.builder.get_variable("current_state")
         var.set(f"{utils.get_state()}")
 
         #  Set the state
-        idle    = int(utils.get_idle_duration())
+        idle = int(utils.get_idle_duration())
         if idle > 5:                                                #  Only print idles time if greater then 5 seconds.
             strIdle = f"idle : {utils.formatSeconds(idle)}"
             length  = len(strIdle)
@@ -160,12 +171,21 @@ class FirstApp:
         else:
             strIdle = ""
 
-        var     = self.builder.get_variable("idle_time")            #  This could change if the font is changed.
+        var = self.builder.get_variable("idle_time")            #  This could change if the font is changed.
         var.set(f"{strIdle}")
+
+        self.set_row()
 
         # Call the set_time_date() function every 1 second.
         self.mainwindow.after(1000, self.set_time_date)
 
+    def set_row(self):
+        if self.myFont.row == -1:
+            return
+        if self.myFont.row != self.row1:
+            self.row1 = self.myFont.row
+            print(self.new_font)
+            self.new_font = fu.set_font(self.row1)
 
     def set_check(self):
         variable = self.builder.get_variable("mcolour_transparent_clicked")
@@ -189,18 +209,8 @@ class FirstApp:
         self.lbl_current_state.configure(background=big, foreground=self.foreground)
         self.lbl_idle_time.configure(background=big,     foreground=self.foreground)
 
-
-    def check_font(self):
-        """  Quick check to see if the digital font is present.
-        """
-        if "DS-Digital" in font.families():
-            print("DS-Digital font Found")
-        else:
-            print("DS-Digital not found, Please install")
-        if "Hack" in font.families():
-            print("Hack font Found")
-        else:
-            print("Hack not found, Please install")
+        if self.new_font:
+            self.lbl_current_time.configure(font=self.new_font)
 
 
     #  Used to move the app.
@@ -239,14 +249,22 @@ def main():
 
     logger.info("-" * 100)
     logger.info(f"  Running {myConfig.NAME} Version {myConfig.VERSION} ")
-    logger.debug(platform.uname())
-    logger.debug(" ")
-    logger.debug(f"Python Verion {platform.python_version()}")
+    logger.debug(f" {platform.uname()}")
+    logger.debug(f" Python Verion {platform.python_version()}")
+    #logger.debug("")
+    #logger.debug(f" PROJECT_PATH :: {PROJECT_PATH}")
+    #logger.debug(f" MAIN_PATH    :: {MAIN_PATH}")
+    #logger.debug(f" PROJECT_UI   :: {PROJECT_UI}")
+    #logger.debug(f" RESOURCE_PATH:: {RESOURCE_PATH}")
+    #logger.debug(f" FONTS_PATH   :: {FONTS_PATH}")
+    #logger.debug(f" CONFIG_PATH  :: {CONFIG_PATH}")
+    #logger.debug(f" LOGGER_PATH  :: {LOGGER_PATH}")
+    #logger.debug("")
 
     if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
-        logger.debug("Running in a PyInstaller bundle")
+        logger.debug("  Running in a PyInstaller bundle")
     else:
-        logger.debug("Running in a normal Python process")
+        logger.debug("  Running in a normal Python process")
 
     app = FirstApp(myConfig, logger)
     app.run()

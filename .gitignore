@@ -131,6 +131,6 @@ $RECYCLE.BIN/
 *.exe
 
 logs/
-pyDigitalKlock/bin/config.toml
+pyDigitalKlock/bin/*.log.*
 
 # End of https://www.gitignore.io/api/python,windows

@@ -2,6 +2,29 @@
    All entries to main project - unless stated.
 
 
+   V2022.21
+
+    [pyKlock]
+        font directy currently consists of DS-Digital, Pixel LCD7, itlivesintheswamp & Twobit
+   [pyDigitalKlock]
+        Added a new menu - Fonts.
+        This displays a new form which list all the fonts in the font directory - src\Fonts.py
+            The font file name has to be the same as the font family name.
+        Also, added module src\utils\font_utils.py which contains common font related functions.
+        Modifications to pyDigitalKlock.py to call Font menu etc.
+        Moved function check_font to font_utils.py
+
+        Currently not returning a valid font object from font form - work to do.
+
+
+V2022.20
+
+    [pyDigitalKlock]
+        Changes so that auto-py-to-ese [pyinstaller] would work.
+            Main changes to projectPaths, comfig.tmol and log files now live
+            in same directory as the executable.
+
+
 V2022.19
 
     Now working against Python V3.10.4

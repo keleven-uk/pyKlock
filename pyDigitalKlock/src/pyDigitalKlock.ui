@@ -12,7 +12,7 @@
     <child>
       <object class="ttk.Label" id="lblTime">
         <property name="background">#80ff80</property>
-        <property name="font">{Pixel LCD7} 48 {}</property>
+        <property name="font">{Twobit} 72 {}</property>
         <property name="foreground">#000000</property>
         <property name="takefocus">true</property>
         <property name="text" translatable="yes">00:00:00</property>
@@ -86,7 +86,7 @@
         <property name="takefocus">true</property>
         <child>
           <object class="tk.Menuitem.Command" id="mfile_quit">
-            <property name="accelerator">"&lt;Control-h&gt;"</property>
+            <property name="accelerator">"&lt;Control-q&gt;"</property>
             <property name="command" type="command" cbtype="with_wid">on_items_clicked</property>
             <property name="label" translatable="yes">Quit</property>
           </object>
@@ -122,6 +122,18 @@
             <property name="onvalue">1</property>
             <property name="state">normal</property>
             <property name="variable">boolean:mcolour_transparent_clicked</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="tk.Menuitem.Submenu" id="mFonts">
+        <property name="columnbreak">false</property>
+        <property name="label" translatable="yes">Fonts</property>
+        <child>
+          <object class="tk.Menuitem.Command" id="mFonts_fonts">
+            <property name="command" type="command" cbtype="with_wid">on_items_clicked</property>
+            <property name="label" translatable="yes">Fonts</property>
           </object>
         </child>
       </object>
@@ -211,6 +223,73 @@
             <property name="text" translatable="yes">Close</property>
             <layout manager="place">
               <property name="anchor">nw</property>
+            </layout>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="pygubu.builder.widgets.dialog" id="dlg_fonts">
+    <property name="geometry">400x200</property>
+    <property name="height">200</property>
+    <property name="iconbitmap">klock.ico</property>
+    <property name="modal">true</property>
+    <property name="title" translatable="yes">Fonts</property>
+    <property name="width">400</property>
+    <child>
+      <object class="ttk.Frame" id="frame1">
+        <property name="height">150</property>
+        <property name="width">400</property>
+        <layout manager="grid">
+          <property name="column">0</property>
+          <property name="row">0</property>
+          <property name="sticky">new</property>
+        </layout>
+        <child>
+          <object class="tk.Listbox" id="lst_fonts">
+            <property name="activestyle">dotbox</property>
+            <property name="justify">left</property>
+            <property name="listvariable">string:lst_fonts_names</property>
+            <property name="relief">sunken</property>
+            <property name="selectmode">single</property>
+            <property name="state">normal</property>
+            <property name="takefocus">true</property>
+            <layout manager="place">
+              <property name="anchor">nw</property>
+              <property name="height">130</property>
+              <property name="width">380</property>
+              <property name="x">10</property>
+              <property name="y">10</property>
+            </layout>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Frame" id="frame2">
+        <property name="height">50</property>
+        <property name="width">400</property>
+        <layout manager="grid">
+          <property name="column">0</property>
+          <property name="row">1</property>
+          <property name="sticky">sew</property>
+        </layout>
+        <child>
+          <object class="ttk.Button" id="font_btnclose">
+            <property name="text" translatable="yes">Close</property>
+            <layout manager="place">
+              <property name="anchor">nw</property>
+              <property name="x">100</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="ttk.Button" id="font_btnok">
+            <property name="text" translatable="yes">ok</property>
+            <layout manager="place">
+              <property name="anchor">nw</property>
+              <property name="x">200</property>
+              <property name="y">0</property>
             </layout>
           </object>
         </child>
