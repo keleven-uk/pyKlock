@@ -84,6 +84,9 @@ class FirstApp:
         self.lbl_current_state = builder.get_object("lblState", master)
         self.lbl_idle_time     = builder.get_object("lblIdle", master)
 
+        print(f"font name {self.config.FONT_NAME} : font size {self.config.FONT_SIZE}")
+        self.lbl_current_time.configure(font=font.Font(family=self.config.FONT_NAME, size=self.config.FONT_SIZE, weight="normal"))
+
         # Set main menu
         self.mainmenu = mainmenu = builder.get_object('mainmenu', self.mainwindow)
         self.mainwindow.configure(menu=mainmenu)
@@ -142,6 +145,7 @@ class FirstApp:
         self.myFont.show_font_dialog()
         self.logger.info(f"    Closing Font Dialog ")
 
+
     def set_time_date(self):
         """  Update the screen, current time, date & idle time.
 
@@ -179,41 +183,50 @@ class FirstApp:
         # Call the set_time_date() function every 1 second.
         self.mainwindow.after(1000, self.set_time_date)
 
+
     def set_row(self):
+        """  Checks if a new font has been selected and sets accordingly.
+        """
         if self.myFont.row == -1:
             return
         if self.myFont.row != self.row1:
             self.row1 = self.myFont.row
-            print(self.new_font)
-            self.new_font = fu.set_font(self.row1)
+            self.new_font, self.config.FONT_NAME, self.config.FONT_SIZE = fu.set_font(self.row1)
+            self.lbl_current_time.configure(font=self.new_font)
+
 
     def set_check(self):
+        """  Checks whether the transparency menu has been clicked.
+        """
         variable = self.builder.get_variable("mcolour_transparent_clicked")
         variable.set(self.config.TRANSPARENT)
 
+
     def set_colours(self):
+        """  Sets the foreground and background colour of the main window and all labels.
+             Is called initially and from the menu when a colour chooser is selected.
+             Also sets the transparency of all widgets.
+        """
         variable = self.builder.get_variable("mcolour_transparent_clicked")
         self.transparent = variable.get()
 
         if self.transparent:
-            big = "grey"
+            trans-colour = "grey"
             self.config.TRANSPARENT = True
         else:
-            big = self.background
+            trans-colour = self.background
             self.config.TRANSPARENT = False
 
-        self.mainwindow.configure(background=big)
-        self.mainmenu.configure(background=big,  foreground=self.foreground)
-        self.lbl_current_time.configure(background=big,  foreground=self.foreground)
-        self.lbl_today_date.configure(background=big,    foreground=self.foreground)
-        self.lbl_current_state.configure(background=big, foreground=self.foreground)
-        self.lbl_idle_time.configure(background=big,     foreground=self.foreground)
-
-        if self.new_font:
-            self.lbl_current_time.configure(font=self.new_font)
+        self.mainwindow.configure(background=trans-colour)
+        self.mainmenu.configure(background=trans-colour,          foreground=self.foreground)
+        self.lbl_current_time.configure(background=trans-colour,  foreground=self.foreground)
+        self.lbl_today_date.configure(background=trans-colour,    foreground=self.foreground)
+        self.lbl_current_state.configure(background=trans-colour, foreground=self.foreground)
+        self.lbl_idle_time.configure(background=trans-colour,     foreground=self.foreground)
 
 
     #  Used to move the app.
+    #  Binds start and sop to mouse left click and move to mouse move.
     def startMove(self,event):
         self.x = event.x
         self.y = event.y
@@ -229,14 +242,25 @@ class FirstApp:
         self.config.Y_POS = y
         self.mainwindow.geometry("+%s+%s" % (x, y))
 
+
     def quit(self, event=None):
-        self.config.FOREGROUND = self.foreground
-        self.config.BACKGROUND = self.background
-        self.config.writeConfig()
+        """  Saves the current configuration and closes app.
+             The font name and size has already been amened in the config class.
+             self.config.TRANSPARENT also already set.
+        """
+        try:
+            self.config.FOREGROUND = self.foreground
+            self.config.BACKGROUND = self.background
+            self.config.writeConfig()
+        except Exception as e:
+            logger.debug(f" Error occurred during saving of config: {e}")
 
         self.mainwindow.quit()
 
+
     def run(self):
+        """  Runs the main GUI loop.
+        """
         self.mainwindow.mainloop()
 
 

@@ -132,6 +132,30 @@ class Config():
         """
         self.config["POSITION"]["y_pos"] = value
 
+    @property
+    def FONT_SIZE(self):
+        """  Return the background colour.
+        """
+        return self.config["FONT"]["size"]
+
+    @FONT_SIZE.setter
+    def FONT_SIZE(self, value):
+        """  Sets the background colour.
+        """
+        self.config["FONT"]["size"] = value
+
+    @property
+    def FONT_NAME(self):
+        """  Return the background colour.
+        """
+        return self.config["FONT"]["name"]
+
+    @FONT_NAME.setter
+    def FONT_NAME(self, value):
+        """  Sets the background colour.
+        """
+        self.config["FONT"]["name"] = value
+
 
 
 
@@ -162,8 +186,8 @@ class Config():
         written = strNow.strftime("%A %d %B %Y  %H:%M:%S")
         config  = dict()
 
-        config['INFO'] = {'myVERSION': '2022.19',
-                          'myNAME'   : 'pyDigitalKlock'}
+        config['INFO'] = {"myVERSION": "2022.21",
+                          "myNAME"   : "pyDigitalKlock"}
 
         config["COLOUR"] = {"foreground":"#ff0000",
                             "background":"#80ff80",
@@ -171,6 +195,9 @@ class Config():
 
         config["POSITION"] = {"x_pos":0,
                               "y_pos":0}
+
+        config["FONT"] = {"size": 76,
+                          "name": "Twobit"}
 
 
         st_toml = toml.dumps(config)

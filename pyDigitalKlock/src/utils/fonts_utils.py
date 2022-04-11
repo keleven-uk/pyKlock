@@ -35,6 +35,9 @@ from src.projectPaths import *
 
 from tkinter import font
 
+DEFAULT_FONT_LENGTH = 76
+DEFAULT_FONT_SIZE   = 355
+
 def list_fonts():
     """  Create a list of all fonts in a given directory.
          Assumes font files end in .ttf.
@@ -55,29 +58,32 @@ def check_font():
         if f_name in font.families():
             print(f" {f_name} font found")
         else:
-            print(f" {f_name} font NOT found")
-            install_font(font_path)
+            print(f" {f_name} font NOT found, will try to install")
+            #install_font(font_path)
 
 
 def set_font(pos):
-    """   return a font object and position pois in the font list.
+    """   return a font object and position pos in the font list.
     """
     lst_fonts = list_fonts()
-    font_name = f"72{lst_fonts[pos].stem}"
-    print(font_name)
+    font_name = f"{lst_fonts[pos].stem}"
 
-    ret_font = font.Font(family=font_name, size=72, weight="normal")
-    return ret_font
+    font_length = font.Font(family=font_name, size=DEFAULT_FONT_LENGTH, weight="normal").measure("00:00:00")
+    font_size   = int(DEFAULT_FONT_SIZE / font_length * DEFAULT_FONT_LENGTH)
+
+    ret_font = font.Font(family=font_name, size=font_size, weight="normal")
+    return ret_font, font_name, font_size
 
 
 def install_font(src_path):
     """  copy the font to the Windows Fonts folder
 
+         It look like it needs administrator privileges to work [to copy font into windows font directory.]
+
          Found at https://gist.github.com/tushortz/598bf0324e37033ed870c4e46461fb1e
     """
 
-    dst_path = os.path.join(os.environ['SystemRoot'], 'Fonts',
-                            os.path.basename(src_path))
+    dst_path = os.path.join(os.environ['SystemRoot'], 'Fonts', os.path.basename(src_path))
     shutil.copy(src_path, dst_path)
     # load the font in the current session
     if not gdi32.AddFontResourceW(dst_path):

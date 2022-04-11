@@ -1,5 +1,5 @@
 ###############################################################################################################
-#    main.py   Copyright (C) <2022>  <Kevin Scott>                                                           #                                                                                                             #                                                                                                             #
+#    main.py   Copyright (C) <2022>  <Kevin Scott>                                                            #                                                                                                             #                                                                                                             #
 #     An attempt to re-create a LCD Klock.                                                                    #
 #                                                                                                             #
 #     For changes see history.txt                                                                             #

@@ -11,18 +11,17 @@
     <property name="width">400</property>
     <child>
       <object class="ttk.Label" id="lblTime">
+        <property name="anchor">w</property>
         <property name="background">#80ff80</property>
         <property name="font">{Twobit} 72 {}</property>
         <property name="foreground">#000000</property>
-        <property name="takefocus">true</property>
         <property name="text" translatable="yes">00:00:00</property>
         <property name="textvariable">string:current_time</property>
         <layout manager="place">
-          <property name="anchor">nw</property>
           <property name="height">100</property>
           <property name="width">400</property>
           <property name="x">10</property>
-          <property name="y">10</property>
+          <property name="y">0</property>
         </layout>
       </object>
     </child>

@@ -2,6 +2,16 @@
     Version numbers are taken from the main project.
 
 
+V2022.22
+
+    Now returns a valid font, all sems to be working.
+    The current font [name and size] is saved between sessions.
+    Added font name and size to config file [both config.py & config.toml].
+    Added font path to projectPaths.py
+    in pyDigitalKlock.py, current time takes its initial font from config
+      and will change when a new font is selected from the menu's.
+
+
 V2022.21
 
     Added a new menu - Fonts.

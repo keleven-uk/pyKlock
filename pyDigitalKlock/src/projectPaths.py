@@ -28,12 +28,15 @@ PROJECT_PATH  = pathlib.Path(__file__).parent
 MAIN_PATH     = pathlib.Path(__file__).parent.parent
 PROJECT_UI    = PROJECT_PATH / "pyDigitalKlock.ui"
 RESOURCE_PATH = MAIN_PATH / "resources"
-FONTS_PATH    = MAIN_PATH.parent / "fonts"
 
+#  If running as an executable i.e. from using auto-py-to-exe.
+#  Some of the paths needs to be toe working directory.
 if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
     CONFIG_PATH   = "config.toml"
     LOGGER_PATH   = "pyDigitalKlock.log"
+    FONTS_PATH    = "fonts"
 else:
     CONFIG_PATH   = MAIN_PATH / "config.toml"
     LOGGER_PATH   = MAIN_PATH / "logs/pyDigitalKlock.log"
+    FONTS_PATH    = MAIN_PATH.parent / "fonts"
 

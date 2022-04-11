@@ -1,5 +1,5 @@
 #   Configure file for pyDigitalKlock.py 
-#   (c) Kevin Scott   Written Friday 08 April 2022  08:24:22
+#   (c) Kevin Scott   Written Sunday 10 April 2022  22:59:30
 #
 #   true and false are lower case 
 #   location needs double \ i.e. c:\tmp\music - well, on windows any way. 
@@ -14,5 +14,5 @@ background = "#000000"
 transparent = true
 
 [POSITION]
-x_pos = 1355
-y_pos = -354
+x_pos = 1354
+y_pos = -353

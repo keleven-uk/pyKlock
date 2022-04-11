@@ -130,7 +130,9 @@ $RECYCLE.BIN/
 #  ignore all executables.
 *.exe
 
+# Project specific
 logs/
 pyDigitalKlock/bin/*.log.*
+pyDigitalKlock/bin/fonts/
 
 # End of https://www.gitignore.io/api/python,windows
