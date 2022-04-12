@@ -20,22 +20,13 @@
 #                                                                                                             #
 ###############################################################################################################
 
-import os
-import shutil
-import ctypes
-from ctypes import wintypes
-import sys
-import ntpath
-try:
-    import winreg
-except ImportError:
-    import _winreg as winreg
 
 from src.projectPaths import *
 
 from tkinter import font
 
-DEFAULT_FONT_LENGTH = 76
+
+DEFAULT_FONT_LENGTH = 75
 DEFAULT_FONT_SIZE   = 355
 
 def list_fonts():
@@ -48,19 +39,30 @@ def list_fonts():
     return lst_fonts
 
 
-def check_font():
-    """  Quick check to see if the digital font is present.
+def check_font(pos):
+    """  Quick check to see if the font at row[pos] in the list box is present.
 
-         NB : the font file name must be the same as the font name **git status
-    """
-    for font_path in list_fonts():
-        f_name = str(font_path.stem)
-        if f_name in font.families():
-            print(f" {f_name} font found")
-        else:
-            print(f" {f_name} font NOT found, will try to install")
-            #install_font(font_path)
+         NB : the font file name must be the same as the font name.
+     """
+    lst_fonts = list_fonts()
+    font_name = f"{lst_fonts[pos].stem}"
 
+    if font_name in font.families():
+        return True
+    else:
+        return False
+
+def check_font_name(font_name):
+    """  Quick check to see if the font name is present.
+
+         NB : the font file name must be the same as the font name.
+     """
+    if font_name.stem in font.families():
+        print(f"font = {font_name} is TRUE")
+        return True
+    else:
+        print(f"font = {font_name} is FALSE")
+        return False
 
 def set_font(pos):
     """   return a font object and position pos in the font list.
@@ -75,40 +77,3 @@ def set_font(pos):
     return ret_font, font_name, font_size
 
 
-def install_font(src_path):
-    """  copy the font to the Windows Fonts folder
-
-         It look like it needs administrator privileges to work [to copy font into windows font directory.]
-
-         Found at https://gist.github.com/tushortz/598bf0324e37033ed870c4e46461fb1e
-    """
-
-    dst_path = os.path.join(os.environ['SystemRoot'], 'Fonts', os.path.basename(src_path))
-    shutil.copy(src_path, dst_path)
-    # load the font in the current session
-    if not gdi32.AddFontResourceW(dst_path):
-        os.remove(dst_path)
-        raise WindowsError('AddFontResource failed to load "%s"' % src_path)
-    # notify running programs
-    user32.SendMessageTimeoutW(HWND_BROADCAST, WM_FONTCHANGE, 0, 0,
-                               SMTO_ABORTIFHUNG, 1000, None)
-    # store the fontname/filename in the registry
-    filename = os.path.basename(dst_path)
-    fontname = os.path.splitext(filename)[0]
-    # try to get the font's real name
-    cb = wintypes.DWORD()
-    if gdi32.GetFontResourceInfoW(filename, ctypes.byref(cb), None,
-                                  GFRI_DESCRIPTION):
-        buf = (ctypes.c_wchar * cb.value)()
-        if gdi32.GetFontResourceInfoW(filename, ctypes.byref(cb), buf,
-                                      GFRI_DESCRIPTION):
-            fontname = buf.value
-    is_truetype = wintypes.BOOL()
-    cb.value = ctypes.sizeof(is_truetype)
-    gdi32.GetFontResourceInfoW(filename, ctypes.byref(cb),
-                               ctypes.byref(is_truetype), GFRI_ISTRUETYPE)
-    if is_truetype:
-        fontname += ' (TrueType)'
-    with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, FONTS_REG_PATH, 0,
-                        winreg.KEY_SET_VALUE) as key:
-        winreg.SetValueEx(key, fontname, 0, winreg.REG_SZ, filename)

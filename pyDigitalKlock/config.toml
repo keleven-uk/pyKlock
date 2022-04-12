@@ -1,11 +1,11 @@
 #   Configure file for pyDigitalKlock.py 
-#   (c) Kevin Scott   Written Sunday 10 April 2022  22:00:14
+#   (c) Kevin Scott   Written Monday 11 April 2022  22:33:18
 #
 #   true and false are lower case 
 #   location needs double \ i.e. c:\tmp\music - well, on windows any way. 
 #
 [INFO]
-myVERSION = "2022.22"
+myVERSION = "2022.23"
 myNAME = "pyDigitalKlock"
 
 [COLOUR]
@@ -18,5 +18,5 @@ x_pos = 916
 y_pos = -354
 
 [FONT]
-size = 47
-name = "Pixel LCD7"
+size = 93
+name = "It Lives In The Swamp BRK"

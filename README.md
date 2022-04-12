@@ -8,7 +8,8 @@ Contains one sub project, pyDigitalKlock.
     This a simple app that tries to reproduce a LED Digital Klock.
     It allows the user to change the foreground and background colours.
     The background can also be switched to transparent.
-    It save the colours and app position between sessions.
+    The font can also be selected from from a selection of fonts.
+    It save the colours, font and app position between sessions.
     The GUI was built using pygubu.
 
 or will be [similar to lazKlock & klock.vb], at the moment a trying ground for ideas.

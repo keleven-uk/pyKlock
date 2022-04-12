@@ -21,6 +21,7 @@
 ###############################################################################################################
 
 import tkinter as tk
+from tkinter import messagebox
 import tkinter.ttk as ttk
 
 import pathlib
@@ -73,20 +74,34 @@ class Font():
         self.dialog.close()
 
     def dialog_btnok_clicked(self):
-        self.row = self.mylistbox.curselection()[0]  #  This return a tuple, which must only contain 1 element.
-                                                     #  List box has selectmode set to single.
+        """  Called when the OK button is clicked.
+             Checks whether the font has been installed, if it is then return the row position
+             else issue a warning and return the error code -2.
+        """
+        if not fu.check_font(self.mylistbox.curselection()[0]):                  #  Font not installed, return error code.
+            messagebox.showerror("Font Not Installed", "The selected font is not installed on this PC. \n   Please install and try again.")
+            self.row = -2
+        else:
+            self.row = self.mylistbox.curselection()[0]  #  This return a tuple, which must only contain 1 element.
+                                                         #  List box has selectmode set to single.
+
         self.dialog.close()
 
 
     def display_fonts(self):
         """  Populates the listbox with a list of fonts.
         """
-        fu.check_font()
         self.mylistbox.select_clear(tk.END)
 
         for font in fu.list_fonts():
             self.mylistbox.insert(tk.END, font)
-            self.logger.info(f" font found: {font}")
+            #self.logger.info(f" font found: {font}")
+
+            if fu.check_font_name(font):
+                self.mylistbox.itemconfig(tk.END, fg="black")
+            else:
+                self.mylistbox.itemconfig(tk.END, fg="red")
+
 
         self.mylistbox.selection_set(tk.END)
 
