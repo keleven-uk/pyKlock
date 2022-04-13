@@ -2,37 +2,45 @@
     Version numbers are taken from the main project.
 
 
+V2022.24
+
+    Added a new menu option - License.
+      This display a new dialog that displays the license text.
+      The license used is The GNU General Public License V3.
+    Modifications to pyDigitalKlock.py to call License menu etc.
+
+-----------------------------------------------------------------------------------------------------------
+File                                                                    blank        comment           code
+-----------------------------------------------------------------------------------------------------------
+pyKlock\pyDigitalKlock\main.py                                              2             23              2
+pyKlock\pyDigitalKlock\config.toml                                          3              6             13
+pyKlock\pyDigitalKlock\bin\Auto-py-to-exe.json                              0              0             85
+pyKlock\pyDigitalKlock\bin\config.toml                                      3              6             13
+pyKlock\pyDigitalKlock\src\pyDigitalKlock.ui                                0              0            352
+pyKlock\pyDigitalKlock\src\pyDigitalKlock.py                               59             69            179
+pyKlock\pyDigitalKlock\src\Config.py                                       44             67            104
+pyKlock\pyDigitalKlock\src\Fonts.py                                        27             35             47
+pyKlock\pyDigitalKlock\src\utils\pyDigitalKlock_utils.py                   22             32             41
+pyKlock\pyDigitalKlock\src\About.py                                        13             27             27
+pyKlock\pyDigitalKlock\src\License.py                                      19             27             27
+pyKlock\pyDigitalKlock\src\utils\fonts_utils.py                            18             34             27
+pyKlock\pyDigitalKlock\src\Logger.py                                       11             28             18
+pyKlock\pyDigitalKlock\src\projectPaths.py                                  4             24             14
+pyKlock\pyDigitalKlock\src\utils\License_text.py                            5             30              1
+-----------------------------------------------------------------------------------------------------------
+SUM:                                                                      230            408            950
+-----------------------------------------------------------------------------------------------------------
+
 V0222.23
 
     It looks like to install a font you need administer privileges on Windows - so abandon for now.
     When a list of fonts is presented for choice, they are checked to see if they are installed.
       if not installed they are coloured red and an error issues if chosen.
 
------------------------------------------------------------------------------------------------------------
-File                                                                    blank        comment           code
------------------------------------------------------------------------------------------------------------
-pyKlock\pyDigitalKlock\bin\Auto-py-to-exe.json                              0              0             85
-pyKlock\pyDigitalKlock\bin\config.toml                                      3              6             13
-pyKlock\pyDigitalKlock\src\pyDigitalKlock.ui                                0              0            298
-pyKlock\pyDigitalKlock\src\pyDigitalKlock.py                               58             68            187
-pyKlock\pyDigitalKlock\src\Config.py                                       44             67            104
-pyKlock\pyDigitalKlock\src\Fonts.py                                        27             35             47
-pyKlock\pyDigitalKlock\src\utils\pyDigitalKlock_utils.py                   22             32             41
-pyKlock\pyDigitalKlock\src\utils\fonts_utils.py                            18             32             29
-pyKlock\pyDigitalKlock\src\About.py                                        13             27             27
-pyKlock\pyDigitalKlock\src\Logger.py                                       11             28             18
-pyKlock\pyDigitalKlock\src\projectPaths.py                                  4             24             14
-pyKlock\pyDigitalKlock\src\License.py                                       5             35              8
-pyKlock\pyDigitalKlock\config.toml                                          3              6             13
-pyKlock\pyDigitalKlock\main.py                                              2             23              2
------------------------------------------------------------------------------------------------------------
-SUM:                                                                      210            383            886
------------------------------------------------------------------------------------------------------------
-
 
 V2022.22
 
-    Now returns a valid font, all sems to be working.
+    Now returns a valid font, all seems to be working.
     The current font [name and size] is saved between sessions.
     Added font name and size to config file [both config.py & config.toml].
     Added font path to projectPaths.py
@@ -43,7 +51,7 @@ V2022.22
 V2022.21
 
     Added a new menu - Fonts.
-      This displays a new form which list all the fonts in the font directory - src\Fonts.py
+      This displays a new dialog which lists all the fonts in the font directory - src\Fonts.py
           The font file name has to be the same as the font family name.
       Also, added module src\utils\font_utils.py which contains common font related functions.
     Modifications to pyDigitalKlock.py to call Font menu etc.

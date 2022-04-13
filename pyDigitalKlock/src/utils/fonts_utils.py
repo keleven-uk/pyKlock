@@ -58,10 +58,10 @@ def check_font_name(font_name):
          NB : the font file name must be the same as the font name.
      """
     if font_name.stem in font.families():
-        print(f"font = {font_name} is TRUE")
+        #print(f"font = {font_name} is TRUE")
         return True
     else:
-        print(f"font = {font_name} is FALSE")
+        #print(f"font = {font_name} is FALSE")
         return False
 
 def set_font(pos):

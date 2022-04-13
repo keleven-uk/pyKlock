@@ -5,7 +5,6 @@
     <property name="container">false</property>
     <property name="geometry">400x145</property>
     <property name="height">145</property>
-    <property name="iconbitmap">klock.ico</property>
     <property name="resizable">none</property>
     <property name="title" translatable="yes">L.E.D. Klock</property>
     <property name="width">400</property>
@@ -143,6 +142,12 @@
         <property name="label" translatable="yes">Help</property>
         <property name="takefocus">true</property>
         <child>
+          <object class="tk.Menuitem.Command" id="mhelp_license">
+            <property name="command" type="command" cbtype="with_wid">on_items_clicked</property>
+            <property name="label" translatable="yes">License</property>
+          </object>
+        </child>
+        <child>
           <object class="tk.Menuitem.Command" id="mhelp_about">
             <property name="command" type="command" cbtype="with_wid">on_items_clicked</property>
             <property name="label" translatable="yes">About</property>
@@ -154,13 +159,12 @@
   <object class="pygubu.builder.widgets.dialog" id="dlg_about">
     <property name="geometry">400x200</property>
     <property name="height">200</property>
-    <property name="iconbitmap">klock.ico</property>
     <property name="title" translatable="yes">L.E.D. Klock: About</property>
-    <property name="width">400</property>
+    <property name="width">200</property>
     <child>
       <object class="ttk.Frame" id="frm_top">
         <property name="height">150</property>
-        <property name="width">400</property>
+        <property name="width">200</property>
         <layout manager="grid">
           <property name="column">0</property>
           <property name="row">0</property>
@@ -170,12 +174,10 @@
           <object class="ttk.Label" id="lbl_Name">
             <property name="text" translatable="yes">lbl_Name</property>
             <property name="textvariable">string:product_name</property>
-            <layout manager="grid">
-              <property name="column">1</property>
-              <property name="padx">100</property>
-              <property name="pady">20</property>
-              <property name="row">0</property>
-              <property name="sticky">ns</property>
+            <layout manager="place">
+              <property name="anchor">nw</property>
+              <property name="x">15</property>
+              <property name="y">10</property>
             </layout>
           </object>
         </child>
@@ -183,12 +185,10 @@
           <object class="ttk.Label" id="lbl_Version">
             <property name="text" translatable="yes">lbl_Version</property>
             <property name="textvariable">string:product_version</property>
-            <layout manager="grid">
-              <property name="column">1</property>
-              <property name="padx">100</property>
-              <property name="pady">20</property>
-              <property name="row">1</property>
-              <property name="sticky">ns</property>
+            <layout manager="place">
+              <property name="anchor">nw</property>
+              <property name="x">15</property>
+              <property name="y">40</property>
             </layout>
           </object>
         </child>
@@ -197,12 +197,10 @@
             <property name="justify">center</property>
             <property name="text" translatable="yes">lbl_Copyright</property>
             <property name="textvariable">string:product_copyright</property>
-            <layout manager="grid">
-              <property name="column">1</property>
-              <property name="padx">100</property>
-              <property name="pady">20</property>
-              <property name="row">2</property>
-              <property name="sticky">ns</property>
+            <layout manager="place">
+              <property name="anchor">nw</property>
+              <property name="x">15</property>
+              <property name="y">70</property>
             </layout>
           </object>
         </child>
@@ -211,7 +209,7 @@
     <child>
       <object class="ttk.Frame" id="frm_bottom">
         <property name="height">50</property>
-        <property name="width">400</property>
+        <property name="width">200</property>
         <layout manager="grid">
           <property name="column">0</property>
           <property name="row">1</property>
@@ -222,6 +220,8 @@
             <property name="text" translatable="yes">Close</property>
             <layout manager="place">
               <property name="anchor">nw</property>
+              <property name="x">10</property>
+              <property name="y">10</property>
             </layout>
           </object>
         </child>
@@ -284,7 +284,61 @@
         </child>
         <child>
           <object class="ttk.Button" id="font_btnok">
-            <property name="text" translatable="yes">ok</property>
+            <property name="text" translatable="yes">OK</property>
+            <layout manager="place">
+              <property name="anchor">nw</property>
+              <property name="x">200</property>
+              <property name="y">0</property>
+            </layout>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="pygubu.builder.widgets.dialog" id="dlg_license">
+    <property name="geometry">400x300</property>
+    <property name="height">300</property>
+    <property name="modal">true</property>
+    <property name="title" translatable="yes">License</property>
+    <property name="width">400</property>
+    <child>
+      <object class="ttk.Frame" id="frame3">
+        <property name="height">250</property>
+        <property name="width">400</property>
+        <layout manager="grid">
+          <property name="column">0</property>
+          <property name="row">0</property>
+          <property name="sticky">new</property>
+        </layout>
+        <child>
+          <object class="tk.Text" id="txt_license">
+            <property name="blockcursor">false</property>
+            <property name="font">TkDefaultFont</property>
+            <property name="height">250</property>
+            <property name="setgrid">false</property>
+            <property name="tabstyle">tabular</property>
+            <property name="width">400</property>
+            <layout manager="place">
+              <property name="anchor">nw</property>
+              <property name="x">0</property>
+              <property name="y">0</property>
+            </layout>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Frame" id="frame4">
+        <property name="height">50</property>
+        <property name="width">400</property>
+        <layout manager="grid">
+          <property name="column">0</property>
+          <property name="row">1</property>
+          <property name="sticky">sew</property>
+        </layout>
+        <child>
+          <object class="ttk.Button" id="license_btnclose">
+            <property name="text" translatable="yes">OK</property>
             <layout manager="place">
               <property name="anchor">nw</property>
               <property name="x">200</property>

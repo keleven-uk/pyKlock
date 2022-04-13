@@ -36,6 +36,7 @@ import src.Config as Config
 import src.Logger as Logger
 import src.About as About
 import src.Fonts as Fonts
+import src.License as License
 import src.utils.pyDigitalKlock_utils as utils
 import src.utils.fonts_utils as fu
 
@@ -76,30 +77,21 @@ class FirstApp:
         self.mainwindow.wm_attributes("-transparentcolor", "gray")
         self.mainwindow.wait_visibility()
 
-        self.myAbout = About.About(
-            self.mainwindow, self.config.NAME, self.config.VERSION
-        )
-        self.myFont = Fonts.Font(self.mainwindow, logger)
+        self.myAbout   = About.About(self.mainwindow, self.config.NAME, self.config.VERSION)
+        self.myLicense = License.License(self.mainwindow, self.config.NAME, self.config.VERSION)
+        self.myFont    = Fonts.Font(self.mainwindow, logger)
 
         self.lbl_current_time = builder.get_object("lblTime", master)
         self.lbl_today_date = builder.get_object("lblDate", master)
         self.lbl_current_state = builder.get_object("lblState", master)
         self.lbl_idle_time = builder.get_object("lblIdle", master)
 
-        self.lbl_current_time.configure(
-            font=font.Font(
-                family=self.config.FONT_NAME,
-                size=self.config.FONT_SIZE,
-                weight="normal",
-            )
-        )
+        self.lbl_current_time.configure(font=font.Font(family=self.config.FONT_NAME,size=self.config.FONT_SIZE,weight="normal",))
 
         # Set main menu
         self.mainmenu = mainmenu = builder.get_object("mainmenu", self.mainwindow)
         self.mainwindow.configure(menu=mainmenu)
-        self.mainmenu.bind_all(
-            "<Control-q>", self.quit
-        )  #  Bind menu quit option to self.quit.
+        self.mainmenu.bind_all("<Control-q>", self.quit)  #  Bind menu quit option to self.quit.
 
         # Connect to Delete event
         self.mainwindow.protocol("WM_DELETE_WINDOW", self.quit)
@@ -122,10 +114,6 @@ class FirstApp:
         """Handle the menu options."""
         if itemid == "mfile_quit":
             self.quit()
-        if itemid == "mhelp_about":
-            self.show_about_dialog()
-        if itemid == "mFonts_fonts":
-            self.show_font_dialog()
         if itemid == "mColour_foreground":
             colours = askcolor(title="Choose colour of foreground")
             self.foreground = colours[1]
@@ -136,6 +124,18 @@ class FirstApp:
             self.set_colours()
         if itemid == "mcolour_transparent":
             self.set_colours()
+        if itemid == "mFonts_fonts":
+            self.show_font_dialog()
+        if itemid == "mhelp_license":
+            self.show_about_license()
+        if itemid == "mhelp_about":
+            self.show_about_dialog()
+
+    def show_about_license(self):
+        """Call the about dialog."""
+        self.logger.info(f"    Running About Dialog ")
+        self.myLicense.show_license_dialog()
+        self.logger.info(f"    Closing About Dialog ")
 
     def show_about_dialog(self):
         """Call the about dialog."""
@@ -174,15 +174,11 @@ class FirstApp:
         if idle > 5:  #  Only print idles time if greater then 5 seconds.
             strIdle = f"idle : {utils.formatSeconds(idle)}"
             length = len(strIdle)
-            strIdle = strIdle.rjust(
-                58 - length, " "
-            )  #  Guess at 58 characters for right justification.
+            strIdle = strIdle.rjust(58 - length, " ")  #  Guess at 58 characters for right justification.
         else:
             strIdle = ""
 
-        var = self.builder.get_variable(
-            "idle_time"
-        )  #  This could change if the font is changed.
+        var = self.builder.get_variable("idle_time")  #  This could change if the font is changed.
         var.set(f"{strIdle}")
 
         self.set_row()
@@ -201,9 +197,7 @@ class FirstApp:
             return
         if self.myFont.row != self.row1:
             self.row1 = self.myFont.row
-            self.new_font, self.config.FONT_NAME, self.config.FONT_SIZE = fu.set_font(
-                self.row1
-            )
+            self.new_font, self.config.FONT_NAME, self.config.FONT_SIZE = fu.set_font(self.row1)
             self.lbl_current_time.configure(font=self.new_font)
 
     def set_check(self):
