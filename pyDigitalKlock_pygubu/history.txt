@@ -1,4 +1,4 @@
-    History files of sub project - pyDigitalKlock.
+    History files of sub project - pyDigitalKlock [Built with pygubu].
     Version numbers are taken from the main project.
 
 

@@ -1,0 +1,10 @@
+    History files of sub project - pyDigitalKlock [Built with PySimpleGUI].
+    Version numbers are taken from the main project.
+
+
+V2022.25
+
+    Created project directory.
+      Contains history.txt & LICENSE.txt.
+
+

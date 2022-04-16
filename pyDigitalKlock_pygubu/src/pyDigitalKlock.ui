@@ -5,6 +5,7 @@
     <property name="container">false</property>
     <property name="geometry">400x145</property>
     <property name="height">145</property>
+    <property name="iconbitmap">Klock.ico</property>
     <property name="resizable">none</property>
     <property name="title" translatable="yes">L.E.D. Klock</property>
     <property name="width">400</property>

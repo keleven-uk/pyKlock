@@ -7,7 +7,7 @@
   },
   {
    "optionDest": "filenames",
-   "value": "D:/My/shed/Projects/python/pyKlock/pyDigitalKlock/main.py"
+   "value": "D:/My/shed/Projects/python/pyKlock/pyDigitalKlock_pygubu/main.py"
   },
   {
    "optionDest": "onefile",
@@ -19,11 +19,15 @@
   },
   {
    "optionDest": "icon_file",
-   "value": "D:/My/shed/Projects/python/pyKlock/pyDigitalKlock/resources/klock.ico"
+   "value": "D:/My/shed/Projects/python/pyKlock/pyDigitalKlock_pygubu/resources/Klock.ico"
   },
   {
    "optionDest": "name",
    "value": "pyDigitalKlock"
+  },
+  {
+   "optionDest": "upx_dir",
+   "value": "D:/upx-3.96-win64"
   },
   {
    "optionDest": "ascii",
@@ -71,7 +75,7 @@
   },
   {
    "optionDest": "datas",
-   "value": "D:/My/shed/Projects/python/pyKlock/pyDigitalKlock/src;src/"
+   "value": "D:/My/shed/Projects/python/pyKlock/pyDigitalKlock_pygubu/src;src/"
   },
   {
    "optionDest": "datas",

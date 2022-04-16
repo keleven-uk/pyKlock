@@ -1,10 +1,21 @@
    History file of the main project - pyKlock
    All entries to main project - unless stated.
 
+   Contains a sub-projects
+     pyDigitalKlock - An attempt to re-create a LCD Klock.
+       pyDigitalKlock.pygubu - built with pygubu.
+       pyDigitalKlock.psg    - built with pySimpleGUI
+
+
+V2022.25
+
+    Moved pyDigitalKlock to pyDigitalKlock_psgubu
+    Created pyDigitalKlock_psg to try pySimple pySimpleGUI
+
 
 V2022.24
 
-[pyDigitalKlock]
+[pyDigitalKlock.pygubu]
     Added a new menu option - License.
       This display a new dialog that displays the license text.
       The license used is The GNU General Public License V3.
@@ -35,7 +46,7 @@ SUM:                                                                      230   
 
 V0222.23
 
-[pyDigitalKlock]
+[pyDigitalKlock.pygubu]
     It looks like to install a font you need administer privileges on Windows - so abandon for now.
     When a list of fonts is presented for choice, they are checked to see if they are installed.
       if not installed they are coloured red and an error issues if chosen.
@@ -43,7 +54,7 @@ V0222.23
 
 V2022.22
 
-[pyDigitalKlock]
+[pyDigitalKlock.pygubu]
     Now returns a valid font, all sems to be working.
     The current font [name and size] is saved between sessions.
     Added font name and size to config file [both config.py & config.toml].
@@ -56,7 +67,7 @@ V2022.21
 
 [pyKlock]
     font directy currently consists of DS-Digital, Pixel LCD7, itlivesintheswamp & Twobit
-[pyDigitalKlock]
+[pyDigitalKlock.pygubu]
     Added a new menu - Fonts.
     This displays a new form which list all the fonts in the font directory - src\Fonts.py
         The font file name has to be the same as the font family name.
@@ -69,7 +80,7 @@ V2022.21
 
 V2022.20
 
-    [pyDigitalKlock]
+    [pyDigitalKlock.pygubu]
         Changes so that auto-py-to-ese [pyinstaller] would work.
             Main changes to projectPaths, comfig.tmol and log files now live
             in same directory as the executable.
@@ -79,7 +90,7 @@ V2022.19
 
     Now working against Python V3.10.4
 
-    [pyDigitalKlock]
+    [pyDigitalKlock.pygubu]
         Added extra properties to config.py & config.toml.
             Added FOREGROUND, BACKGROUND, TRANSPARENT, X_POS & YPOS.
             These properties have both setters and getters.
@@ -90,7 +101,7 @@ V2022.19
 
 V202.18
 
-    [pyDigitalKlock]
+    [pyDigitalKlock.pygubu]
         Added the ability to choose the colour of both foreground and background.
             Added menu option which load colour chooser for both foreground and background.
             Added logic to set the colour for both foreground and background
@@ -103,7 +114,7 @@ V202.18
 
 V2022.17.93ccf3e
 
-    [pyDigitalKlock]
+    [pyDigitalKlock.pygubu]
         Created an about dialog - in src\about.py.
             Amended menus to call new about dialog.
         Created src\projectPaths to hold relevant paths used throw-out the project.
@@ -111,7 +122,7 @@ V2022.17.93ccf3e
 
 V2022.16.1d7e07d
 
-    [pyDigitalKlock]
+    [pyDigitalKlock.pygubu]
         Started build of the menus.
             Added File/Quit & File/Help.
             Implemented simple action for each.
@@ -122,7 +133,7 @@ V2022.15.a879173
     [pyKlock]
         Added fonts directory, added fonts DS-DIGI & Pixel LCD-7
 
-    [pyDigitalKlock]
+    [pyDigitalKlock.pygubu]
         Added to src - config.py, License.py & Logger.py
         Amended to use config and logger files.
 
@@ -133,14 +144,14 @@ V2022.14.9ed795a
         Moved requirements.txt to requirements\product.txt
         Moved requirements_dev to requirements\development.txt
 
-    [pyDigitalKlock]
+    [pyDigitalKlock.pygubu]
 	Simplified the status bar formatting.
            This was achieved by using three labels - date, state & idle time.
 
 
 V2022.13.3643d9a
 
-    [pyDigitalKlock]
+    [pyDigitalKlock.pygubu]
         Added directory - bin - holds any executables.
         Added directory - src - holds the main source code files.
         Added directory - src\utils - holds any utility source code files [both .py and .ui].
@@ -152,7 +163,7 @@ V2022.13.3643d9a
 
 V2022.12.71f7527
 
-    [pyDigitalKlock]
+    [pyDigitalKlock.pygubu]
         Added a sub project - pyDigitalKlock.
         An attempt to re-create a LCD Klock.
         The gui is built using pygubu-designer.

@@ -90,7 +90,8 @@ celerybeat-schedule
 .venv
 venv/
 ENV/
-env_3.10/
+env_psg/
+env_pygubu/
 
 # Spyder project settings
 .spyderproject
@@ -132,7 +133,9 @@ $RECYCLE.BIN/
 
 # Project specific
 logs/
-pyDigitalKlock/bin/*.log.*
-pyDigitalKlock/bin/fonts/
+pyDigitalKlock_pygubu/bin/*.log.*
+pyDigitalKlock_pygubu/bin/fonts/
+pyDigitalKlock_psg/bin/*.log.*
+pyDigitalKlock_psg/bin/fonts/
 
 # End of https://www.gitignore.io/api/python,windows
