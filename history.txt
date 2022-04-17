@@ -7,6 +7,14 @@
        pyDigitalKlock.psg    - built with pySimpleGUI
 
 
+V2022.26
+
+[pyDigitalKlock.psg]
+    Basic functionality now working.
+        Current time, date, idle time & key status now updating correctly.
+        key status show the status of the Caps, Num Lock & Scroll Lock keys.
+
+
 V2022.25
 
     Moved pyDigitalKlock to pyDigitalKlock_psgubu

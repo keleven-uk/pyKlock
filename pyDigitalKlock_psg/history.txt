@@ -2,6 +2,13 @@
     Version numbers are taken from the main project.
 
 
+V2022.26
+
+    Basic functionality now working.
+        Current time, date, idle time & key status now updating correctly.
+        key status show the status of the Caps, Num Lock & Scroll Lock keys.
+
+
 V2022.25
 
     Created project directory.

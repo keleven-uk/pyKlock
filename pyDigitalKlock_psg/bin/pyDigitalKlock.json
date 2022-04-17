@@ -1,0 +1,89 @@
+{
+ "version": "auto-py-to-exe-configuration_v1",
+ "pyinstallerOptions": [
+  {
+   "optionDest": "noconfirm",
+   "value": true
+  },
+  {
+   "optionDest": "filenames",
+   "value": "D:/My/shed/Projects/python/pyKlock/pyDigitalKlock_psg/main.py"
+  },
+  {
+   "optionDest": "onefile",
+   "value": true
+  },
+  {
+   "optionDest": "console",
+   "value": false
+  },
+  {
+   "optionDest": "icon_file",
+   "value": "D:/My/shed/Projects/python/pyKlock/pyDigitalKlock_psg/resources/Klock.ico"
+  },
+  {
+   "optionDest": "name",
+   "value": "pyDigitalKlock"
+  },
+  {
+   "optionDest": "ascii",
+   "value": false
+  },
+  {
+   "optionDest": "clean_build",
+   "value": false
+  },
+  {
+   "optionDest": "strip",
+   "value": false
+  },
+  {
+   "optionDest": "noupx",
+   "value": false
+  },
+  {
+   "optionDest": "disable_windowed_traceback",
+   "value": false
+  },
+  {
+   "optionDest": "embed_manifest",
+   "value": true
+  },
+  {
+   "optionDest": "uac_admin",
+   "value": false
+  },
+  {
+   "optionDest": "uac_uiaccess",
+   "value": false
+  },
+  {
+   "optionDest": "win_private_assemblies",
+   "value": false
+  },
+  {
+   "optionDest": "win_no_prefer_redirects",
+   "value": false
+  },
+  {
+   "optionDest": "bootloader_ignore_signals",
+   "value": false
+  },
+  {
+   "optionDest": "datas",
+   "value": "D:/My/shed/Projects/python/pyKlock/env_psg/Lib/site-packages/PySimpleGUI;PySimpleGUI/"
+  },
+  {
+   "optionDest": "datas",
+   "value": "D:/My/shed/Projects/python/pyKlock/pyDigitalKlock_psg/src;src/"
+  },
+  {
+   "optionDest": "datas",
+   "value": "D:/My/shed/Projects/python/pyKlock/env_psg/Lib/site-packages/pythonwin;pythonwin/"
+  }
+ ],
+ "nonPyinstallerOptions": {
+  "increaseRecursionLimit": true,
+  "manualArguments": ""
+ }
+}

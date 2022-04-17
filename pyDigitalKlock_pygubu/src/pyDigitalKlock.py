@@ -1,6 +1,6 @@
 ###############################################################################################################
 #    pyDigitalKlock   Copyright (C) <2022>  <Kevin Scott>                                                     #                                                                                                             #                                                                                                             #
-#     An attempt to re-create a LCD Klock.                                                                    #
+#     An attempt to re-create a LCD Klock [using pygubu].                                                     #
 #                                                                                                             #
 #     For changes see history.txt                                                                             #
 #                                                                                                             #
