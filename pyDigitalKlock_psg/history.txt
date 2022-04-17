@@ -2,6 +2,16 @@
     Version numbers are taken from the main project.
 
 
+V2022.27
+
+    You can now change the foreground and background colours.
+    The new colour is chosen be launching a colour chooser dialog.
+        The change in background colour changes the current theme.
+          This needs the windows layouts to be re read.
+        The change in foreground works on the text elements themselves.
+          The them options don't seem o work at the mo.
+
+
 V2022.26
 
     Basic functionality now working.
