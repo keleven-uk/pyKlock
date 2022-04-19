@@ -7,6 +7,31 @@
        pyDigitalKlock.psg    - built with pySimpleGUI
 
 
+V2022.27
+
+[pyDigitalKlock.psg]
+    pyDigitalKlock not loads and save certain parameters.
+        Application name and version are now held in the config file [config.toml].
+        Windows location is saved and re-used when run.
+        Foreground & Background colours are also saved and re-used.
+    A logger is created on application start.
+        Certain info and debug information is saved to the log file.
+    toml & pyInstaller [auto-py-to-exe] are added to request file.
+        An executable has been created and lived in the bin directory [not under git].
+    A new file, src\klock.py, containing the GUI layout and supporting functions.
+
+
+V2022.27
+
+[pyDigitalKlock.psg]
+    You can now change the foreground and background colours.
+    The new colour is chosen be launching a colour chooser dialog.
+        The change in background colour changes the current theme.
+          This needs the windows layouts to be re read.
+        The change in foreground works on the text elements themselves.
+          The them options don't seem o work at the mo.
+
+
 V2022.26
 
 [pyDigitalKlock.psg]

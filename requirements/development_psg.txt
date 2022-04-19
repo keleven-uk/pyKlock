@@ -11,11 +11,12 @@ greenlet==1.1.2
 pefile==2021.9.3
 psgdemos==1.9.0
 pycparser==2.21
-pyinstaller==4.10
+pyinstaller==5.0
 pyinstaller-hooks-contrib==2022.3
 PySimpleGUI==4.59.0
 pywin32==303
 pywin32-ctypes==0.2.0
+toml==0.10.2
 whichcraft==0.6.1
 zope.event==4.5.0
 zope.interface==5.4.0

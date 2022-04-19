@@ -14,6 +14,8 @@ Contains one sub project, pyDigitalKlock.
     The font can also be selected from from a selection of fonts.
     It save the colours, font and app position between sessions.
 
-    One becomes two.
-    The first was built with pybugu and the second built with pySimpleGUI
-    The latter looks better and maybe the way to go.
+One becomes two.
+    the first pyDigitalKlock was built using pygubu, the second was built using pySimpleGui.
+    The latter look better and more simple to use, maybe the way to go.
+
+

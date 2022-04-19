@@ -1,3 +1,4 @@
 psgdemos==1.9.0
 PySimpleGUI==4.59.0
 pywin32==303
+toml==0.10.2
