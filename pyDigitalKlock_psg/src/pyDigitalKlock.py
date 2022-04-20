@@ -27,6 +27,7 @@ import datetime
 import platform
 
 import src.klock as klock
+import src.license as license
 import src.Config as Config
 import src.Logger as Logger
 import src.utils.pyDigitalKlock_utils as utils
@@ -58,6 +59,10 @@ def run_klock(my_logger, my_config):
         my_config.X_POS, my_config.Y_POS = window.CurrentLocation() #  Need to read location within the event loop.
 
         match event:
+            case "License":
+                window.disappear()
+                license.run_license(my_config.NAME, my_config.VERSION)
+                window.reappear()
             case "About":
                 window.disappear()
                 sg.popup(my_config.NAME, f"V {my_config.VERSION}", "PySimpleGUI Version", sg.version, grab_anywhere=True)
@@ -73,9 +78,17 @@ def run_klock(my_logger, my_config):
                 bac_colour = askcolor(title="Choose colour of background")
                 win_colour = bac_colour[1]
                 window = klock.win_layout(win_colour, txt_colour, my_config)                         #  Recreates the window object, so the change in
-                window.reappear()                                                   #  background colour takes effect.
+                window.reappear()                                                                    #  background colour takes effect.
+            case "Transparent":
+                window.disappear()
+                window = klock.win_layout(win_colour, txt_colour, my_config, transparent=True)
+                window.reappear()
+            case "Normal":
+                window.disappear()
+                window = klock.win_layout(win_colour, txt_colour, my_config, transparent=False)
+                window.reappear()
 
-    try:                                                                            #  Saves the current configuration and closes app.
+    try:                                                                                             #  Saves the current configuration and closes app.
         my_config.FOREGROUND = txt_colour
         my_config.BACKGROUND = win_colour
         my_config.THEME      = sg.theme()
@@ -99,10 +112,6 @@ def main():
     my_logger.debug(f" {platform.uname()}")
     my_logger.debug(f" Python Version {platform.python_version()}")
     my_logger.debug("")
-    my_logger.debug(f" PROJECT_PATH :: {PROJECT_PATH}")
-    my_logger.debug(f" MAIN_PATH    :: {MAIN_PATH}")
-    my_logger.debug(f" RESOURCE_PATH:: {RESOURCE_PATH}")
-    my_logger.debug(f" FONTS_PATH   :: {FONTS_PATH}")
     my_logger.debug(f" CONFIG_PATH  :: {CONFIG_PATH}")
     my_logger.debug(f" LOGGER_PATH  :: {LOGGER_PATH}")
     my_logger.debug("")

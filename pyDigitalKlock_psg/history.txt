@@ -2,9 +2,19 @@
     Version numbers are taken from the main project.
 
 
+V2022.29
+
+    Implemented the license menu option.
+        This loads a separate form that display the license text [GNU V3].
+        The text is held in src\utils\license_text.py.
+    Implemented the transparent menu option.
+        The sets the transparent colour to be the same as the background colour.
+        It also sets the menu text to "normal", which reset the transparency.
+
+
 V2022.28
 
-    pyDigitalKlock not loads and save certain parameters.
+    pyDigitalKlock now loads and save certain parameters.
         Application name and version are now held in the config file [config.toml].
         Windows location is saved and re-used when run.
         Foreground & Background colours are also saved and re-used.

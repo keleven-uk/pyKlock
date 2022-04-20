@@ -1,22 +1,22 @@
 #   Configure file for pyDigitalKlock.py 
-#   (c) Kevin Scott   Written Monday 18 April 2022  21:42:02
+#   (c) Kevin Scott   Written Tuesday 19 April 2022  22:28:34
 #
 #   true and false are lower case 
 #   location needs double \ i.e. c:\tmp\music - well, on windows any way. 
 #
 [INFO]
-myVERSION = "2022.28"
+myVERSION = "2022.29"
 myNAME = "pyDigitalKlock"
 
 [COLOUR]
-foreground = "#ff8000"
+foreground = "#0000ff"
 background = "#00ff00"
-theme = "LightGreen3"
+theme = "NeutralBlue"
 transparent = true
 
 [POSITION]
-x_pos = 1186
-y_pos = -263
+x_pos = 1282
+y_pos = -312
 
 [FONT]
 size = 66

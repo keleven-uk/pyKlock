@@ -1,6 +1,6 @@
 ###############################################################################################################
 #    klock.py   Copyright (C) <2022>  <Kevin Scott>                                                           #                                                                                                             #                                                                                                             #
-#     The GUI layout and supporting functions.                                                                #
+#     The klock GUI layout and supporting functions.                                                          #
 #                                                                                                             #
 #     For changes see history.txt                                                                             #
 #                                                                                                             #
@@ -44,13 +44,13 @@ def update_text(window):
     window['-CURRENT-IDLE-'].update(utils.get_idle_duration())
 
 
-def win_layout(win_colour, txt_colour, my_config):
+def win_layout(win_colour, txt_colour, my_config, transparent=False):
     """  Sets up the windows and menu layout.
          Returns a finalized windows object.
 
          In it's own def so that it can be easily called twice.
          This is so the windows can be re done after a background colour change.
-         A bit klunky, but a work around to reload the theme at run time.
+         A bit klunky, but a work around to reload the theme at run time and to set transparency.
     """
     sg.theme_background_color(win_colour)               #  Sets all the backgrounds to win_colour
     sg.theme_element_background_color(win_colour)
@@ -58,11 +58,19 @@ def win_layout(win_colour, txt_colour, my_config):
 
     strNow = datetime.datetime.now()
 
-    menu_def = [["File",  ["Quit"]],
-                ["Colour",["Foreground", "Background", "Transparent"]],
-                ["Font",  ["Font"]],
-                ["Help",  ["License", "About"]]
-               ]
+    #  Change the menu text to reflect transparency or to set back to normal.
+    if transparent:
+        menu_def = [["File",  ["Quit"]],
+                    ["Colour",["Foreground", "Background", "Normal"]],
+                    ["Font",  ["Font"]],
+                    ["Help",  ["License", "About"]]
+                   ]
+    else:
+        menu_def = [["File",  ["Quit"]],
+                    ["Colour",["Foreground", "Background", "Transparent"]],
+                    ["Font",  ["Font"]],
+                    ["Help",  ["License", "About"]]
+                   ]
 
     layout = [[sg.Menu(menu_def, tearoff=False, pad=(200, 1))],
               [sg.Text(f"{strNow:%H:%M:%S}",      justification="center", key="-CURRENT_TIME-", font=("Twobit",72))],   #  Current time.
@@ -72,7 +80,11 @@ def win_layout(win_colour, txt_colour, my_config):
              ]
 
     #window = sg.Window('Window Title', layout, no_titlebar=True, alpha_channel=0.5)
-    win =  sg.Window('L.E.D. Klock', layout, alpha_channel=0.6, location=(my_config.X_POS, my_config.Y_POS), size=(400, 150))
+    if transparent:
+        win =  sg.Window('L.E.D. Klock', layout, alpha_channel=0.6, location=(my_config.X_POS, my_config.Y_POS), size=(400, 150), transparent_color=win_colour)
+    else:
+        win =  sg.Window('L.E.D. Klock', layout, alpha_channel=0.6, location=(my_config.X_POS, my_config.Y_POS), size=(400, 150))
+
     win.finalize()
     win.keep_on_top_set()
     update_text_colour(win, txt_colour)     #  Set all text foreground colour to txt_colour.
