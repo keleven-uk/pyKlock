@@ -2,6 +2,37 @@
     Version numbers are taken from the main project.
 
 
+V2022.30
+
+    Implemented the font menu.
+        This displays a new windows that lists all the fonts in the font directory.
+        For a chosen font, it is checked that it is installed on the system - if not an error is displayed.
+        If it is installed it is passed back to the main program and used for the current time.
+        The new font is save at klock quit and used when re-run.
+        A fonts directory has been added to the sub-project which includes a few selected fonts.
+
+---------------------------------------------------------------------------------------------------------------
+File                                                                        blank        comment           code
+---------------------------------------------------------------------------------------------------------------
+pyKlock\pyDigitalKlock_psg\main.py                                              2             23              2
+pyKlock\pyDigitalKlock_psg\config.toml                                          3              6             14
+pyKlock\pyDigitalKlock_psg\bin\config.toml                                      3              6             14
+pyKlock\pyDigitalKlock_psg\bin\pyDigitalKlock.json                              0              0             89
+pyKlock\pyDigitalKlock_psg\src\Config.py                                       46             70            112
+pyKlock\pyDigitalKlock_psg\src\pyDigitalKlock.py                               30             27             88
+pyKlock\pyDigitalKlock_psg\src\klock.py                                        17             32             46
+pyKlock\pyDigitalKlock_psg\src\utils\pyDigitalKlock_utils.py                   25             31             46
+pyKlock\pyDigitalKlock_psg\src\fonts.py                                        11             25             30
+pyKlock\pyDigitalKlock_psg\src\utils\fonts_utils.py                            15             29             19
+pyKlock\pyDigitalKlock_psg\src\Logger.py                                       11             28             18
+pyKlock\pyDigitalKlock_psg\src\license.py                                      10             25             16
+pyKlock\pyDigitalKlock_psg\src\projectPaths.py                                  4             24             13
+pyKlock\pyDigitalKlock_psg\src\utils\License_text.py                            5             30              1
+---------------------------------------------------------------------------------------------------------------
+SUM:                                                                          182            356            508
+---------------------------------------------------------------------------------------------------------------
+
+
 V2022.29
 
     Implemented the license menu option.

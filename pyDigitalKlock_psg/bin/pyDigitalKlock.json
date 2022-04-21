@@ -70,6 +70,10 @@
    "value": false
   },
   {
+   "optionDest": "argv_emulation",
+   "value": false
+  },
+  {
    "optionDest": "datas",
    "value": "D:/My/shed/Projects/python/pyKlock/env_psg/Lib/site-packages/PySimpleGUI;PySimpleGUI/"
   },

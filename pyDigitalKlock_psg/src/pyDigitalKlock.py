@@ -26,10 +26,11 @@ from tkinter.colorchooser import askcolor
 import datetime
 import platform
 
-import src.klock as klock
+import src.klock   as klock
+import src.fonts   as fonts
 import src.license as license
-import src.Config as Config
-import src.Logger as Logger
+import src.Config  as Config
+import src.Logger  as Logger
 import src.utils.pyDigitalKlock_utils as utils
 
 from src.projectPaths import *
@@ -59,6 +60,11 @@ def run_klock(my_logger, my_config):
         my_config.X_POS, my_config.Y_POS = window.CurrentLocation() #  Need to read location within the event loop.
 
         match event:
+            case "Font":
+                window.disappear()
+                new_font, font_name, font_size = fonts.run_fonts()
+                window['-CURRENT_TIME-'].update(font=new_font)
+                window.reappear()
             case "License":
                 window.disappear()
                 license.run_license(my_config.NAME, my_config.VERSION)
@@ -89,6 +95,8 @@ def run_klock(my_logger, my_config):
                 window.reappear()
 
     try:                                                                                             #  Saves the current configuration and closes app.
+        my_config.FONT_NAME  = font_name
+        my_config.FONT_SIZE  = font_size
         my_config.FOREGROUND = txt_colour
         my_config.BACKGROUND = win_colour
         my_config.THEME      = sg.theme()
@@ -96,7 +104,7 @@ def run_klock(my_logger, my_config):
     except Exception as e:
         my_logger.debug(f" Error occurred during saving of config: {e}")
 
-    window.close()
+    window.close(); del window
 
 
 
@@ -112,8 +120,9 @@ def main():
     my_logger.debug(f" {platform.uname()}")
     my_logger.debug(f" Python Version {platform.python_version()}")
     my_logger.debug("")
-    my_logger.debug(f" CONFIG_PATH  :: {CONFIG_PATH}")
-    my_logger.debug(f" LOGGER_PATH  :: {LOGGER_PATH}")
+    my_logger.debug(f" CONFIG_PATH :: {CONFIG_PATH}")
+    my_logger.debug(f" LOGGER_PATH :: {LOGGER_PATH}")
+    my_logger.debug(f" FONTS_PATH  :: {FONTS_PATH}")
     my_logger.debug("")
 
     if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):

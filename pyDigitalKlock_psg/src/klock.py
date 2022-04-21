@@ -89,4 +89,7 @@ def win_layout(win_colour, txt_colour, my_config, transparent=False):
     win.keep_on_top_set()
     update_text_colour(win, txt_colour)     #  Set all text foreground colour to txt_colour.
 
+    #  Update current time to saved font.
+    win['-CURRENT_TIME-'].update(font=(my_config.FONT_NAME, my_config.FONT_SIZE))
+
     return win

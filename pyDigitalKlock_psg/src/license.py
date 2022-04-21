@@ -48,4 +48,4 @@ def run_license(NAME, VERSION):
             break
 
 
-    window.close()
+    window.close(); del window

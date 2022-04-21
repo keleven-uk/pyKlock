@@ -1,7 +1,6 @@
 ###############################################################################################################
-#    projectPaths.py   Copyright (C) <2022>  <Kevin Scott>                                                    #                                                                                                             #                                                                                                             #
-#    Holds common directory paths for the project.                                                            #
-#        Must sit in src directory                                                                            #
+#    fonts_utils.py   Copyright (C) <2022>  <Kevin Scott>                                                     #                                                                                                             #                                                                                                             #
+#    utility function for fonts.py.                  .                                                        #
 #                                                                                                             #
 #     For changes see history.txt                                                                             #
 #                                                                                                             #
@@ -21,21 +20,44 @@
 #                                                                                                             #
 ###############################################################################################################
 
-import sys
-import pathlib
 
-PROJECT_PATH  = pathlib.Path(__file__).parent
-MAIN_PATH     = pathlib.Path(__file__).parent.parent
-RESOURCE_PATH = MAIN_PATH / "resources"
+from src.projectPaths import *
 
-#  If running as an executable i.e. from using auto-py-to-exe.
-#  Some of the paths needs to be toe working directory.
-if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
-    CONFIG_PATH   = "config.toml"
-    LOGGER_PATH   = "pyDigitalKlock.log"
-    FONTS_PATH    = "fonts"
-else:
-    CONFIG_PATH   = MAIN_PATH / "config.toml"
-    LOGGER_PATH   = MAIN_PATH / "logs/pyDigitalKlock.log"
-    FONTS_PATH    = MAIN_PATH / "fonts"
+from tkinter import font
+
+from pathlib import Path
+
+DEFAULT_FONT_LENGTH = 75
+DEFAULT_FONT_SIZE   = 355
+
+def list_fonts():
+    """  Create a list of all fonts in a given directory.
+         Assumes font files end in .ttf.
+    """
+    path      = pathlib.Path(FONTS_PATH)
+    lst_fonts = list(path.rglob("*.ttf"))
+
+    return lst_fonts
+
+
+def check_font(font_name):
+    """  Quick check to see if the font is installed on the system.
+
+         NB : the font file name must be the same as the font name.
+     """
+    if font_name in font.families():
+        return True
+    else:
+        return False
+
+
+def set_font(font_name):
+    """   return a font object from a font_name.
+    """
+    font_length = font.Font(family=font_name, size=DEFAULT_FONT_LENGTH, weight="normal").measure("00:00:00")
+    font_size   = int(DEFAULT_FONT_SIZE / font_length * DEFAULT_FONT_LENGTH)
+
+    ret_font = font.Font(family=font_name, size=font_size, weight="normal")
+    return ret_font, font_size
+
 
