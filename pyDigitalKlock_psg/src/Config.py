@@ -33,6 +33,8 @@ class Config():
 
          If config.toml is not found, a default configure file is generated.
 
+         The get read the directory and if the key is not found a default is returned.
+
          Use single quotes :-(
 
          usage:
@@ -63,7 +65,7 @@ class Config():
     def NAME(self):
         """  Returns the application name.
         """
-        return self.config['INFO']['myNAME']
+        return self.config['INFO'].get('myNAME', "pyDigitalKlock")
 
     @property
     def VERSION(self):
@@ -75,7 +77,7 @@ class Config():
     def FOREGROUND(self):
         """  Return the foreground colour.
         """
-        return self.config["COLOUR"]["foreground"]
+        return self.config["COLOUR"].get("foreground", "#ff0000")
 
     @FOREGROUND.setter
     def FOREGROUND(self, value):
@@ -87,7 +89,7 @@ class Config():
     def BACKGROUND(self):
         """  Return the background colour.
         """
-        return self.config["COLOUR"]["background"]
+        return self.config["COLOUR"].get("background", "#80ff80")
 
     @BACKGROUND.setter
     def BACKGROUND(self, value):
@@ -99,7 +101,7 @@ class Config():
     def THEME(self):
         """  Return the background colour.
         """
-        return self.config["COLOUR"]["theme"]
+        return self.config["COLOUR"].get("theme", "NeutralBlue")
 
     @THEME.setter
     def THEME(self, value):
@@ -111,7 +113,7 @@ class Config():
     def TRANSPARENT(self):
         """  Return the background colour.
         """
-        return self.config["COLOUR"]["transparent"]
+        return self.config["COLOUR"].get("transparent", "false")
 
     @TRANSPARENT.setter
     def TRANSPARENT(self, value):
@@ -123,7 +125,7 @@ class Config():
     def X_POS(self):
         """  Return the background colour.
         """
-        return self.config["POSITION"]["x_pos"]
+        return self.config["POSITION"].get("x_pos", "0")
 
     @X_POS.setter
     def X_POS(self, value):
@@ -135,7 +137,7 @@ class Config():
     def Y_POS(self):
         """  Return the background colour.
         """
-        return self.config["POSITION"]["y_pos"]
+        return self.config["POSITION"].get("y_pos", "0")
 
     @Y_POS.setter
     def Y_POS(self, value):
@@ -147,7 +149,7 @@ class Config():
     def FONT_SIZE(self):
         """  Return the background colour.
         """
-        return self.config["FONT"]["size"]
+        return self.config["FONT"].get("size", "72")
 
     @FONT_SIZE.setter
     def FONT_SIZE(self, value):
@@ -159,7 +161,7 @@ class Config():
     def FONT_NAME(self):
         """  Return the background colour.
         """
-        return self.config["FONT"]["name"]
+        return self.config["FONT"].get("name", "Twobit")
 
     @FONT_NAME.setter
     def FONT_NAME(self, value):
@@ -202,7 +204,7 @@ class Config():
 
         config["COLOUR"] = {"foreground":"#ff0000",
                             "background":"#80ff80",
-                            "theme":"LightGreen4",
+                            "theme":"NeutralBlue",
                             "transparent":"false"
                             }
 

@@ -44,7 +44,7 @@ def update_text(window):
     window['-CURRENT-IDLE-'].update(utils.get_idle_duration())
 
 
-def win_layout(win_colour, txt_colour, my_config, transparent=False):
+def win_layout(win_colour, txt_colour, my_config, transparent=False, change_theme=False):
     """  Sets up the windows and menu layout.
          Returns a finalized windows object.
 
@@ -52,22 +52,26 @@ def win_layout(win_colour, txt_colour, my_config, transparent=False):
          This is so the windows can be re done after a background colour change.
          A bit klunky, but a work around to reload the theme at run time and to set transparency.
     """
-    sg.theme_background_color(win_colour)               #  Sets all the backgrounds to win_colour
-    sg.theme_element_background_color(win_colour)
-    sg.theme_text_element_background_color(win_colour)
+    win_location = (my_config.X_POS, my_config.Y_POS)
+    win_size     = (400, 150)
+
+    if not change_theme:                                    #  If changing theme, ignore foreground and background colours.
+        sg.theme_background_color(win_colour)               #  Sets all the backgrounds to win_colour [background colour]
+        sg.theme_element_background_color(win_colour)
+        sg.theme_text_element_background_color(win_colour)
 
     strNow = datetime.datetime.now()
 
     #  Change the menu text to reflect transparency or to set back to normal.
     if transparent:
         menu_def = [["File",  ["Quit"]],
-                    ["Colour",["Foreground", "Background", "Normal"]],
+                    ["Colour",["Foreground", "Background", "Theme", "Normal"]],
                     ["Font",  ["Font"]],
                     ["Help",  ["License", "About"]]
                    ]
     else:
         menu_def = [["File",  ["Quit"]],
-                    ["Colour",["Foreground", "Background", "Transparent"]],
+                    ["Colour",["Foreground", "Background", "Theme", "Transparent"]],
                     ["Font",  ["Font"]],
                     ["Help",  ["License", "About"]]
                    ]
@@ -81,15 +85,24 @@ def win_layout(win_colour, txt_colour, my_config, transparent=False):
 
     #window = sg.Window('Window Title', layout, no_titlebar=True, alpha_channel=0.5)
     if transparent:
-        win =  sg.Window('L.E.D. Klock', layout, alpha_channel=0.6, location=(my_config.X_POS, my_config.Y_POS), size=(400, 150), transparent_color=win_colour)
+        win =  sg.Window('L.E.D. Klock', layout, alpha_channel=0.6, location=win_location, size= win_size, transparent_color=win_colour, no_titlebar=True)
     else:
-        win =  sg.Window('L.E.D. Klock', layout, alpha_channel=0.6, location=(my_config.X_POS, my_config.Y_POS), size=(400, 150))
+        win =  sg.Window('L.E.D. Klock', layout, alpha_channel=0.6, location=win_location, size= win_size, no_titlebar=True)
 
     win.finalize()
     win.keep_on_top_set()
-    update_text_colour(win, txt_colour)     #  Set all text foreground colour to txt_colour.
+
+    if not change_theme:                                    #  If changing theme, ignore foreground and background colours.
+        update_text_colour(win, txt_colour)                 #  Set all text foreground colour to txt_colour.
 
     #  Update current time to saved font.
     win['-CURRENT_TIME-'].update(font=(my_config.FONT_NAME, my_config.FONT_SIZE))
 
+    #  Bind mouse, so klock can be moved.
+    win.bind("<Button-1>", "-STARTMOVE-")
+    win.bind("<ButtonRelease-1>", "-STOPMOVE-")
+    win.bind("<B1-Motion>", "-MOVING-")
+
     return win
+
+

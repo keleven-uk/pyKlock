@@ -7,11 +7,31 @@
        pyDigitalKlock.psg    - built with pySimpleGUI
 
 
+
+V2022.32
+
+[pyDigitalKlock.psg]
+    There was a problem, in that when a new theme was applied the previous foreground and background
+    colours where then applied.  The applying of a new theme should ignore previous foreground and
+    background colours.  Applying a new theme now sets foreground and background colours to that of the theme.
+
+
+V2022.31
+
+[pyDigitalKlock.psg]
+    Implemented the theme menu.
+        The displays a list of the installed themes available in a new window.
+        If a them is selected a preview window is displayed.
+        If a new theme is selected, this will over write any previous foreground & background colour choices.
+    Amended config.py to return default values if it cant find the config key.
+    Changed the window layout to use the no_titlebar option.
+        Added the ability to move the window by dragging the mouse.
+
+
 The two versions [pySimpleGUI & pygubu] and now both virtually at the same point.
 The pySimpleGUI version is about 350 lines of code smaller - mainly .ui file.
 Although pySimpleGui doesn't have the same refinement of layout, it is a lot
 more simpler to use.  Also, seems to have a lot more features.
-
 
 V2022.30
 
