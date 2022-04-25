@@ -1,6 +1,6 @@
 ###############################################################################################################
 #    fonts.py   Copyright (C) <2022>  <Kevin Scott>                                                           #                                                                                                             #                                                                                                             #
-#     The license GUI layout and supporting functions.                                                        #
+#     The font GUI layout and supporting functions.                                                           #
 #                                                                                                             #
 #     For changes see history.txt                                                                             #
 #                                                                                                             #
@@ -27,11 +27,15 @@ import src.utils.fonts_utils as fu
 
 def run_fonts():
     """  A Simple dialog.
-         Just displays the licence text..
+         Displays the contents of the font directory and allows a font to be chosen.
+         If the font is installed, return the font object, if not display an error.
+
+         fu.list_fonts() - return a list of fonts.
     """
-    font      = None
-    font_name = None
-    font_size = None
+    ret_font    = None
+    font_name   = None
+    font_length = 400
+    font_height = 150
 
     sg.theme("NeutralBlue")
 
@@ -50,17 +54,17 @@ def run_fonts():
             break
         elif event == "OK":
             font_list = window["-FONT-"].get()          #  Returns a list even though select single is specified.
-            if font_list:
+            if font_list:                               #  If ok is clicked without a font chosen, an empty list is returned.
                 font_path = font_list[0]
             else:
                 break
-            font_name = f"{font_path.stem}"
-            if fu.check_font(font_name):
-                font, font_size = fu.set_font(font_name)           #  Returns a font object.
+            font_name = f"{font_path.stem}"             #  Grab the font name form the font path.
+            if fu.check_font(font_name):                #  Check if the font is  installed.
+                ret_font, font_name, font_length, font_height = fu.set_font(font_name)           #  Returns a font object.
                 break
             else:
                 sg.popup_error("Font not installed, Please install and try again.\n\n Ot choose another font.")
 
     window.close(); del window
 
-    return font, font_name, font_size
+    return ret_font, font_name, font_length, font_height

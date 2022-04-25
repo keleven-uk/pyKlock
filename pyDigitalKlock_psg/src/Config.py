@@ -35,8 +35,6 @@ class Config():
 
          The get read the directory and if the key is not found a default is returned.
 
-         Use single quotes :-(
-
          usage:
             myConfig = myConfig.Config()
     """
@@ -65,13 +63,13 @@ class Config():
     def NAME(self):
         """  Returns the application name.
         """
-        return self.config['INFO'].get('myNAME', "pyDigitalKlock")
+        return self.config["INFO"].get("myNAME", "pyDigitalKlock")
 
     @property
     def VERSION(self):
         """  Returns the application Version.
         """
-        return self.config['INFO']['myVERSION']
+        return self.config["INFO"]["myVERSION"]
 
     @property
     def FOREGROUND(self):
@@ -101,7 +99,7 @@ class Config():
     def THEME(self):
         """  Return the background colour.
         """
-        return self.config["COLOUR"].get("theme", "NeutralBlue")
+        return self.config["COLOUR"].get("theme", "Dark")
 
     @THEME.setter
     def THEME(self, value):
@@ -122,28 +120,52 @@ class Config():
         self.config["COLOUR"]["transparent"] = value
 
     @property
+    def WIN_WIDTH(self):
+        """  Return the background colour.
+        """
+        return self.config["WINDOW"].get("width", "400")
+
+    @WIN_WIDTH.setter
+    def WIN_WIDTH(self, value):
+        """  Sets the background colour.
+        """
+        self.config["WINDOW"]["width"] = value
+
+    @property
+    def WIN_HEIGHT(self):
+        """  Return the background colour.
+        """
+        return self.config["WINDOW"].get("height", "150")
+
+    @WIN_HEIGHT.setter
+    def WIN_HEIGHT(self, value):
+        """  Sets the background colour.
+        """
+        self.config["WINDOW"]["height"] = value
+
+    @property
     def X_POS(self):
         """  Return the background colour.
         """
-        return self.config["POSITION"].get("x_pos", "0")
+        return self.config["WINDOW"].get("x_pos", "0")
 
     @X_POS.setter
     def X_POS(self, value):
         """  Sets the background colour.
         """
-        self.config["POSITION"]["x_pos"] = value
+        self.config["WINDOW"]["x_pos"] = value
 
     @property
     def Y_POS(self):
         """  Return the background colour.
         """
-        return self.config["POSITION"].get("y_pos", "0")
+        return self.config["WINDOW"].get("y_pos", "0")
 
     @Y_POS.setter
     def Y_POS(self, value):
         """  Sets the background colour.
         """
-        self.config["POSITION"]["y_pos"] = value
+        self.config["WINDOW"]["y_pos"] = value
 
     @property
     def FONT_SIZE(self):
@@ -168,8 +190,6 @@ class Config():
         """  Sets the background colour.
         """
         self.config["FONT"]["name"] = value
-
-
 
 
 
@@ -199,17 +219,19 @@ class Config():
         written = strNow.strftime("%A %d %B %Y  %H:%M:%S")
         config  = dict()
 
-        config['INFO'] = {"myVERSION": "2022.24",
+        config['INFO'] = {"myVERSION": "2022.33",
                           "myNAME"   : "pyDigitalKlock"}
 
         config["COLOUR"] = {"foreground":"#ff0000",
                             "background":"#80ff80",
-                            "theme":"NeutralBlue",
-                            "transparent":"false"
+                            "theme":"Dark",
+                            "transparent":false
                             }
 
-        config["POSITION"] = {"x_pos":0,
-                              "y_pos":0}
+        config["WINDOW"] = {"width":400,
+                            "height":150,
+                            "x_pos":0,
+                            "y_pos":0}
 
         config["FONT"] = {"size": 76,
                           "name": "Twobit"}

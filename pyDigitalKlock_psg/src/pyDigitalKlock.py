@@ -41,15 +41,19 @@ from src.projectPaths import *
 def run_klock(my_logger, my_config):
     """  Builds and runs the Klock.
     """
-    txt_colour = my_config.FOREGROUND                   #  Default or initial foreground colour for the text labels.
-    win_colour = my_config.BACKGROUND                   #  Default or initial window background colour.
-    font_name  = my_config.FONT_NAME                    #  Default or initial font name.
-    font_size  = my_config.FONT_SIZE                    #  Default of initial font size.
-    sg.theme(my_config.THEME)                           #  Default of initial theme.
+    txt_colour    = my_config.FOREGROUND                #  Default or initial foreground colour for the text labels.
+    win_colour    = my_config.BACKGROUND                #  Default or initial window background colour.
+    font_name     = my_config.FONT_NAME                 #  Default or initial font name.
+    font_size     = my_config.FONT_SIZE                 #  Default or initial font size.
+    window_length = my_config.WIN_WIDTH                 #  Default or initial windows width.
+    window_height = my_config.WIN_HEIGHT                #  Default or initial windows height.
+    transparancy  = my_config.TRANSPARENT
+    sg.theme(my_config.THEME)                           #  Default or initial theme.
     sg.SetOptions(element_padding=(0, 0))
 
+    print(transparancy)
     # Create the Window
-    window = klock.win_layout(win_colour, txt_colour, my_config)  #  Creates the initial window.
+    window = klock.win_layout(win_colour, txt_colour, my_config, window_length, window_height, transparancy)  #  Creates the initial window.
 
     # Event Loop to process "events" and get the "values" of the inputs
     while True:
@@ -63,8 +67,10 @@ def run_klock(my_logger, my_config):
         match event:
             case "Font":
                 window.disappear()
-                new_font, font_name, font_size = fonts.run_fonts()
-                window['-CURRENT_TIME-'].update(font=new_font)
+                new_font, font_name, window_length, window_height = fonts.run_fonts()
+                if new_font:                            #  Cancel was selected in font window, or no font selected.
+                    window = klock.win_layout(win_colour, txt_colour, my_config, window_length, window_height, transparancy)
+                    window['-CURRENT_TIME-'].update(font=new_font)
                 window.reappear()
             case "License":
                 window.disappear()
@@ -84,25 +90,26 @@ def run_klock(my_logger, my_config):
                 window.disappear()
                 bac_colour = askcolor(title="Choose colour of background")
                 win_colour = bac_colour[1]
-                window = klock.win_layout(win_colour, txt_colour, my_config)                         #  Recreates the window object, so the change in
-                window.reappear()                                                                    #  background colour takes effect.
+                window = klock.win_layout(win_colour, txt_colour, my_config, window_length, window_height, transparancy)
+                window.reappear()
             case "Theme":
                 window.disappear()
                 my_config.THEME = theme.run_theme()
                 sg.theme(my_config.THEME)
-                window = klock.win_layout(win_colour, txt_colour, my_config, change_theme=True)
+                window = klock.win_layout(win_colour, txt_colour, my_config, window_length, window_height, transparancy, change_theme=True)
                 txt_colour = sg.theme_text_color()
                 win_colour = sg.theme_background_color()
                 window.reappear()
             case "Transparent":
                 window.disappear()
-                window = klock.win_layout(win_colour, txt_colour, my_config, transparent=True)
+                transparancy = True
+                window = klock.win_layout(win_colour, txt_colour, my_config, window_length, window_height, transparancy)
                 window.reappear()
             case "Normal":
                 window.disappear()
-                window = klock.win_layout(win_colour, txt_colour, my_config, transparent=False)
+                transparancy = False
+                window = klock.win_layout(win_colour, txt_colour, my_config, window_length, window_height, transparancy)
                 window.reappear()
-                ear()
             case "-STARTMOVE-":                                                                      #  Left click, start move.
                 off_x = window.CurrentLocation()[0] - window.mouse_location()[0]                     #  Offset from window top left hand corner
                 off_y = window.CurrentLocation()[1] - window.mouse_location()[1]                     #  to mouse position.
@@ -114,11 +121,14 @@ def run_klock(my_logger, my_config):
                 window.move(my_config.X_POS, my_config.Y_POS)                                        #  Move the window.
 
     try:                                                                                             #  Saves the current configuration and closes app.
-        my_config.FONT_NAME  = font_name
-        my_config.FONT_SIZE  = font_size
-        my_config.FOREGROUND = txt_colour
-        my_config.BACKGROUND = win_colour
-        my_config.THEME      = sg.theme()
+        my_config.FONT_NAME   = font_name
+        my_config.FONT_SIZE   = font_size
+        my_config.FOREGROUND  = txt_colour
+        my_config.BACKGROUND  = win_colour
+        my_config.TRANSPARENT = transparancy
+        my_config.WIN_WIDTH   = window_length
+        my_config.WIN_HEIGHT  = window_height
+        my_config.THEME       = sg.theme()
         my_config.writeConfig()
     except Exception as e:
         my_logger.debug(f" Error occurred during saving of config: {e}")

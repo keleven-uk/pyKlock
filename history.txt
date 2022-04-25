@@ -8,6 +8,15 @@
 
 
 
+V2022.33
+
+[pyDigitalKlock.psg]
+    There was a problem with applying and saving transparency, should be save as a Boolean and not a string.
+    The determining the font size never really worked, so stopped doing it.
+        Instead I now change the window size to suit the font size.  I think this works better.
+        The window size (width, height) has been added to the config file.
+
+
 V2022.32
 
 [pyDigitalKlock.psg]

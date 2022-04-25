@@ -25,7 +25,7 @@ from src.utils.License_text import license_text
 
 def run_license(NAME, VERSION):
     """  A Simple dialog.
-         Just displays the licence text..
+         Just to displays the licence text..
     """
 
     sg.theme("NeutralBlue")
@@ -40,7 +40,7 @@ def run_license(NAME, VERSION):
     window['-licence_text-'].print(f"{NAME}     {VERSION}      Copyright (C) 2022  Kevin Scott")     # Routed to your multiline element
     window['-licence_text-'].print(license_text)
 
-    #Event loop tp process events
+    #Event loop to process events
     while True:
         event, values = window.read()
 

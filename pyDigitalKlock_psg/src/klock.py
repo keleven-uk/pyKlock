@@ -37,6 +37,8 @@ def update_text_colour(window, txt_colour):
 
 
 def update_text(window):
+    """  Updated the text fields to current time, current date, key state and idle time.
+    """
     strNow = datetime.datetime.now()
     window['-CURRENT_TIME-'].update(f"{strNow:%H:%M:%S}")
     window['-CURRENT-STATUS-'].update(f"{utils.get_state()}")
@@ -44,16 +46,16 @@ def update_text(window):
     window['-CURRENT-IDLE-'].update(utils.get_idle_duration())
 
 
-def win_layout(win_colour, txt_colour, my_config, transparent=False, change_theme=False):
+def win_layout(win_colour, txt_colour, my_config, window_length, window_height, transparent, change_theme=False):
     """  Sets up the windows and menu layout.
          Returns a finalized windows object.
 
-         In it's own def so that it can be easily called twice.
-         This is so the windows can be re done after a background colour change.
+         In it's own def so that it can be easily called multiple times.
+         This is so the windows can be re done after a layout change.
          A bit klunky, but a work around to reload the theme at run time and to set transparency.
     """
     win_location = (my_config.X_POS, my_config.Y_POS)
-    win_size     = (400, 150)
+    win_size     = (window_length, window_height)
 
     if not change_theme:                                    #  If changing theme, ignore foreground and background colours.
         sg.theme_background_color(win_colour)               #  Sets all the backgrounds to win_colour [background colour]
@@ -85,9 +87,9 @@ def win_layout(win_colour, txt_colour, my_config, transparent=False, change_them
 
     #window = sg.Window('Window Title', layout, no_titlebar=True, alpha_channel=0.5)
     if transparent:
-        win =  sg.Window('L.E.D. Klock', layout, alpha_channel=0.6, location=win_location, size= win_size, transparent_color=win_colour, no_titlebar=True)
+        win =  sg.Window('L.E.D. Klock', layout, location=win_location, size= win_size, transparent_color=win_colour, no_titlebar=True)
     else:
-        win =  sg.Window('L.E.D. Klock', layout, alpha_channel=0.6, location=win_location, size= win_size, no_titlebar=True)
+        win =  sg.Window('L.E.D. Klock', layout, location=win_location, size= win_size, no_titlebar=True)
 
     win.finalize()
     win.keep_on_top_set()
