@@ -1,6 +1,6 @@
 ###############################################################################################################
 #    pyKlock   Copyright (C) <2022>  <Kevin Scott>                                                            #                                                                                                             #                                                                                                             #
-#     An attempt to re-create a LCD Klock [using pySimpleGUI].                                                #
+#     An attempt to re-create a Klock [using pySimpleGUI].                                                    #
 #                                                                                                             #
 #     For changes see history.txt                                                                             #
 #                                                                                                             #
@@ -26,105 +26,58 @@ from tkinter.colorchooser import askcolor
 import datetime
 import platform
 
-import src.klock   as klock
 import src.fonts   as fonts
 import src.theme   as theme
-import src.Config  as Config
-import src.Logger  as Logger
+import src.config  as Config
+import src.logger  as Logger
 import src.license as license
-import src.utils.pyDigitalKlock_utils as utils
 
 from src.projectPaths import *
 
-
+from src.layouts.fuzzy_time_layout  import fuzzy_time_layout
+from src.layouts.world_klock_layout import world_klock_layout
+from src.layouts.countdown_layout   import countdown_layout
+from src.layouts.timer_layout       import timer_layout
+from src.layouts.menu_defs          import menu_def
 
 def run_klock(my_logger, my_config):
     """  Builds and runs the Klock.
     """
-    font_name     = my_config.FONT_NAME                 #  Default or initial font name.
-    font_size     = my_config.FONT_SIZE                 #  Default or initial font size.
-    window_length = my_config.WIN_WIDTH                 #  Default or initial windows width.
-    window_height = my_config.WIN_HEIGHT                #  Default or initial windows height.
-    sg.theme(my_config.THEME)                           #  Default or initial theme.
-    sg.SetOptions(element_padding=(0, 0))
 
-    # Create the Window
-    window = klock.win_layout(win_colour, txt_colour, my_config, window_length, window_height, transparancy)  #  Creates the initial window.
+    #  Create actual layout using columns and a row of buttons
+    layout = [[sg.Menu(menu_def, tearoff=False, pad=(200, 1))],
+              [sg.Column(fuzzy_time_layout,  visible=True,  key="-FUZZY-"),
+               sg.Column(world_klock_layout, visible=False, key="-WORLD-"),
+               sg.Column(countdown_layout,   visible=False, key="-COUNTDOWN-"),
+               sg.Column(timer_layout,       visible=False, key="-TIMER-")],
+              [sg.Button("Fuzzy Time",  key="-BTN_FUZZY-"),
+               sg.Button("World Klock", key="-BTN_WORLD-"),
+               sg.Button("Countdown",   key="-BTN_COUNTDOWN-"),
+               sg.Button("Timer",       key="-BTN_TIMER-")]
+             ]
 
-    # Event Loop to process "events" and get the "values" of the inputs
+    pr_button = "-FUZZY-"
+    window = sg.Window("pyKlock", layout)
+
     while True:
-        event, values = window.read(timeout=1000)
-
-        if event in (sg.WIN_CLOSED, 'Quit'):            # if user closes window or clicks quit
+        event, values = window.read()
+        if event in (sg.WIN_CLOSED, 'Exit'):
             break
 
-        klock.update_text(window)
-
         match event:
-            case "Font":
-                window.disappear()
-                new_font, font_name, window_length, window_height = fonts.run_fonts()
-                if new_font:                            #  Cancel was selected in font window, or no font selected.
-                    window = klock.win_layout(win_colour, txt_colour, my_config, window_length, window_height, transparancy)
-                    window['-CURRENT_TIME-'].update(font=new_font)
-                window.reappear()
+            case ("-BTN_FUZZY-"|"-BTN_WORLD-"|"-BTN_COUNTDOWN-"|"-BTN_TIMER-"):
+                pressed = "-" + event[5:-1] +"-"
+                window[pr_button].update(visible=False)
+                window[pressed].update(visible=True)
+                pr_button = pressed
             case "License":
                 window.disappear()
                 license.run_license(my_config.NAME, my_config.VERSION)
                 window.reappear()
             case "About":
                 window.disappear()
-                sg.popup(my_config.NAME, f"V {my_config.VERSION}", "PySimpleGUI Version", sg.version, grab_anywhere=True)
+                sg.popup(f"{my_config.NAME}    V {my_config.VERSION}", "PySimpleGUI Version", sg.version, grab_anywhere=True)
                 window.reappear()
-            case "Foreground":
-                window.disappear()
-                for_colour = askcolor(title="Choose colour of foreground")
-                txt_colour = for_colour[1]
-                klock.update_text_colour(window, txt_colour)
-                window.reappear()
-            case "Background":
-                window.disappear()
-                bac_colour = askcolor(title="Choose colour of background")
-                win_colour = bac_colour[1]
-                window = klock.win_layout(win_colour, txt_colour, my_config, window_length, window_height, transparancy)
-                window.reappear()
-            case "Theme":
-                window.disappear()
-                my_config.THEME = theme.run_theme()
-                sg.theme(my_config.THEME)
-                window = klock.win_layout(win_colour, txt_colour, my_config, window_length, window_height, transparancy, change_theme=True)
-                txt_colour = sg.theme_text_color()
-                win_colour = sg.theme_background_color()
-                window.reappear()
-            case "Transparent":
-                window.disappear()
-                transparancy = True
-                window = klock.win_layout(win_colour, txt_colour, my_config, window_length, window_height, transparancy)
-                window.reappear()
-            case "Normal":
-                window.disappear()
-                transparancy = False
-                window = klock.win_layout(win_colour, txt_colour, my_config, window_length, window_height, transparancy)
-                window.reappear()
-            case "-STARTMOVE-":                                                                      #  Left click, start move.
-                off_x = window.CurrentLocation()[0] - window.mouse_location()[0]                     #  Offset from window top left hand corner
-                off_y = window.CurrentLocation()[1] - window.mouse_location()[1]                     #  to mouse position.
-            case "-STOPMOVE-":                                                                       #  Not currently used.
-                pass
-            case "-MOVING-":                                                                         #  The mouse has been moved
-                my_config.X_POS = window.mouse_location()[0] + off_x                                 #  Calculate the new windows position.
-                my_config.Y_POS = window.mouse_location()[1] + off_y
-                window.move(my_config.X_POS, my_config.Y_POS)                                        #  Move the window.
-
-    try:                                                                                             #  Saves the current configuration and closes app.
-        my_config.FONT_NAME   = font_name
-        my_config.FONT_SIZE   = font_size
-        my_config.WIN_WIDTH   = window_length
-        my_config.WIN_HEIGHT  = window_height
-        my_config.THEME       = sg.theme()
-        my_config.writeConfig()
-    except Exception as e:
-        my_logger.debug(f" Error occurred during saving of config: {e}")
 
     window.close(); del window
 

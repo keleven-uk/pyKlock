@@ -5,7 +5,7 @@
 #   location needs double \ i.e. c:\tmp\music - well, on windows any way. 
 #
 [INFO]
-myVERSION = "2022.34"
+myVERSION = "2022.35"
 myNAME = "pyKlock"
 
 [COLOUR]

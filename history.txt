@@ -8,10 +8,20 @@
        pyDigitalKlock.psg    - built with pySimpleGUI
 
 
+V2022.35
+
+    Added skeleton window layouts for Fuzzy Time, World Klock, Countdown & timer.
+        These live in src\layouts.git add .
+    The main klock windows loads with Fuzzy Time and allows the other faces to be selected
+    using buttons.  The button will display the selected layout, overwriting the previous one.
+    Start of the menu system consisting of File|Exit & Help|Licence|About.
+        The License and About display simple info windows.
+
+
 V2022.34
 
     Laid out the basic directory structure of the main project - pyKlock.
-    Copied python files from sub projects that will be re-used on the main project.
+    Copied python files from sub projects that will be re-used [modified] in the main project.
 
 
 V2022.33
