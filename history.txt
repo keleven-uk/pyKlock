@@ -8,6 +8,14 @@
        pyDigitalKlock.psg    - built with pySimpleGUI
 
 
+V2022.36
+
+    The separate layouts in separate modules created a problem.
+        Implemented the trick in re-creating the window to apply a change in theme.
+        The worked in pgDigitalKlock but not in pyKlock, this was traced to the layout modules.
+        If the individual layouts are all in one module, the theme change works, if not an error.
+
+
 V2022.35
 
     Added skeleton window layouts for Fuzzy Time, World Klock, Countdown & timer.

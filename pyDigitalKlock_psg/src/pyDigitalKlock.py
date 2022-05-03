@@ -51,7 +51,6 @@ def run_klock(my_logger, my_config):
     sg.theme(my_config.THEME)                           #  Default or initial theme.
     sg.SetOptions(element_padding=(0, 0))
 
-    print(transparancy)
     # Create the Window
     window = klock.win_layout(win_colour, txt_colour, my_config, window_length, window_height, transparancy)  #  Creates the initial window.
 
