@@ -19,6 +19,7 @@
 #                                                                                                             #
 ###############################################################################################################
 
+import datetime
 
 from win32api import GetKeyState
 from win32con import VK_CAPITAL, VK_SCROLL, VK_NUMLOCK
@@ -92,6 +93,17 @@ def formatSeconds(seconds):
         return f"{minutes}m:{seconds}s"
     else:
         return f"{seconds}s"
+
+
+
+def update_status_bar(window):
+    """  Updated the text fields to current time, current date, key state and idle time.
+    """
+    strNow = datetime.datetime.now()
+    window['-CURRENT-DATE-'].update(f"{ strNow:%A %d %B %Y}")
+    window['-CURRENT-STATUS-'].update(f"{get_state()}")
+    window['-CURRENT-IDLE-'].update(get_idle_duration())
+
 
 
 

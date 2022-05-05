@@ -1,6 +1,6 @@
 ###############################################################################################################
 #    klock.py   Copyright (C) <2022>  <Kevin Scott>                                                           #                                                                                                             #                                                                                                             #
-#     The klock GUI layout and supporting functions.                                                          #
+#     The klock GUI layout.                                                                                   #
 #                                                                                                             #
 #     For changes see history.txt                                                                             #
 #                                                                                                             #
@@ -24,7 +24,7 @@ import PySimpleGUI as sg
 import datetime
 
 
-def win_layout(my_config):
+def win_layout(my_config, win_location, win_size, timetypes):
     """  Sets up the windows and menu layout.
          Returns a finalized windows object.
 
@@ -40,10 +40,16 @@ def win_layout(my_config):
                 ["Help",  ["License", "About"]]
                 ]
 
-    fuzzy_time_layout = [[sg.Text("Fuzzy Time K")],
-                         [sg.Text("{strNow:%H:%M:%S}"), sg.Button("1")]
-                        ]
+    fuzzy_left_row_layout= [[sg.Combo(list(timetypes), key="-TIME_TYPES-", default_value="Fuzzy Time")]
+                           ]
 
+    fuzzy_right_row_layout = [[sg.Text("00:00:00", key="-CURRENT_TIME-", font=("Twobit",28))]
+                             ]
+
+    fuzzy_time_layout = [[sg.Text("Fuzzy Time")],
+                         [sg.Text(" ")],
+                         [sg.Frame("", layout=fuzzy_left_row_layout), sg.Text(" "), sg.Frame("", layout=fuzzy_right_row_layout, size=(680, 55))]
+                        ]
 
     world_klock_layout = [[sg.Text("World Klock")],
                           [sg.Text("World Klock"), sg.Button("1")]
@@ -76,19 +82,15 @@ def win_layout(my_config):
     #  Create actual layout using columns and a row of buttons
     klock_layout = [[sg.Menu(menu_def, tearoff=False, pad=(200, 1))],
                     [screen_layout],
+                    [sg.Text(" ")],
                     [sg.Frame("Choose Wisely", layout=button_layout)],
                     [status_bar]
                     ]
 
     #window = sg.Window('Window Title', layout, no_titlebar=True, alpha_channel=0.5)
-    win =  sg.Window('pyKlock', klock_layout)
+    win =  sg.Window('pyKlock', klock_layout, location=win_location, size= win_size)
 
     win.finalize()
-
-    ##  Bind mouse, so klock can be moved.
-    #win.bind("<Button-1>", "-STARTMOVE-")
-    #win.bind("<ButtonRelease-1>", "-STOPMOVE-")
-    #win.bind("<B1-Motion>", "-MOVING-")
 
     return win
 

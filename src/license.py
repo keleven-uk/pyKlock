@@ -21,7 +21,7 @@
 
 import PySimpleGUI as sg
 
-from src.utils.License_text import license_text
+from src.utils.license_text import license_text
 
 def run_license(NAME, VERSION):
     """  A Simple dialog.

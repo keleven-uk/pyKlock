@@ -8,6 +8,16 @@
        pyDigitalKlock.psg    - built with pySimpleGUI
 
 
+V2022.37
+
+    Update of pyKlock status bar now work okay, date, key status & idle time.
+    Fuzzy Time now works, this now display the current time in many different formats.
+        i.e. in words, fuzzy time, in hex, in roman numerals, in binary etc.
+        The format of the time is chosen from a drop down menu [combo box].
+    The window size and location is now specifies in config and save at the end of the session.
+        These are passed to the klock layout when the window is created.
+
+
 V2022.36
 
     The separate layouts in separate modules created a problem.
