@@ -36,7 +36,8 @@ def win_layout(my_config, win_location, win_size, timetypes):
 
     #  Change the menu text to reflect transparency or to set back to normal.
 
-    menu_def = [["File",  ["Theme", "---", "Quit"]],
+    menu_def = [["File",  ["Theme", "Font", "---", "Exit"]],
+                ["Time", ["LCD Klock"]],
                 ["Help",  ["License", "About"]]
                 ]
 
@@ -68,6 +69,7 @@ def win_layout(my_config, win_location, win_size, timetypes):
                       sg.Button("World Klock", key="-BTN_WORLD-"),
                       sg.Button("Countdown",   key="-BTN_COUNTDOWN-"),
                       sg.Button("Timer",       key="-BTN_TIMER-"),
+                      sg.Button("Hide",        key="_HIDE_"),
                       sg.Button("Exit",        key="-EXIT-")]]
 
     screen_layout = [sg.Column(fuzzy_time_layout,  visible=True,  key="-FUZZY-"),

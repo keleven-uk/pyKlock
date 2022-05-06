@@ -24,6 +24,7 @@ import PySimpleGUI as sg
 from tkinter.colorchooser import askcolor
 
 import platform
+import subprocess
 
 import src.theme        as theme
 import src.config       as Config
@@ -81,7 +82,11 @@ def run_klock(my_logger, my_config):
                 window[pr_button].update(visible=False)
                 window[pressed].update(visible=True)
                 pr_button = pressed
-            case "License":
+            case "LCD Klock":                                                                       #  Run the sub project pyDigitalKlock_psg have to
+                window.hide()                                                                       #  hide window, if use disappear the window
+                sg.execute_py_file(pyfile="main.py", cwd="pyDigitalKlock_psg", wait=True)           #  appears almost immediately.  Probably because
+                window.un_hide()                                                                    #  running an .py file and not a internal sg call.
+            case "License":                                                                         #  Seems the wait is ignored.
                 window.disappear()
                 license.run_license(my_config.NAME, my_config.VERSION)
                 window.reappear()
@@ -93,8 +98,9 @@ def run_klock(my_logger, my_config):
                 window.disappear()
                 sg.theme(theme.run_theme())
                 window = klock.win_layout(my_config, win_location, win_size, current_time.timeTypes)
-                txt_colour = sg.theme_text_color()
-                win_colour = sg.theme_background_color()
+                window.reappear()
+            case "Font":
+                window.disappear()
                 window.reappear()
             case "-STARTMOVE-":                                                                      #  Left click, start move.
                 off_x = window.CurrentLocation()[0] - window.mouse_location()[0]                     #  Offset from window top left hand corner

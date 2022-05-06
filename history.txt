@@ -4,8 +4,16 @@
 
    Contains a sub-projects in two parts.
      pyDigitalKlock - An attempt to re-create a LCD Klock.
-       pyDigitalKlock.pygubu - built with pygubu.
-       pyDigitalKlock.psg    - built with pySimpleGUI
+       pyDigitalKlock_pygubu - built with pygubu.
+       pyDigitalKlock_psg    - built with pySimpleGUI
+
+
+V2020.38
+
+    Added two ne menu options - Font to the File menu, not implemented yet.
+    Also, A new menu option Time.  The first option is LCD Klock.
+        This loads the sub project pyDigitalKlock_psg.
+        pyDigitalKlock_psg is loaded from the python source using sg.execute_py_file()
 
 
 V2022.37
