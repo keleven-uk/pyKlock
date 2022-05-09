@@ -1,15 +1,15 @@
 #   Configure file for pyDigitalKlock.py 
-#   (c) Kevin Scott   Written Thursday 05 May 2022  22:36:29
+#   (c) Kevin Scott   Written Monday 09 May 2022  20:07:49
 #
 #   true and false are lower case 
 #   location needs double \ i.e. c:\tmp\music - well, on windows any way. 
 #
 [INFO]
-myVERSION = "2022.38"
+myVERSION = "2022.39.beta"
 myNAME = "pyKlock"
 
 [COLOUR]
-theme = "DarkBlue1"
+theme = "NeutralBlue"
 foreground = "#ff0000"
 background = "#80ff80"
 transparent = "false"
@@ -17,9 +17,12 @@ transparent = "false"
 [WINDOW]
 width = 875
 height = 200
-x_pos = -903
-y_pos = -554
+x_pos = 545
+y_pos = -352
 
 [FONT]
-size = 76
+size = 27
 name = "It Lives In The Swamp BRK"
+
+[TIME]
+type = "Time in Words"

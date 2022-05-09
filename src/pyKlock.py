@@ -27,6 +27,7 @@ import platform
 import subprocess
 
 import src.theme        as theme
+import src.fonts        as fonts
 import src.config       as Config
 import src.logger       as Logger
 import src.license      as license
@@ -42,28 +43,23 @@ from src.projectPaths import *
 def run_klock(my_logger, my_config):
     """  Builds and runs the Klock.
     """
-    current_time = time.SelectTime()
-    font_name    = my_config.FONT_NAME
-    font_size    = my_config.FONT_SIZE
+    current_time = time.SelectTime()                                           #  Object with the varied time codes.
 
-    win_location = (my_config.X_POS, my_config.Y_POS)
-    win_size     = (my_config.WIN_WIDTH, my_config.WIN_HEIGHT)
+    font_name    = my_config.FONT_NAME                                         #  Initial name of the font used.
+    font_size    = my_config.FONT_SIZE                                         #  Initial size of the font used.
+    win_location = (my_config.X_POS, my_config.Y_POS)                          #  Initial windows location.
+    win_size     = (my_config.WIN_WIDTH, my_config.WIN_HEIGHT)                 #  Initial windows size.
+    time_type    = my_config.TIME_TYPE                                         #  Initial time type.
+    sg.theme(my_config.THEME)                                                  #  Initial theme.
+    pr_button    = "-FUZZY-"                                                   #  Initial view.
 
-    pr_button = "-FUZZY-"
-
-    sg.theme(my_config.THEME)                                     #  Default or initial theme.
     sg.SetOptions(element_padding=(0, 0))
 
     # Create the Window
-    window = klock.win_layout(my_config, win_location, win_size, current_time.timeTypes)  #  Creates the initial window.
+    window = klock.win_layout(my_config, win_location, win_size, current_time.timeTypes, font_name, time_type)  #  Creates the initial window.
 
     utils.update_status_bar(window)
-    window["-CURRENT_TIME-"].update(current_time.getTime("Fuzzy Time"))
-
-    ###  Bind mouse, so klock can be moved.
-    #window["-CURRENT_TIME-"].bind("<Button-1>", "-STARTMOVE-")
-    #window["-CURRENT_TIME-"].bind("<ButtonRelease-1>", "-STOPMOVE-")
-    #window["-CURRENT_TIME-"].bind("<B1-Motion>", "-MOVING-")
+    window["-CURRENT_TIME-"].update(current_time.getTime(time_type))
 
     # Event Loop to process "events" and get the "values" of the inputs
     while True:
@@ -72,53 +68,54 @@ def run_klock(my_logger, my_config):
         if event in (sg.WIN_CLOSED, 'Exit', "-EXIT-"):            # if user closes window or clicks quit
             break
 
-        current_time_type = window["-TIME_TYPES-"].get()
         utils.update_status_bar(window)
-        window["-CURRENT_TIME-"].update(current_time.getTime(current_time_type))
+        window["-CURRENT_TIME-"].update(current_time.getTime(time_type))
 
         match event:
-            case ("-BTN_FUZZY-"|"-BTN_WORLD-"|"-BTN_COUNTDOWN-"|"-BTN_TIMER-"):
+            case ("-BTN_FUZZY-"|"-BTN_WORLD-"|"-BTN_COUNTDOWN-"|"-BTN_TIMER-"):                     #  Button pressed, change views.
                 pressed = "-" + event[5:-1] +"-"
                 window[pr_button].update(visible=False)
                 window[pressed].update(visible=True)
                 pr_button = pressed
+            case "-TIME_TYPES-":                                                                    #  Another choice selected from the combo box.
+                time_type = values["-TIME_TYPES-"]
+                window["-CURRENT_TIME-"].update(current_time.getTime(time_type))
             case "LCD Klock":                                                                       #  Run the sub project pyDigitalKlock_psg have to
                 window.hide()                                                                       #  hide window, if use disappear the window
                 sg.execute_py_file(pyfile="main.py", cwd="pyDigitalKlock_psg", wait=True)           #  appears almost immediately.  Probably because
                 window.un_hide()                                                                    #  running an .py file and not a internal sg call.
-            case "License":                                                                         #  Seems the wait is ignored.
+            case "License":                                                                         #  Display License info.
                 window.disappear()
                 license.run_license(my_config.NAME, my_config.VERSION)
                 window.reappear()
-            case "About":
+            case "About":                                                                           #  Display About info, triggered from the menu option.
                 window.disappear()
                 sg.popup(my_config.NAME, f"V {my_config.VERSION}", "PySimpleGUI Version", sg.version, grab_anywhere=True)
                 window.reappear()
-            case "Theme":
+            case "Theme":                                                                           #  Change the theme, triggered from the menu option.
                 window.disappear()
                 sg.theme(theme.run_theme())
-                window = klock.win_layout(my_config, win_location, win_size, current_time.timeTypes)
+                window = klock.win_layout(my_config, win_location, win_size, current_time.timeTypes, font_name, time_type)
                 window.reappear()
-            case "Font":
+            case "Font":                                                                             #  Change the font, triggered from the menu option.
                 window.disappear()
+                new_font, font_name, font_size = fonts.run_fonts()
+                if new_font:                            #  Cancel was selected in font window, or no font selected.
+                    window = klock.win_layout(my_config, win_location, win_size, current_time.timeTypes, font_name, time_type)
+                    window['-CURRENT_TIME-'].update(font=new_font)
+                    my_logger.debug(f"Font name = {font_name}  Font size = {font_size}")
+
                 window.reappear()
-            case "-STARTMOVE-":                                                                      #  Left click, start move.
-                off_x = window.CurrentLocation()[0] - window.mouse_location()[0]                     #  Offset from window top left hand corner
-                off_y = window.CurrentLocation()[1] - window.mouse_location()[1]                     #  to mouse position.
-            case "-STOPMOVE-":                                                                       #  Not currently used.
-                pass
-            case "-MOVING-":                                                                         #  The mouse has been moved
-                my_config.X_POS = window.mouse_location()[0] + off_x                                 #  Calculate the new windows position.
-                my_config.Y_POS = window.mouse_location()[1] + off_y
-                window.move(my_config.X_POS, my_config.Y_POS)                                        #  Move the window.
 
 
-
-    try:                                                                                             #  Saves the current configuration and closes app.
-        my_config.WIN_WIDTH  = window.Size[0]                                                        #  Final windows width.
-        my_config.WIN_HEIGHT = window.Size[1]                                                        #  Final windows height.
-        my_config.X_POS      = window.current_location()[0]                                          #  Final windows X position.
-        my_config.Y_POS      = window.current_location()[1]                                          #  Final windows Y position.
+    try:                                                                                #  Saves the current configuration and closes app.
+        my_config.FONT_NAME  = font_name                                                #  Final name of the font used.
+        my_config.FONT_SIZE  = font_size                                                #  Final size of the font used.
+        my_config.WIN_WIDTH  = window.Size[0]                                           #  Final windows width.
+        my_config.WIN_HEIGHT = window.Size[1]                                           #  Final windows height.
+        my_config.X_POS      = window.current_location()[0]                             #  Final windows X position.
+        my_config.Y_POS      = window.current_location()[1]                             #  Final windows Y position.
+        my_config.TIME_TYPE  = time_type                                                #  Final time type.
         my_config.THEME      = sg.theme()
         my_config.writeConfig()
     except Exception as e:

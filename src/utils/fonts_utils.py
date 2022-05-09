@@ -27,7 +27,8 @@ from tkinter import font
 
 from pathlib import Path
 
-DEFAULT_FONT_LENGTH = 72
+DEFAULT_FONT_SIZE   = 28
+DEFAULT_FONT_LENGTH = 510
 
 
 def list_fonts():
@@ -56,10 +57,11 @@ def set_font(font_name):
 
           Adds a bit to length and width for padding and the second tow of text.
     """
-    font_length = font.Font(family=font_name, size=DEFAULT_FONT_LENGTH, weight="normal").measure("00:00:00")  + 24
-    font_height = font.Font(family=font_name, size=DEFAULT_FONT_LENGTH, weight="normal").metrics("linespace") + 36
+    font_length = font.Font(family=font_name, size=DEFAULT_FONT_SIZE, weight="normal").measure("twelve minutes to twelve in the evening")
+    font_height = font.Font(family=font_name, size=DEFAULT_FONT_SIZE, weight="normal").metrics("linespace")
+    font_size   = int(DEFAULT_FONT_SIZE * (DEFAULT_FONT_LENGTH / font_length))
 
-    ret_font = font.Font(family=font_name, size=DEFAULT_FONT_LENGTH, weight="normal")
-    return ret_font, font_name, font_length, font_height
+    ret_font = font.Font(family=font_name, size=font_size, weight="normal")
+    return ret_font, font_name, font_size
 
 

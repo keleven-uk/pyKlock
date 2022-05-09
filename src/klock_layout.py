@@ -24,7 +24,7 @@ import PySimpleGUI as sg
 import datetime
 
 
-def win_layout(my_config, win_location, win_size, timetypes):
+def win_layout(my_config, win_location, win_size, timetypes, font_name, time_type):
     """  Sets up the windows and menu layout.
          Returns a finalized windows object.
 
@@ -41,10 +41,10 @@ def win_layout(my_config, win_location, win_size, timetypes):
                 ["Help",  ["License", "About"]]
                 ]
 
-    fuzzy_left_row_layout= [[sg.Combo(list(timetypes), key="-TIME_TYPES-", default_value="Fuzzy Time")]
+    fuzzy_left_row_layout= [[sg.Combo(list(timetypes), key="-TIME_TYPES-", default_value=time_type, enable_events=True)]
                            ]
 
-    fuzzy_right_row_layout = [[sg.Text("00:00:00", key="-CURRENT_TIME-", font=("Twobit",28))]
+    fuzzy_right_row_layout = [[sg.Text("00:00:00", key="-CURRENT_TIME-", font=(font_name,28))]
                              ]
 
     fuzzy_time_layout = [[sg.Text("Fuzzy Time")],

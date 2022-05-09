@@ -60,11 +60,11 @@ def run_fonts():
                 break
             font_name = f"{font_path.stem}"             #  Grab the font name form the font path.
             if fu.check_font(font_name):                #  Check if the font is  installed.
-                ret_font, font_name, font_length, font_height = fu.set_font(font_name)           #  Returns a font object.
+                ret_font, font_name, font_size = fu.set_font(font_name)           #  Returns a font object.
                 break
             else:
                 sg.popup_error("Font not installed, Please install and try again.\n\n Ot choose another font.")
 
     window.close(); del window
 
-    return ret_font, font_name, font_length, font_height
+    return ret_font, font_name, font_size

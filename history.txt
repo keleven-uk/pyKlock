@@ -8,9 +8,20 @@
        pyDigitalKlock_psg    - built with pySimpleGUI
 
 
+V2020.39
+
+    Implemented the font menu.
+        Because installing font needs administrator privileges and trkinter has not have a  font dialog.
+        The font menu option will load a form that displays all the fonts in the font sub directory of pyKlock.
+        A font can be selected, and if installed on the system, will be applied to the time text.
+        If the font is not installed, an error message is displayed.
+    Added time type to config.py & config.toml.
+    Also save the window size and location in config.toml, only location is used at the moment.
+
+
 V2020.38
 
-    Added two ne menu options - Font to the File menu, not implemented yet.
+    Added two new menu options - Font to the File menu, not implemented yet.
     Also, A new menu option Time.  The first option is LCD Klock.
         This loads the sub project pyDigitalKlock_psg.
         pyDigitalKlock_psg is loaded from the python source using sg.execute_py_file()

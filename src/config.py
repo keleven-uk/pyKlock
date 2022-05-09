@@ -155,6 +155,17 @@ class Config():
         """
         self.config["FONT"]["name"] = value
 
+    @property
+    def TIME_TYPE(self):
+        """  Return the background colour.
+        """
+        return self.config["TIME"].get("type", "Fuzzy Time")
+
+    @TIME_TYPE.setter
+    def TIME_TYPE(self, value):
+        """  Sets the background colour.
+        """
+        self.config["TIME"]["type"] = value
 
 
     def writeConfig(self):
@@ -195,6 +206,8 @@ class Config():
 
         config["FONT"] = {"size": 76,
                           "name": "Twobit"}
+
+        config["TIME"] = {"type": "Fuzzy Time"}
 
 
         st_toml = toml.dumps(config)

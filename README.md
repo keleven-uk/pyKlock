@@ -4,6 +4,14 @@ Klock - a clock with a k.
 
 Written in Python 3.10.4
 
+Klock will consist of a number of views, selected by a row of buttons along the bottom.
+
+The first view is Fuzzy Time.
+    The will display the current time in a number of different modes.
+        i.e. in Words, in Hex, in Roman Numerals, in Binary etc.
+    The font of the time can also be changed.
+
+
 or will be [similar to lazKlock & klock.vb], at the moment a trying ground for ideas.
 Stuff that I come across that might be useful.
 
