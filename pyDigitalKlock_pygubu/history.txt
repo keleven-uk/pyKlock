@@ -2,7 +2,7 @@
     Version numbers are taken from the main project.
 
 
-V2022.24
+V2022.24.cc02227
 
     Added a new menu option - License.
       This display a new dialog that displays the license text.
@@ -31,14 +31,14 @@ pyKlock\pyDigitalKlock\src\utils\License_text.py                            5   
 SUM:                                                                      230            408            950
 -----------------------------------------------------------------------------------------------------------
 
-V0222.23
+V0222.23.9de0da2
 
     It looks like to install a font you need administer privileges on Windows - so abandon for now.
     When a list of fonts is presented for choice, they are checked to see if they are installed.
       if not installed they are coloured red and an error issues if chosen.
 
 
-V2022.22
+V2022.22.5cd4165
 
     Now returns a valid font, all seems to be working.
     The current font [name and size] is saved between sessions.
@@ -48,7 +48,7 @@ V2022.22
       and will change when a new font is selected from the menu's.
 
 
-V2022.21
+V2022.21.9cf9169
 
     Added a new menu - Fonts.
       This displays a new dialog which lists all the fonts in the font directory - src\Fonts.py
@@ -60,14 +60,14 @@ V2022.21
     Currently not returning a valid font object from font form - work to do.
 
 
-V2022.20
+V2022.20.cf917da
 
     Changes so that auto-py-to-ese [pyinstaller] would work.
         Main changes to projectPaths, comfig.tmol and log files now live
         in same directory as the executable.
 
 
-V2022.19
+V2022.19.93ceb1c
 
     Now working against Python V3.10.4git commit
 
@@ -79,7 +79,7 @@ V2022.19
         and transparency are seven between sessions.
 
 
-V2022.18
+V202.18.3d4f978
 
     Added the ability to choose the colour of both foreground and background.
         Added menu option which load colour chooser for both foreground and background.

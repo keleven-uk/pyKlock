@@ -25,7 +25,7 @@ from pathlib import Path
 
 import src.utils.fonts_utils as fu
 
-def run_fonts():
+def run_fonts(time_type):
     """  A Simple dialog.
          Displays the contents of the font directory and allows a font to be chosen.
          If the font is installed, return the font object, if not display an error.
@@ -58,9 +58,9 @@ def run_fonts():
                 font_path = font_list[0]
             else:
                 break
-            font_name = f"{font_path.stem}"             #  Grab the font name form the font path.
-            if fu.check_font(font_name):                #  Check if the font is  installed.
-                ret_font, font_name, font_size = fu.set_font(font_name)           #  Returns a font object.
+            font_name = f"{font_path.stem}"                                         #  Grab the font name form the font path.
+            if fu.check_font(font_name):                                            #  Check if the font is  installed.
+                ret_font, font_name, font_size = fu.set_font(font_name, time_type)  #  Returns a font object.
                 break
             else:
                 sg.popup_error("Font not installed, Please install and try again.\n\n Ot choose another font.")

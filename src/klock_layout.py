@@ -24,7 +24,7 @@ import PySimpleGUI as sg
 import datetime
 
 
-def win_layout(my_config, win_location, win_size, timetypes, font_name, time_type):
+def win_layout(my_config, win_location, win_size, timetypes, font_name, font_size, time_type):
     """  Sets up the windows and menu layout.
          Returns a finalized windows object.
 
@@ -36,20 +36,22 @@ def win_layout(my_config, win_location, win_size, timetypes, font_name, time_typ
 
     #  Change the menu text to reflect transparency or to set back to normal.
 
-    menu_def = [["File",  ["Theme", "Font", "---", "Exit"]],
+    menu_def = [["File",  ["---", "Exit"]],
+                ["Settings", ["Theme", "Font"]],
                 ["Time", ["LCD Klock"]],
                 ["Help",  ["License", "About"]]
                 ]
 
-    fuzzy_left_row_layout= [[sg.Combo(list(timetypes), key="-TIME_TYPES-", default_value=time_type, enable_events=True)]
+    fuzzy_left_row_layout= [[sg.VPush(), sg.Combo(list(timetypes), key="-TIME_TYPES-", default_value=time_type, enable_events=True, readonly=True)]
                            ]
 
-    fuzzy_right_row_layout = [[sg.Text("00:00:00", key="-CURRENT_TIME-", font=(font_name,28))]
+
+    fuzzy_right_row_layout = [[sg.VPush(), sg.Text("00:00:00", key="-CURRENT_TIME-", font=(font_name,font_size))]
                              ]
 
     fuzzy_time_layout = [[sg.Text("Fuzzy Time")],
                          [sg.Text(" ")],
-                         [sg.Frame("", layout=fuzzy_left_row_layout), sg.Text(" "), sg.Frame("", layout=fuzzy_right_row_layout, size=(680, 55))]
+                         [sg.Frame("", layout=fuzzy_left_row_layout, size=(140, 66)), sg.Text(" "), sg.Frame("", layout=fuzzy_right_row_layout, size=(700, 66))]
                         ]
 
     world_klock_layout = [[sg.Text("World Klock")],
@@ -85,7 +87,7 @@ def win_layout(my_config, win_location, win_size, timetypes, font_name, time_typ
     klock_layout = [[sg.Menu(menu_def, tearoff=False, pad=(200, 1))],
                     [screen_layout],
                     [sg.Text(" ")],
-                    [sg.Frame("Choose Wisely", layout=button_layout)],
+                    [sg.Frame("Choose Wisely", layout=button_layout, size=(850, 45))],
                     [status_bar]
                     ]
 

@@ -10,6 +10,18 @@
 
 V2020.39
 
+    Theme & Font now reside in the settings menu.
+    Used sg.VPush to centre Fuzzy Time text & Time Types combo box.
+    Always had the problem with font size, when the font is changed.
+        For each time type, measure the longest text possible and use to try and determine
+        the appropriate font size, this is then used to set the font.
+        This is done in src\utils\fonts_utils\set_font()
+        So, when a new time type is chosen the window is re-created with the new font size.
+    Added fonts Nancy Blackett semaphore and backwards.
+
+
+V2020.38.130fed1
+
     Implemented the font menu.
         Because installing font needs administrator privileges and trkinter has not have a  font dialog.
         The font menu option will load a form that displays all the fonts in the font sub directory of pyKlock.
@@ -19,7 +31,7 @@ V2020.39
     Also save the window size and location in config.toml, only location is used at the moment.
 
 
-V2020.38
+V2020.37.1c928b2
 
     Added two new menu options - Font to the File menu, not implemented yet.
     Also, A new menu option Time.  The first option is LCD Klock.
@@ -27,7 +39,7 @@ V2020.38
         pyDigitalKlock_psg is loaded from the python source using sg.execute_py_file()
 
 
-V2022.37
+V2022.36.3144b47
 
     Update of pyKlock status bar now work okay, date, key status & idle time.
     Fuzzy Time now works, this now display the current time in many different formats.
@@ -37,7 +49,7 @@ V2022.37
         These are passed to the klock layout when the window is created.
 
 
-V2022.36
+V2022.35.e660ea2
 
     The separate layouts in separate modules created a problem.
         Implemented the trick in re-creating the window to apply a change in theme.
@@ -45,7 +57,7 @@ V2022.36
         If the individual layouts are all in one module, the theme change works, if not an error.
 
 
-V2022.35
+V2022.34.ee8175c
 
     Added skeleton window layouts for Fuzzy Time, World Klock, Countdown & timer.
         These live in src\layouts.git add .
@@ -55,13 +67,13 @@ V2022.35
         The License and About display simple info windows.
 
 
-V2022.34
+V2022.33.37f936c
 
     Laid out the basic directory structure of the main project - pyKlock.
     Copied python files from sub projects that will be re-used [modified] in the main project.
 
 
-V2022.33
+V2022.32.9be69de
 
 [pyDigitalKlock.psg]
     There was a problem with applying and saving transparency, should be save as a Boolean and not a string.
@@ -70,17 +82,12 @@ V2022.33
         The window size (width, height) has been added to the config file.
 
 
-V2022.32
+V2022.31.6547308
 
 [pyDigitalKlock.psg]
     There was a problem, in that when a new theme was applied the previous foreground and background
     colours where then applied.  The applying of a new theme should ignore previous foreground and
     background colours.  Applying a new theme now sets foreground and background colours to that of the theme.
-
-
-V2022.31
-
-[pyDigitalKlock.psg]
     Implemented the theme menu.
         The displays a list of the installed themes available in a new window.
         If a them is selected a preview window is displayed.
@@ -95,7 +102,8 @@ The pySimpleGUI version is about 350 lines of code smaller - mainly .ui file.
 Although pySimpleGui doesn't have the same refinement of layout, it is a lot
 more simpler to use.  Also, seems to have a lot more features.
 
-V2022.30
+
+V2022.30.38961ce
 
 [pyDigitalKlock.psg]
     Implemented the font menu.
@@ -127,7 +135,7 @@ SUM:                                                                          18
 ---------------------------------------------------------------------------------------------------------------
 
 
-V2022.29
+V2022.29.0e3ead2
 
 [pyDigitalKlock.psg]
     Implemented the license menu option.
@@ -138,7 +146,7 @@ V2022.29
         It also sets the menu text to "normal", which reset the transparency.
 
 
-V2022.28
+V2022.28.06e6f69
 
 [pyDigitalKlock.psg]
     pyDigitalKlock now loads and save certain parameters.
@@ -152,7 +160,7 @@ V2022.28
     A new file, src\klock.py, containing the GUI layout and supporting functions.
 
 
-V2022.27
+V2022.27.44b8ccd
 
 [pyDigitalKlock.psg]
     You can now change the foreground and background colours.
@@ -163,7 +171,7 @@ V2022.27
           The them options don't seem o work at the mo.
 
 
-V2022.26
+V2022.26.92d8238
 
 [pyDigitalKlock.psg]
     Basic functionality now working.
@@ -171,13 +179,13 @@ V2022.26
         key status show the status of the Caps, Num Lock & Scroll Lock keys.
 
 
-V2022.25
+V2022.25.5e0b6d6
 
     Moved pyDigitalKlock to pyDigitalKlock_psgubu
     Created pyDigitalKlock_psg to try pySimple pySimpleGUI
 
 
-V2022.24
+V2022.24.cc02227
 
 [pyDigitalKlock.pygubu]
     Added a new menu option - License.
@@ -208,7 +216,7 @@ SUM:                                                                      230   
 -----------------------------------------------------------------------------------------------------------
 
 
-V0222.23
+V0222.23.9de0da2
 
 [pyDigitalKlock.pygubu]
     It looks like to install a font you need administer privileges on Windows - so abandon for now.
@@ -216,7 +224,7 @@ V0222.23
       if not installed they are coloured red and an error issues if chosen.
 
 
-V2022.22
+V2022.22.5cd4165
 
 [pyDigitalKlock.pygubu]
     Now returns a valid font, all sems to be working.
@@ -227,7 +235,7 @@ V2022.22
       and will change when a new font is selected from the menu's.
 
 
-V2022.21
+V2022.21.9cf9169
 
 [pyKlock]
     font directy currently consists of DS-Digital, Pixel LCD7, itlivesintheswamp & Twobit
@@ -242,7 +250,7 @@ V2022.21
     Currently not returning a valid font object from font form - work to do.
 
 
-V2022.20
+V2022.20.cf917da
 
     [pyDigitalKlock.pygubu]
         Changes so that auto-py-to-ese [pyinstaller] would work.
@@ -250,7 +258,7 @@ V2022.20
             in same directory as the executable.
 
 
-V2022.19
+V2022.19.93ceb1c
 
     Now working against Python V3.10.4
 
@@ -263,7 +271,7 @@ V2022.19
             and transparency are seven between sessions.
 
 
-V202.18
+V202.18.3d4f978
 
     [pyDigitalKlock.pygubu]
         Added the ability to choose the colour of both foreground and background.

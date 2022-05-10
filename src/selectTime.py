@@ -125,9 +125,9 @@ class SelectTime:
                 __hour -= 12
                 __ampm = "in the evening" if __hour > 5 else "in the afternoon"
             if __sRtn == "":
-                __fuzzyTime = f"about {tc.hours[__hour]}'ish {__ampm}"
+                __fuzzyTime = f" about {tc.hours[__hour]}'ish {__ampm}"
             else:
-                __fuzzyTime = f"{__sRtn} {tc.hours[__hour]} {__ampm}"
+                __fuzzyTime = f" {__sRtn} {tc.hours[__hour]} {__ampm}"
 
         return __fuzzyTime
 
@@ -155,17 +155,17 @@ class SelectTime:
             __ampm = "in the evening" if __hour >= 5 else "in the afternoon"
 
         if __mins == 0:
-            __minsStr = f"{tc.hours[__hour]} o'clock {__ampm}"
+            __minsStr = f" {tc.hours[__hour]} o'clock {__ampm}"
         elif 1 <= __mins <= 9:
-            __minsStr = f"{tc.units[__mins]} minutes {__pasTo} {tc.hours[__hour]} {__ampm}"
+            __minsStr = f" {tc.units[__mins]} minutes {__pasTo} {tc.hours[__hour]} {__ampm}"
         elif 10 <= __mins <= 20:
-            __minsStr = f"{tc.tens[__mins-9]} minutes {__pasTo} {tc.hours[__hour]} {__ampm}"
+            __minsStr = f" {tc.tens[__mins-9]} minutes {__pasTo} {tc.hours[__hour]} {__ampm}"
         elif 21 <= __mins <= 29:
             __minsTens = math.floor(__mins / 10)
             __minsUnit = __mins - (__minsTens * 10)
-            __minsStr = f"twenty {tc.units[__minsUnit]} minutes {__pasTo} {tc.hours[__hour]} {__ampm}"
+            __minsStr = f" twenty {tc.units[__minsUnit]} minutes {__pasTo} {tc.hours[__hour]} {__ampm}"
         else:
-            __minsStr = f"thirty minutes past {tc.hours[__hour]} {__ampm}"
+            __minsStr = f" thirty minutes past {tc.hours[__hour]} {__ampm}"
 
         return __minsStr
 

@@ -1,5 +1,5 @@
 #   Configure file for pyDigitalKlock.py 
-#   (c) Kevin Scott   Written Monday 09 May 2022  20:07:49
+#   (c) Kevin Scott   Written Tuesday 10 May 2022  20:45:52
 #
 #   true and false are lower case 
 #   location needs double \ i.e. c:\tmp\music - well, on windows any way. 
@@ -17,12 +17,12 @@ transparent = "false"
 [WINDOW]
 width = 875
 height = 200
-x_pos = 545
-y_pos = -352
+x_pos = -895
+y_pos = -263
 
 [FONT]
-size = 27
-name = "It Lives In The Swamp BRK"
+size = 36
+name = "Nancy Blackett semaphore"
 
 [TIME]
-type = "Time in Words"
+type = "GMT Time"
