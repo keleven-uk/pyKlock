@@ -33,6 +33,7 @@ import src.logger       as Logger
 import src.license      as license
 import src.selectTime   as time
 import src.klock_layout as klock
+import src.stopwatch    as stopwatch
 
 import src.utils.fonts_utils as fu
 import src.utils.klock_utils as utils
@@ -45,6 +46,7 @@ def run_klock(my_logger, my_config):
     """  Builds and runs the Klock.
     """
     current_time = time.SelectTime()                                           #  Object with the varied time codes.
+    my_stopwatch = stopwatch.timer()
 
     font_name    = my_config.FONT_NAME                                         #  Initial name of the font used.
     font_size    = my_config.FONT_SIZE                                         #  Initial size of the font used.
@@ -59,6 +61,7 @@ def run_klock(my_logger, my_config):
     # Create the Window
     window = klock.win_layout(my_config, win_location, win_size, current_time.timeTypes, font_name, font_size, time_type)  #  Creates the initial window.
 
+    utils.set_title(window, pr_button, my_stopwatch)
     utils.update_status_bar(window)
     window["-CURRENT_TIME-"].update(current_time.getTime(time_type))
 
@@ -69,8 +72,12 @@ def run_klock(my_logger, my_config):
         if event in (sg.WIN_CLOSED, 'Exit', "-EXIT-"):            # if user closes window or clicks quit
             break
 
+        utils.set_title(window, pr_button, my_stopwatch)
         utils.update_status_bar(window)
         window["-CURRENT_TIME-"].update(current_time.getTime(time_type))
+
+        if my_stopwatch.timer_running:
+            window["-TIMER-TEXT-"].update(my_stopwatch.elapsed_time)
 
         match event:
             case ("-BTN_FUZZY-"|"-BTN_WORLD-"|"-BTN_COUNTDOWN-"|"-BTN_TIMER-"):                     #  Button pressed, change views.
@@ -78,11 +85,12 @@ def run_klock(my_logger, my_config):
                 window[pr_button].update(visible=False)
                 window[pressed].update(visible=True)
                 pr_button = pressed
+                utils.set_title(window, pressed, my_stopwatch)
             case "-TIME_TYPES-":                                                                    #  Another choice selected from the combo box.
                 window.disappear()
                 time_type = values["-TIME_TYPES-"]
                 ret_font, font_name, font_size = fu.set_font(font_name, time_type)  #  Returns a font object.
-                window = klock.win_layout(my_config, win_location, win_size, current_time.timeTypes, font_name, font_size, time_type)
+                window = klock.win_layout(my_config, window.current_location(), win_size, current_time.timeTypes, font_name, font_size, time_type)
                 window["-CURRENT_TIME-"].update(current_time.getTime(time_type))
                 my_logger.debug(f"Time Type {time_type}  Font name = {font_name}  Font size = {font_size}")
                 window.reappear()
@@ -101,19 +109,23 @@ def run_klock(my_logger, my_config):
             case "Theme":                                                                           #  Change the theme, triggered from the menu option.
                 window.disappear()
                 sg.theme(theme.run_theme())
-                window = klock.win_layout(my_config, win_location, win_size, current_time.timeTypes, font_name, font_size, time_type)
+                window = klock.win_layout(my_config, window.current_location(), win_size, current_time.timeTypes, font_name, font_size, time_type)
                 window["-CURRENT_TIME-"].update(current_time.getTime(time_type))
                 window.reappear()
             case "Font":                                                                             #  Change the font, triggered from the menu option.
                 window.disappear()
                 new_font, font_name, font_size = fonts.run_fonts(time_type)
                 if new_font:                            #  Cancel was selected in font window, or no font selected.
-                    window = klock.win_layout(my_config, win_location, win_size, current_time.timeTypes, font_name, font_size, time_type)
+                    window = klock.win_layout(my_config, window.current_location(), win_size, current_time.timeTypes, font_name, font_size, time_type)
                     window['-CURRENT_TIME-'].update(font=new_font)
                     window["-CURRENT_TIME-"].update(current_time.getTime(time_type))
                     my_logger.debug(f"Font name = {font_name}  Font size = {font_size}")
-
                 window.reappear()
+            case ("-TIMER_START-"|"-TIMER_RESUME-"|"-TIMER_STOP-"|"-TIMER_PAUSE-"|"-TIMER_CLEAR-"):
+                #  Stopwatch functions called - pass to stopwatch.
+                stopwatch.stopwatch(event, window, my_stopwatch)
+
+
 
 
     try:                                                                                #  Saves the current configuration and closes app.
@@ -145,9 +157,10 @@ def main():
     my_logger.debug(f" {platform.uname()}")
     my_logger.debug(f" Python Version {platform.python_version()}")
     my_logger.debug("")
-    my_logger.debug(f" CONFIG_PATH :: {CONFIG_PATH}")
-    my_logger.debug(f" LOGGER_PATH :: {LOGGER_PATH}")
-    my_logger.debug(f" FONTS_PATH  :: {FONTS_PATH}")
+    my_logger.debug(f" CONFIG_PATH     :: {CONFIG_PATH}")
+    my_logger.debug(f" LOGGER_PATH     :: {LOGGER_PATH}")
+    my_logger.debug(f" FONTS_PATH      :: {FONTS_PATH}")
+    my_logger.debug(f" RESOURCE_PATH  :: {RESOURCE_PATH}")
     my_logger.debug("")
 
     if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):

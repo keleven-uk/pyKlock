@@ -1,11 +1,11 @@
 #   Configure file for pyDigitalKlock.py 
-#   (c) Kevin Scott   Written Tuesday 10 May 2022  20:45:52
+#   (c) Kevin Scott   Written Friday 13 May 2022  21:09:39
 #
 #   true and false are lower case 
 #   location needs double \ i.e. c:\tmp\music - well, on windows any way. 
 #
 [INFO]
-myVERSION = "2022.39.beta"
+myVERSION = "2022.40"
 myNAME = "pyKlock"
 
 [COLOUR]
@@ -17,12 +17,12 @@ transparent = "false"
 [WINDOW]
 width = 875
 height = 200
-x_pos = -895
+x_pos = -902
 y_pos = -263
 
 [FONT]
-size = 36
-name = "Nancy Blackett semaphore"
+size = 29
+name = "Twobit"
 
 [TIME]
-type = "GMT Time"
+type = "Fuzzy Time"

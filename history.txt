@@ -8,6 +8,65 @@
        pyDigitalKlock_psg    - built with pySimpleGUI
 
 
+V2020.40
+
+    Implemented the stopwatch view.
+    A new file pyklock\src\stopwatch.py holds the stopwatch class.
+    This consists a clock face to display hours, minutes and seconds and a row of buttons.
+    The buttons allow for the timer to be started, stopped, resumed, paused and cleared.
+    The buttons all have icons and tooltips.
+        The icon files reside in pyklock\resources.
+    The form title not reflects the current view, if the stopwatch is running then the
+        stopwatch value is included in the title.
+
+
+Over 4000 source lines.
+------------------------------------------------------------------------------------------------------------------
+File                                                                           blank        comment           code
+------------------------------------------------------------------------------------------------------------------
+pyKlock\pyDigitalKlock_pygubu\src\pyDigitalKlock.ui                                0              0            353
+pyKlock\src\selectTime.py                                                        132            155            235
+pyKlock\pyDigitalKlock_pygubu\src\pyDigitalKlock.py                               59             60            188
+pyKlock\pyDigitalKlock_psg\src\Config.py                                          48             78            126
+pyKlock\pyDigitalKlock_psg\src\pyDigitalKlock.py                                  29             27            117
+pyKlock\src\config.py                                                             44             70            111
+pyKlock\src\pyKlock.py                                                            35             27            108
+pyKlock\pyDigitalKlock_pygubu\src\Config.py                                       44             67            104
+pyKlock\pyDigitalKlock_psg\bin\pyDigitalKlock.json                                 0              0             93
+pyKlock\pyDigitalKlock_pygubu\bin\Auto-py-to-exe.json                              0              0             89
+pyKlock\src\utils\timeCodes.py                                                     5             21             78
+pyKlock\src\utils\fonts_utils.py                                                  19             32             54
+pyKlock\pyDigitalKlock_psg\src\klock.py                                           22             35             53
+pyKlock\src\klock_layout.py                                                       24             29             53
+pyKlock\src\utils\klock_utils.py                                                  29             33             52
+pyKlock\pyDigitalKlock_pygubu\src\Fonts.py                                        27             35             47
+pyKlock\pyDigitalKlock_psg\src\utils\pyDigitalKlock_utils.py                      25             31             46
+pyKlock\pyDigitalKlock_pygubu\src\utils\pyDigitalKlock_utils.py                   22             32             41
+pyKlock\pyDigitalKlock_psg\src\fonts.py                                           12             27             31
+pyKlock\src\fonts.py                                                              12             27             31
+pyKlock\pyDigitalKlock_pygubu\src\About.py                                        13             27             27
+pyKlock\pyDigitalKlock_pygubu\src\License.py                                      19             27             27
+pyKlock\pyDigitalKlock_pygubu\src\utils\fonts_utils.py                            18             34             27
+pyKlock\src\theme.py                                                              10              6             22
+pyKlock\config.toml                                                                4              6             18
+pyKlock\pyDigitalKlock_psg\src\utils\fonts_utils.py                               17             30             18
+pyKlock\src\logger.py                                                             11             28             18
+pyKlock\pyDigitalKlock_psg\bin\config.toml                                         3              6             16
+pyKlock\pyDigitalKlock_psg\config.toml                                             3              6             16
+pyKlock\pyDigitalKlock_psg\src\license.py                                         10             25             16
+pyKlock\src\license.py                                                            10             25             16
+pyKlock\pyDigitalKlock_pygubu\src\projectPaths.py                                  4             24             14
+pyKlock\pyDigitalKlock_pygubu\bin\config.toml                                      3              6             13
+pyKlock\pyDigitalKlock_pygubu\config.toml                                          3              6             13
+pyKlock\src\projectPaths.py                                                        4             24             13
+pyKlock\main.py                                                                    2             23              2
+pyKlock\pyDigitalKlock_pygubu\main.py                                              2             23              2
+pyKlock\pyDigitalKlock_pygubu\src\utils\License_text.py                            5             30              1
+pyKlock\src\utils\license_text.py                                                  5             30              1
+------------------------------------------------------------------------------------------------------------------
+SUM:                                                                             734           1172           2290
+------------------------------------------------------------------------------------------------------------------
+
 V2020.39
 
     Theme & Font now reside in the settings menu.

@@ -23,6 +23,7 @@ import PySimpleGUI as sg
 
 import datetime
 
+from src.projectPaths import *
 
 def win_layout(my_config, win_location, win_size, timetypes, font_name, font_size, time_type):
     """  Sets up the windows and menu layout.
@@ -33,6 +34,13 @@ def win_layout(my_config, win_location, win_size, timetypes, font_name, font_siz
          A bit klunky, but a work around to reload the theme at run time and to set transparency.
     """
     strNow = datetime.datetime.now()
+
+    start_image  = RESOURCE_PATH / "Start.png"
+    resume_image = RESOURCE_PATH / "Resume.png"
+    stop_image   = RESOURCE_PATH / "Stop.png"
+    pause_image  = RESOURCE_PATH / "Pause.png"
+    clear_image  = RESOURCE_PATH / "Clear.png"
+    klock_icon   = RESOURCE_PATH / "Klock.ico"
 
     #  Change the menu text to reflect transparency or to set back to normal.
 
@@ -49,21 +57,33 @@ def win_layout(my_config, win_location, win_size, timetypes, font_name, font_siz
     fuzzy_right_row_layout = [[sg.VPush(), sg.Text("00:00:00", key="-CURRENT_TIME-", font=(font_name,font_size))]
                              ]
 
-    fuzzy_time_layout = [[sg.Text("Fuzzy Time")],
-                         [sg.Text(" ")],
+    fuzzy_time_layout = [[sg.Text(" ")],
                          [sg.Frame("", layout=fuzzy_left_row_layout, size=(140, 66)), sg.Text(" "), sg.Frame("", layout=fuzzy_right_row_layout, size=(700, 66))]
                         ]
 
-    world_klock_layout = [[sg.Text("World Klock")],
-                          [sg.Text("World Klock"), sg.Button("1")]
+    world_klock_layout = [[sg.Text("World Klock")]
                          ]
 
-    countdown_layout = [[sg.Text("Countdown")],
-                        [sg.Text("Countdown"), sg.Button("1")]
+    countdown_layout = [[sg.Text("Countdown")]
                        ]
 
-    timer_layout = [[sg.Text("Timer")],
-                    [sg.Text("Timer"), sg.Button("1")]
+    timer_layout = [[sg.Text("00:00:00", key="-TIMER-TEXT-",  font=("TkDefaultFont", 56)),
+                     sg.Text(" "),
+                     sg.Button("Start", key="-TIMER_START-", size=(10,5), visible=True,
+                               button_color=sg.TRANSPARENT_BUTTON, image_filename=start_image,  image_size=(100, 100),
+                               tooltip="Start the timer"),
+                     sg.Button("Resume", key="-TIMER_RESUME-", size=(10,5), visible=False,
+                               button_color=sg.TRANSPARENT_BUTTON, image_filename=resume_image, image_size=(100, 100),
+                               tooltip="Re-start the timer"),
+                     sg.Button("Stop", key="-TIMER_STOP-", size=(10,5), visible=False,
+                               button_color=sg.TRANSPARENT_BUTTON, image_filename=stop_image,   image_size=(100, 100),
+                               tooltip="Stop the timer"),
+                     sg.Button("Pause", key="-TIMER_PAUSE-", size=(10,5), visible=False,
+                               button_color=sg.TRANSPARENT_BUTTON, image_filename=pause_image,  image_size=(100, 100),
+                               tooltip="Pause the timer"),
+                     sg.Button("Clear", key="-TIMER_CLEAR-", size=(10,5), visible=False,
+                               button_color=sg.TRANSPARENT_BUTTON, image_filename=clear_image,  image_size=(100, 100),
+                               tooltip="Clear the timer")]
                    ]
 
 
@@ -71,7 +91,7 @@ def win_layout(my_config, win_location, win_size, timetypes, font_name, font_siz
                       sg.Button("World Klock", key="-BTN_WORLD-"),
                       sg.Button("Countdown",   key="-BTN_COUNTDOWN-"),
                       sg.Button("Timer",       key="-BTN_TIMER-"),
-                      sg.Button("Hide",        key="_HIDE_"),
+                      sg.Button("Hide",        key="-HIDE-"),
                       sg.Button("Exit",        key="-EXIT-")]]
 
     screen_layout = [sg.Column(fuzzy_time_layout,  visible=True,  key="-FUZZY-"),
@@ -92,7 +112,7 @@ def win_layout(my_config, win_location, win_size, timetypes, font_name, font_siz
                     ]
 
     #window = sg.Window('Window Title', layout, no_titlebar=True, alpha_channel=0.5)
-    win =  sg.Window('pyKlock', klock_layout, location=win_location, size= win_size)
+    win =  sg.Window('pyKlock', klock_layout, location=win_location, size= win_size, icon="Klock.png")
 
     win.finalize()
 
