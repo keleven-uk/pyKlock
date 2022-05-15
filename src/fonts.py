@@ -34,8 +34,9 @@ def run_fonts(time_type):
     """
     ret_font    = None
     font_name   = None
-    font_length = 400
-    font_height = 150
+    font_size   = fu.DEFAULT_FONT_SIZE
+    font_length = fu.DEFAULT_FONT_LENGTH
+    font_height = fu.DEFAULT_FONT_HEIGHT
 
     sg.theme("NeutralBlue")
 

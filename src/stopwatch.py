@@ -29,10 +29,10 @@ class timer():
 
     usage:
         stopwatch = timer()
-        stopwatch.start()           Starts the stopwatch
-        stopwatch.stop()            Stops the stopwatch, stops the ticks
+        stopwatch.start()           Starts the stopwatch.
+        stopwatch.stop()            Stops the stopwatch, stops the ticks.
         stopwatch.pause()           Pauses the stopwatch, the ticks still continue.
-        stopwatch.elapsed_time      Return the current value of the stopwatch
+        stopwatch.elapsed_time      Return the current value of the stopwatch.
         stopwatch.timer_running     Returns True if the stopwatch has been started.
 
         NB  Stop and Pause do the same thing within the class, but could be different in calling code.
@@ -77,7 +77,7 @@ class timer():
             return "00:00:00"
 
 
-def stopwatch(event, window, my_stopwatch):
+def run_stopwatch(event, window, my_stopwatch):
     """  Control the visibility of the buttons, only display the relevant buttons.
          Call the appropriate timer functions.
     """

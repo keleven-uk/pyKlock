@@ -30,6 +30,7 @@ from pathlib import Path
 MAXIMUM_FONT_SIZE   = 36
 DEFAULT_FONT_SIZE   = 28
 DEFAULT_FONT_LENGTH = 510
+DEFAULT_FONT_HEIGHT = 150
 
 
 def list_fonts():

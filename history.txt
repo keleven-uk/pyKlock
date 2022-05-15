@@ -8,7 +8,19 @@
        pyDigitalKlock_psg    - built with pySimpleGUI
 
 
-V2020.40
+V2022.41
+
+    Implemented the countdown view.
+    A new file pyklock\src\countdown.py holds the countdown class.
+    This allows a time interval to be set, via a spin control or buttons, and the time
+        will count down to zero.
+    The buttons all have icons and tooltips.
+        the start and stop icons are same as the stopwatch.
+    The form title now reflects the current view, if the countdown is running then the
+        countdown value is included in the title.
+    Added two new fonts DIXIE & Harry P.
+
+V2022.40
 
     Implemented the stopwatch view.
     A new file pyklock\src\stopwatch.py holds the stopwatch class.
@@ -16,7 +28,7 @@ V2020.40
     The buttons allow for the timer to be started, stopped, resumed, paused and cleared.
     The buttons all have icons and tooltips.
         The icon files reside in pyklock\resources.
-    The form title not reflects the current view, if the stopwatch is running then the
+    The form title now reflects the current view, if the stopwatch is running then the
         stopwatch value is included in the title.
 
 
@@ -67,7 +79,7 @@ pyKlock\src\utils\license_text.py                                               
 SUM:                                                                             734           1172           2290
 ------------------------------------------------------------------------------------------------------------------
 
-V2020.39
+V2022.39
 
     Theme & Font now reside in the settings menu.
     Used sg.VPush to centre Fuzzy Time text & Time Types combo box.
@@ -79,7 +91,7 @@ V2020.39
     Added fonts Nancy Blackett semaphore and backwards.
 
 
-V2020.38.130fed1
+V2022.38.130fed1
 
     Implemented the font menu.
         Because installing font needs administrator privileges and trkinter has not have a  font dialog.
@@ -90,7 +102,7 @@ V2020.38.130fed1
     Also save the window size and location in config.toml, only location is used at the moment.
 
 
-V2020.37.1c928b2
+V2022.37.1c928b2
 
     Added two new menu options - Font to the File menu, not implemented yet.
     Also, A new menu option Time.  The first option is LCD Klock.
