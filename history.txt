@@ -8,13 +8,20 @@
        pyDigitalKlock_psg    - built with pySimpleGUI
 
 
+V2022.43
+
+    Added actions to the countdown, choices are selected from a combo box.
+        Choices are "None", "Notify", "Notify + Sound", "Pop Up", "Shutdown PC", "Log Out PC".
+        More actions will be added when needed.
+
+
 V2022.42
 
     Amended the countdown class, so that a copy of the window object is passed in.
     This allows countdown to raise an event when finished that can be read in the main event loop.
     When countdown finishes a notification is generated and a .mp3 file is played.
     Problem with playing mp3 files, will only play until the next read in the event loop.
-      It does seem like that, work around is that it play as lonf as the notification is visible.
+        It does seem like that, work around is that it play as long as the notification is visible.
     Only the required buttons are now visible, all redundant buttons are hidden.
     Removed button_color=sg.TRANSPARENT_BUTTON from all buttons - look better now.
 

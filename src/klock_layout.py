@@ -42,7 +42,7 @@ def win_layout(my_config, win_location, win_size, timetypes, font_name, font_siz
     clear_image  = RESOURCE_PATH / "Clear.png"
     klock_icon   = RESOURCE_PATH / "Klock.ico"
 
-    #  Change the menu text to reflect transparency or to set back to normal.
+    #  Menu definitions
 
     menu_def = [["File",  ["---", "Exit"]],
                 ["Settings", ["Theme", "Font"]],
@@ -50,27 +50,30 @@ def win_layout(my_config, win_location, win_size, timetypes, font_name, font_siz
                 ["Help",  ["License", "About"]]
                 ]
 
-    fuzzy_left_row_layout= [[sg.VPush(), sg.Combo(list(timetypes), key="-TIME_TYPES-", default_value=time_type, enable_events=True, readonly=True)]
-                           ]
+    #  Fuzzy Time GUI definitions
+    fuzzy_left_row_layout= [[sg.VPush(), sg.Combo(list(timetypes), key="-TIME_TYPES-", default_value=time_type, enable_events=True, readonly=True)]]
 
-
-    fuzzy_right_row_layout = [[sg.VPush(), sg.Text("00:00:00", key="-CURRENT_TIME-", font=(font_name,font_size))]
-                             ]
+    fuzzy_right_row_layout = [[sg.VPush(), sg.Text("00:00:00", key="-CURRENT_TIME-", font=(font_name,font_size))]]
 
     fuzzy_time_layout = [[sg.Text(" ")],
                          [sg.Frame("", layout=fuzzy_left_row_layout, size=(140, 66)), sg.Text(" "), sg.Frame("", layout=fuzzy_right_row_layout, size=(700, 66))]
                         ]
 
+    #  World Klock GUI definitions
     world_klock_layout = [[sg.Text("World Klock")]
                          ]
 
-    countdown_top_left_layout = [[sg.Spin([x+1 for x in range(120)], key="-COUNTDOWN_TARGET-", size=(5,1),  font=("TkDefaultFont", 16))]
-                                ]
+    #  Countdown GUI definitions
+    actions = ["None", "Notify", "Notify + Sound", "Pop Up", "Shutdown PC", "Log Out PC"]
+    countdown_top_left_layout = [sg.Spin([x+1 for x in range(120)], key="-COUNTDOWN_TARGET-", size=(8,1),  font=("TkDefaultFont", 16))]
 
-    countdown_bottom_left_layout = [[sg.Spin([1,2,3])]
-                                   ]
+    countdown_bottom_left_layout = [sg.Combo(actions, key="-COUNTDOWN-ACTION-", default_value=actions[0], size=(14,1),  font=("TkDefaultFont", 10))]
 
-    countdown_layout = [[sg.Spin([x+1 for x in range(120)], key="-COUNTDOWN_TARGET-", size=(5,1),  font=("TkDefaultFont", 16)),
+    countdown_middle_left_layout = [sg.Text("")]
+
+    countdown_column_left_layout = [countdown_top_left_layout, countdown_middle_left_layout, countdown_bottom_left_layout]
+
+    countdown_layout = [[sg.Column(countdown_column_left_layout),
                          sg.Text("     "), sg.Text("00:00:00", key="-COUNTDOWN-TEXT-",  font=("TkDefaultFont", 56)),
                          sg.Push(),
                          sg.Button("", key="-COUNTDOWN_START-", size=(10,5), visible=True,
@@ -84,6 +87,7 @@ def win_layout(my_config, win_location, win_size, timetypes, font_name, font_siz
                          sg.Button("+60", key="-+60-", size=(5,2))
                        ]]
 
+    #  Stopwatch [Time] GUI definitions
     timer_layout = [[sg.Text("00:00:00", key="-TIMER-TEXT-",  font=("TkDefaultFont", 56)),
                      sg.Text(" "),
                      sg.Button("", key="-TIMER_START-", size=(10,5), visible=True,
@@ -98,7 +102,7 @@ def win_layout(my_config, win_location, win_size, timetypes, font_name, font_siz
                                image_filename=clear_image,  image_size=(100, 100), tooltip="Clear the Timer")]
                    ]
 
-
+    #  Buttons GUI definitions
     button_layout = [[sg.Button("Fuzzy Time",  key="-BTN_FUZZY-"),
                       sg.Button("World Klock", key="-BTN_WORLD-"),
                       sg.Button("Countdown",   key="-BTN_COUNTDOWN-"),
@@ -106,11 +110,13 @@ def win_layout(my_config, win_location, win_size, timetypes, font_name, font_siz
                       sg.Button("Hide",        key="-HIDE-"),
                       sg.Button("Exit",        key="-EXIT-")]]
 
+    #  Build the screen, only one view visible.
     screen_layout = [sg.Column(fuzzy_time_layout,  visible=True,  key="-FUZZY-"),
                      sg.Column(world_klock_layout, visible=False, key="-WORLD-"),
                      sg.Column(countdown_layout,   visible=False, key="-COUNTDOWN-"),
                      sg.Column(timer_layout,       visible=False, key="-TIMER-")]
 
+    #  Status Bar GUI definitions
     status_bar = [[sg.Text("", justification="left",   key="-CURRENT-DATE-"),   sg.Push(),         #  Current Date
                    sg.Text("", justification="center", key="-CURRENT-STATUS-"), sg.Push(),         #  Current status.
                    sg.Text("", justification="right",  key="-CURRENT-IDLE-")]]                     #  Current idle time.

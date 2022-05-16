@@ -21,6 +21,7 @@
 
 import PySimpleGUI as sg
 
+import os
 import datetime
 
 import miniaudio
@@ -135,19 +136,35 @@ def set_title(window, view, my_stopwatch, my_countdown):
     window.set_title(f" {title}")
 
 
-def play_warning(path):
+def play_warning(action):
     """  Play sound file in a separate thread
          (don't block current thread)
     """
-    print(path)
-    stream = miniaudio.stream_file(path)
-    with miniaudio.PlaybackDevice() as device:
-        device.start(stream)
-        sg.SystemTray.notify("Countdown", "Countdown had finished.")
+    print(action)
+    warning_sound = RESOURCE_PATH / "alarm-fatal.mp3"
+
+    match action:
+        case "Notify + Sound":
+            stream = miniaudio.stream_file(warning_sound)
+            with miniaudio.PlaybackDevice() as device:
+                device.start(stream)
+                sg.SystemTray.notify("Countdown", "Countdown had finished.")
+        case "Notify":
+            sg.SystemTray.notify("Countdown", "Countdown had finished.")
+        case "Pop Up":
+            sg.popup("Countdown had finished.", title="Countdown")
+        case "Shutdown PC":
+            os.system("shutdown /s")
+        case "Log Out PC":
+            os.system("shutdown /l")
 
 
+#/s = shut down PC
+#/r = reboot PC
+#/h = Hibernate PC
+#/l = log off current user
 
-
+#/a = attemps to cancel reboot
 
 
 

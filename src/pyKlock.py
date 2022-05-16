@@ -169,7 +169,7 @@ def main():
     my_logger.debug(f" CONFIG_PATH     :: {CONFIG_PATH}")
     my_logger.debug(f" LOGGER_PATH     :: {LOGGER_PATH}")
     my_logger.debug(f" FONTS_PATH      :: {FONTS_PATH}")
-    my_logger.debug(f" RESOURCE_PATH  :: {RESOURCE_PATH}")
+    my_logger.debug(f" RESOURCE_PATH   :: {RESOURCE_PATH}")
     my_logger.debug("")
 
     if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):

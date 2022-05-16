@@ -94,8 +94,6 @@ def run_countdown(event, window, my_countdown, values):
     """  Control the visibility of the buttons, only display the relevant buttons.
          Call the appropriate countdown functions.
     """
-    warning_sound = RESOURCE_PATH / "alarm-fatal.mp3"
-
     match event:
         case "-+15-":
             window["-COUNTDOWN_START-"].update(visible=False)
@@ -155,5 +153,6 @@ def run_countdown(event, window, my_countdown, values):
             window["-+45-"].update(visible=True)
             window["-+60-"].update(visible=True)
             window["-COUNTDOWN_TARGET-"].update(value=1)
-            utils.play_warning(warning_sound)
+            action = values["-COUNTDOWN-ACTION-"]
+            utils.play_warning(action)
 
