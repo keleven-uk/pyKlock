@@ -8,17 +8,29 @@
        pyDigitalKlock_psg    - built with pySimpleGUI
 
 
+V2022.42
+
+    Amended the countdown class, so that a copy of the window object is passed in.
+    This allows countdown to raise an event when finished that can be read in the main event loop.
+    When countdown finishes a notification is generated and a .mp3 file is played.
+    Problem with playing mp3 files, will only play until the next read in the event loop.
+      It does seem like that, work around is that it play as lonf as the notification is visible.
+    Only the required buttons are now visible, all redundant buttons are hidden.
+    Removed button_color=sg.TRANSPARENT_BUTTON from all buttons - look better now.
+
+
 V2022.41
 
     Implemented the countdown view.
     A new file pyklock\src\countdown.py holds the countdown class.
-    This allows a time interval to be set, via a spin control or buttons, and the time
-        will count down to zero.
+    This allows a time interval to be set, either via a spin control or pre-set buttons,
+        and the time will count down to zero.
     The buttons all have icons and tooltips.
         the start and stop icons are same as the stopwatch.
     The form title now reflects the current view, if the countdown is running then the
         countdown value is included in the title.
     Added two new fonts DIXIE & Harry P.
+
 
 V2022.40
 

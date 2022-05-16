@@ -47,7 +47,6 @@ def run_klock(my_logger, my_config):
     """
     current_time = time.SelectTime()                                           #  Object with the varied time codes.
     my_stopwatch = stopwatch.timer()
-    my_countdown = countdown.countdown()
 
     font_name    = my_config.FONT_NAME                                         #  Initial name of the font used.
     font_size    = my_config.FONT_SIZE                                         #  Initial size of the font used.
@@ -61,6 +60,8 @@ def run_klock(my_logger, my_config):
 
     # Create the Window
     window = klock.win_layout(my_config, win_location, win_size, current_time.timeTypes, font_name, font_size, time_type)  #  Creates the initial window.
+
+    my_countdown = countdown.countdown(window)
 
     utils.set_title(window, pr_button, my_stopwatch, my_countdown)
     utils.update_status_bar(window)
@@ -128,9 +129,10 @@ def run_klock(my_logger, my_config):
             case ("-TIMER_START-"|"-TIMER_RESUME-"|"-TIMER_STOP-"|"-TIMER_PAUSE-"|"-TIMER_CLEAR-"):
                 #  Stopwatch functions called - pass to my_stopwatch.
                 stopwatch.run_stopwatch(event, window, my_stopwatch)
-            case ("-+15-"|"-+30-"|"-+45-"|"-+60-"|"-COUNTDOWN_START-"|"-COUNTDOWN_STOP-"|"-COUNTDOWN_TARGET-"):
+            case ("-+15-"|"-+30-"|"-+45-"|"-+60-"|"-COUNTDOWN_START-"|"-COUNTDOWN_STOP-"|"-COUNTDOWN_TARGET-"|"-COUNTDOWN_EVENT-"):
                 #  Countdown functions called - pass to my_countdown.
                countdown.run_countdown(event, window, my_countdown, values)
+
 
 
 

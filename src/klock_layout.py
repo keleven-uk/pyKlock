@@ -64,15 +64,19 @@ def win_layout(my_config, win_location, win_size, timetypes, font_name, font_siz
     world_klock_layout = [[sg.Text("World Klock")]
                          ]
 
+    countdown_top_left_layout = [[sg.Spin([x+1 for x in range(120)], key="-COUNTDOWN_TARGET-", size=(5,1),  font=("TkDefaultFont", 16))]
+                                ]
+
+    countdown_bottom_left_layout = [[sg.Spin([1,2,3])]
+                                   ]
+
     countdown_layout = [[sg.Spin([x+1 for x in range(120)], key="-COUNTDOWN_TARGET-", size=(5,1),  font=("TkDefaultFont", 16)),
                          sg.Text("     "), sg.Text("00:00:00", key="-COUNTDOWN-TEXT-",  font=("TkDefaultFont", 56)),
                          sg.Push(),
-                         sg.Button("Start", key="-COUNTDOWN_START-", size=(10,5), visible=True,
-                               button_color=sg.TRANSPARENT_BUTTON, image_filename=start_image,  image_size=(100, 100),
-                               tooltip="Start the Countdown"),
-                         sg.Button("Stop", key="-COUNTDOWN_STOP-", size=(10,5), visible=False,
-                               button_color=sg.TRANSPARENT_BUTTON, image_filename=stop_image,   image_size=(100, 100),
-                               tooltip="Stop the Countdown"),
+                         sg.Button("", key="-COUNTDOWN_START-", size=(10,5), visible=True,
+                               image_filename=start_image, image_size=(100, 100), tooltip="Start the Countdown"),
+                         sg.Button("", key="-COUNTDOWN_STOP-", size=(10,5), visible=False,
+                               image_filename=stop_image, image_size=(100, 100), tooltip="Stop the Countdown"),
                          sg.Push(),
                          sg.Button("+15", key="-+15-", size=(5,2)),
                          sg.Button("+30", key="-+30-", size=(5,2)),
@@ -82,21 +86,16 @@ def win_layout(my_config, win_location, win_size, timetypes, font_name, font_siz
 
     timer_layout = [[sg.Text("00:00:00", key="-TIMER-TEXT-",  font=("TkDefaultFont", 56)),
                      sg.Text(" "),
-                     sg.Button("Start", key="-TIMER_START-", size=(10,5), visible=True,
-                               button_color=sg.TRANSPARENT_BUTTON, image_filename=start_image,  image_size=(100, 100),
-                               tooltip="Start the Timer"),
-                     sg.Button("Resume", key="-TIMER_RESUME-", size=(10,5), visible=False,
-                               button_color=sg.TRANSPARENT_BUTTON, image_filename=resume_image, image_size=(100, 100),
-                               tooltip="Re-start the Timer"),
-                     sg.Button("Stop", key="-TIMER_STOP-", size=(10,5), visible=False,
-                               button_color=sg.TRANSPARENT_BUTTON, image_filename=stop_image,   image_size=(100, 100),
-                               tooltip="Stop the Timer"),
-                     sg.Button("Pause", key="-TIMER_PAUSE-", size=(10,5), visible=False,
-                               button_color=sg.TRANSPARENT_BUTTON, image_filename=pause_image,  image_size=(100, 100),
-                               tooltip="Pause the Timer"),
-                     sg.Button("Clear", key="-TIMER_CLEAR-", size=(10,5), visible=False,
-                               button_color=sg.TRANSPARENT_BUTTON, image_filename=clear_image,  image_size=(100, 100),
-                               tooltip="Clear the Timer")]
+                     sg.Button("", key="-TIMER_START-", size=(10,5), visible=True,
+                               image_filename=start_image,  image_size=(100, 100), tooltip="Start the Timer"),
+                     sg.Button("", key="-TIMER_RESUME-", size=(10,5), visible=False,
+                               image_filename=resume_image, image_size=(100, 100), tooltip="Re-start the Timer"),
+                     sg.Button("", key="-TIMER_STOP-", size=(10,5), visible=False,
+                               image_filename=stop_image,   image_size=(100, 100), tooltip="Stop the Timer"),
+                     sg.Button("", key="-TIMER_PAUSE-", size=(10,5), visible=False,
+                               image_filename=pause_image,  image_size=(100, 100), tooltip="Pause the Timer"),
+                     sg.Button("", key="-TIMER_CLEAR-", size=(10,5), visible=False,
+                               image_filename=clear_image,  image_size=(100, 100), tooltip="Clear the Timer")]
                    ]
 
 

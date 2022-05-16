@@ -19,7 +19,11 @@
 #                                                                                                             #
 ###############################################################################################################
 
+import PySimpleGUI as sg
+
 import datetime
+
+import miniaudio
 
 from win32api import GetKeyState
 from win32con import VK_CAPITAL, VK_SCROLL, VK_NUMLOCK
@@ -131,7 +135,15 @@ def set_title(window, view, my_stopwatch, my_countdown):
     window.set_title(f" {title}")
 
 
-
+def play_warning(path):
+    """  Play sound file in a separate thread
+         (don't block current thread)
+    """
+    print(path)
+    stream = miniaudio.stream_file(path)
+    with miniaudio.PlaybackDevice() as device:
+        device.start(stream)
+        sg.SystemTray.notify("Countdown", "Countdown had finished.")
 
 
 

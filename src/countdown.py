@@ -22,18 +22,27 @@
 
 import time
 
+from src.projectPaths import *
+
+import src.utils.klock_utils as utils
+
+
 class countdown():
     """  A Simple class that implements a countdown timer.
 
+         A copy of the window object needs to be passed in because when the countdown has finished,
+         it can then pass back an event by writing to the main window event loop.
+
          Usage:
-            my_countdown = countdown(
+            my_countdown = countdown(window)
             my_countdown.start(n)               #  Starts the countdown of n minutes.)
             my_countdown.tick()                 #  Decrements the countdown, should be called regularly [i.e. every second].
                                                 #  Tick also return the current countdown value.
             my_countdown.clear                  #  Cancels the current countdown and sets everything back to the start.
 
     """
-    def __init__(self):
+    def __init__(self, window):
+        self.window     = window
         self.is_running = False
         self.target     = 0
 
@@ -66,6 +75,7 @@ class countdown():
         """
 
         if self.target == 0:
+            self.window.write_event_value("-COUNTDOWN_EVENT-", ("Finished"))
             self.is_running = False
             return "00:00:00"
 
@@ -84,31 +94,66 @@ def run_countdown(event, window, my_countdown, values):
     """  Control the visibility of the buttons, only display the relevant buttons.
          Call the appropriate countdown functions.
     """
+    warning_sound = RESOURCE_PATH / "alarm-fatal.mp3"
+
     match event:
         case "-+15-":
             window["-COUNTDOWN_START-"].update(visible=False)
             window["-COUNTDOWN_STOP-"].update(visible=True)
+            window["-+15-"].update(visible=False)
+            window["-+30-"].update(visible=False)
+            window["-+45-"].update(visible=False)
+            window["-+60-"].update(visible=False)
             my_countdown.start(15)
         case "-+30-":
             window["-COUNTDOWN_START-"].update(visible=False)
             window["-COUNTDOWN_STOP-"].update(visible=True)
+            window["-+15-"].update(visible=False)
+            window["-+30-"].update(visible=False)
+            window["-+45-"].update(visible=False)
+            window["-+60-"].update(visible=False)
             my_countdown.start(30)
         case "-+45-":
             window["-COUNTDOWN_START-"].update(visible=False)
             window["-COUNTDOWN_STOP-"].update(visible=True)
+            window["-+15-"].update(visible=False)
+            window["-+30-"].update(visible=False)
+            window["-+45-"].update(visible=False)
+            window["-+60-"].update(visible=False)
             my_countdown.start(45)
         case "-+60-":
             window["-COUNTDOWN_START-"].update(visible=False)
             window["-COUNTDOWN_STOP-"].update(visible=True)
+            window["-+15-"].update(visible=False)
+            window["-+30-"].update(visible=False)
+            window["-+45-"].update(visible=False)
+            window["-+60-"].update(visible=False)
             my_countdown.start(60)
         case "-COUNTDOWN_START-":
             window["-COUNTDOWN_START-"].update(visible=False)
             window["-COUNTDOWN_STOP-"].update(visible=True)
+            window["-+15-"].update(visible=False)
+            window["-+30-"].update(visible=False)
+            window["-+45-"].update(visible=False)
+            window["-+60-"].update(visible=False)
             my_countdown.start(int(values["-COUNTDOWN_TARGET-"]))
         case "-COUNTDOWN_STOP-":
             window["-COUNTDOWN_START-"].update(visible=True)
             window["-COUNTDOWN_STOP-"].update(visible=False)
+            window["-+15-"].update(visible=True)
+            window["-+30-"].update(visible=True)
+            window["-+45-"].update(visible=True)
+            window["-+60-"].update(visible=True)
             window["-COUNTDOWN-TEXT-"].update("00:00:00")
             window["-COUNTDOWN_TARGET-"].update(value=1)
             my_countdown.clear()
+        case "-COUNTDOWN_EVENT-":
+            window["-COUNTDOWN_START-"].update(visible=True)
+            window["-COUNTDOWN_STOP-"].update(visible=False)
+            window["-+15-"].update(visible=True)
+            window["-+30-"].update(visible=True)
+            window["-+45-"].update(visible=True)
+            window["-+60-"].update(visible=True)
+            window["-COUNTDOWN_TARGET-"].update(value=1)
+            utils.play_warning(warning_sound)
 
