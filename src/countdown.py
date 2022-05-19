@@ -75,6 +75,7 @@ class countdown():
         """
 
         if self.target == 0:
+            print("at 0 -COUNTDOWN_EVENT-")
             self.window.write_event_value("-COUNTDOWN_EVENT-", ("Finished"))
             self.is_running = False
             return "00:00:00"
@@ -142,10 +143,11 @@ def run_countdown(event, window, my_countdown, values):
             window["-+30-"].update(visible=True)
             window["-+45-"].update(visible=True)
             window["-+60-"].update(visible=True)
-            window["-COUNTDOWN-TEXT-"].update("00:00:00")
+            window["-COUNTDOWN_TEXT-"].update("00:00:00")
             window["-COUNTDOWN_TARGET-"].update(value=1)
             my_countdown.clear()
         case "-COUNTDOWN_EVENT-":
+            print("at case -COUNTDOWN_EVENT-")
             window["-COUNTDOWN_START-"].update(visible=True)
             window["-COUNTDOWN_STOP-"].update(visible=False)
             window["-+15-"].update(visible=True)
@@ -153,6 +155,6 @@ def run_countdown(event, window, my_countdown, values):
             window["-+45-"].update(visible=True)
             window["-+60-"].update(visible=True)
             window["-COUNTDOWN_TARGET-"].update(value=1)
-            action = values["-COUNTDOWN-ACTION-"]
-            utils.play_warning(action)
+            action = values["-COUNTDOWN_ACTION-"]
+            utils.run_action(action)
 

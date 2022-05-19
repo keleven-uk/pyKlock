@@ -40,3 +40,11 @@ else:
     FONTS_PATH    = MAIN_PATH / "fonts"
     RESOURCE_PATH = MAIN_PATH / "resources"
 
+
+start_image  = RESOURCE_PATH / "Start.png"
+resume_image = RESOURCE_PATH / "Resume.png"
+stop_image   = RESOURCE_PATH / "Stop.png"
+pause_image  = RESOURCE_PATH / "Pause.png"
+clear_image  = RESOURCE_PATH / "Clear.png"
+klock_icon   = RESOURCE_PATH / "Klock.ico"
+

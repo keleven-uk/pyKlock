@@ -116,6 +116,6 @@ def run_stopwatch(event, window, my_stopwatch):
             window["-TIMER_STOP-"].update(visible=False)
             window["-TIMER_PAUSE-"].update(visible=False)
             window["-TIMER_CLEAR-"].update(visible=False)
-            window["-TIMER-TEXT-"].update("00:00:00")
+            window["-TIMER_TEXT-"].update("00:00:00")
             my_stopwatch.stop()
 

@@ -27,8 +27,8 @@ from tkinter import font
 
 from pathlib import Path
 
-MAXIMUM_FONT_SIZE   = 36
-DEFAULT_FONT_SIZE   = 28
+MAXIMUM_FONT_SIZE   = 40
+DEFAULT_FONT_SIZE   = 32
 DEFAULT_FONT_LENGTH = 510
 DEFAULT_FONT_HEIGHT = 150
 

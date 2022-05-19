@@ -8,6 +8,14 @@
        pyDigitalKlock_psg    - built with pySimpleGUI
 
 
+V2022.44
+
+    Implemented the World Klock view.
+    A new file pyklock\src\world_klock.py holds the world_klock class.
+    This displays the time in a given time zone, that is selected from a drop down list.
+    Added two files to the requirements directory - development_pyklock & product_pyklock
+
+
 V2022.43
 
     Added actions to the countdown, choices are selected from a combo box.

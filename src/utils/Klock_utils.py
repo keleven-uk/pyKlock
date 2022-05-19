@@ -30,6 +30,8 @@ from win32api import GetKeyState
 from win32con import VK_CAPITAL, VK_SCROLL, VK_NUMLOCK
 from ctypes import Structure, windll, c_uint, sizeof, byref
 
+from src.projectPaths import *
+
 def get_state():
     """  Checks the current state of Caps Lock, Scroll Lock & Num Lock.
          The results are returned as a sting.
@@ -136,7 +138,7 @@ def set_title(window, view, my_stopwatch, my_countdown):
     window.set_title(f" {title}")
 
 
-def play_warning(action):
+def run_action(action):
     """  Play sound file in a separate thread
          (don't block current thread)
     """

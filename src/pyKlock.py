@@ -35,7 +35,9 @@ import src.selectTime   as time
 import src.klock_layout as klock
 import src.stopwatch    as stopwatch
 import src.countdown    as countdown
+import src.world_klock  as world_klock
 
+import src.utils.fonts_utils as fu
 import src.utils.klock_utils as utils
 
 from src.projectPaths import *
@@ -45,8 +47,9 @@ from src.projectPaths import *
 def run_klock(my_logger, my_config):
     """  Builds and runs the Klock.
     """
-    current_time = time.SelectTime()                                           #  Object with the varied time codes.
-    my_stopwatch = stopwatch.timer()
+    current_time   = time.SelectTime()                                           #  Object with the varied time codes.
+    my_stopwatch   = stopwatch.timer()
+    my_world_klock = world_klock.world_klock()
 
     font_name    = my_config.FONT_NAME                                         #  Initial name of the font used.
     font_size    = my_config.FONT_SIZE                                         #  Initial size of the font used.
@@ -59,7 +62,7 @@ def run_klock(my_logger, my_config):
     sg.SetOptions(element_padding=(0, 0))
 
     # Create the Window
-    window = klock.win_layout(my_config, win_location, win_size, current_time.timeTypes, font_name, font_size, time_type)  #  Creates the initial window.
+    window = klock.win_layout(my_config, my_world_klock, win_location, win_size, current_time.timeTypes, font_name, font_size, time_type)  #  Creates the initial window.
 
     my_countdown = countdown.countdown(window)
 
@@ -75,9 +78,12 @@ def run_klock(my_logger, my_config):
             break
 
         if my_stopwatch.timer_running:
-            window["-TIMER-TEXT-"].update(my_stopwatch.elapsed_time)
+            window["-TIMER_TEXT-"].update(my_stopwatch.elapsed_time)
         if my_countdown.countdown_running:
-            window["-COUNTDOWN-TEXT-"].update(my_countdown.tick())
+            window["-COUNTDOWN_TEXT-"].update(my_countdown.tick())
+        if pr_button == "-WORLD-":
+            timezone = values["-WORLD_ZONE-"]
+            window["-WORLD_TEXT-"].update(my_world_klock.get_local_time(timezone))
 
         utils.set_title(window, pr_button, my_stopwatch, my_countdown)
         utils.update_status_bar(window)
@@ -94,7 +100,7 @@ def run_klock(my_logger, my_config):
                 window.disappear()
                 time_type = values["-TIME_TYPES-"]
                 ret_font, font_name, font_size = fu.set_font(font_name, time_type)  #  Returns a font object.
-                window = klock.win_layout(my_config, window.current_location(), win_size, current_time.timeTypes, font_name, font_size, time_type)
+                window = klock.win_layout(my_config, my_world_klock, win_location, win_size, current_time.timeTypes, font_name, font_size, time_type)
                 window["-CURRENT_TIME-"].update(current_time.getTime(time_type))
                 my_logger.debug(f"Time Type {time_type}  Font name = {font_name}  Font size = {font_size}")
                 window.reappear()
@@ -113,7 +119,7 @@ def run_klock(my_logger, my_config):
             case "Theme":                                                                           #  Change the theme, triggered from the menu option.
                 window.disappear()
                 sg.theme(theme.run_theme())
-                window = klock.win_layout(my_config, window.current_location(), win_size, current_time.timeTypes, font_name, font_size, time_type)
+                window = klock.win_layout(my_config, my_world_klock, win_location, win_size, current_time.timeTypes, font_name, font_size, time_type)
                 window["-CURRENT_TIME-"].update(current_time.getTime(time_type))
                 window.reappear()
             case "Font":
@@ -121,7 +127,7 @@ def run_klock(my_logger, my_config):
                     window.disappear()
                     new_font, font_name, font_size = fonts.run_fonts(time_type)
                     if new_font:                            #  Cancel was selected in font window, or no font selected.
-                        window = klock.win_layout(my_config, window.current_location(), win_size, current_time.timeTypes, font_name, font_size, time_type)
+                        window = klock.win_layout(my_config, my_world_klock, win_location, win_size, current_time.timeTypes, font_name, font_size, time_type)
                         window['-CURRENT_TIME-'].update(font=new_font)
                         window["-CURRENT_TIME-"].update(current_time.getTime(time_type))
                         my_logger.debug(f"Font name = {font_name}  Font size = {font_size}")
@@ -131,7 +137,13 @@ def run_klock(my_logger, my_config):
                 stopwatch.run_stopwatch(event, window, my_stopwatch)
             case ("-+15-"|"-+30-"|"-+45-"|"-+60-"|"-COUNTDOWN_START-"|"-COUNTDOWN_STOP-"|"-COUNTDOWN_TARGET-"|"-COUNTDOWN_EVENT-"):
                 #  Countdown functions called - pass to my_countdown.
-               countdown.run_countdown(event, window, my_countdown, values)
+                print("at event loop -COUNTDOWN_EVENT-")
+                countdown.run_countdown(event, window, my_countdown, values)
+            case "-WORLD_ZONE-":
+                #  World Klock functions called - pass to my_countdown.
+                timezone = values["-WORLD_ZONE-"]
+                window["-WORLD_TEXT-"].update(my_world_klock.get_local_time(timezone))
+
 
 
 

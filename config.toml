@@ -1,11 +1,11 @@
 #   Configure file for pyDigitalKlock.py 
-#   (c) Kevin Scott   Written Monday 16 May 2022  22:14:30
+#   (c) Kevin Scott   Written Thursday 19 May 2022  19:56:39
 #
 #   true and false are lower case 
 #   location needs double \ i.e. c:\tmp\music - well, on windows any way. 
 #
 [INFO]
-myVERSION = "2022.43"
+myVERSION = "2022.44"
 myNAME = "pyKlock"
 
 [COLOUR]
@@ -21,8 +21,8 @@ x_pos = 773
 y_pos = -568
 
 [FONT]
-size = 17
-name = "Radioland"
+size = 24
+name = "Twobit"
 
 [TIME]
-type = "Fuzzy Time"
+type = "Time in Words"
