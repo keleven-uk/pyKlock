@@ -66,7 +66,7 @@ def run_klock(my_logger, my_config):
 
     my_countdown = countdown.countdown(window)
 
-    utils.set_title(window, pr_button, my_stopwatch, my_countdown)
+    utils.set_title(window, pr_button, my_stopwatch, my_countdown, current_time)
     utils.update_status_bar(window)
     window["-CURRENT_TIME-"].update(current_time.getTime(time_type))
 
@@ -85,7 +85,7 @@ def run_klock(my_logger, my_config):
             timezone = values["-WORLD_ZONE-"]
             window["-WORLD_TEXT-"].update(my_world_klock.get_local_time(timezone))
 
-        utils.set_title(window, pr_button, my_stopwatch, my_countdown)
+        utils.set_title(window, pr_button, my_stopwatch, my_countdown, current_time)
         utils.update_status_bar(window)
         window["-CURRENT_TIME-"].update(current_time.getTime(time_type))
 
@@ -95,7 +95,7 @@ def run_klock(my_logger, my_config):
                 window[pr_button].update(visible=False)
                 window[pressed].update(visible=True)
                 pr_button = pressed
-                utils.set_title(window, pressed, my_stopwatch, my_countdown)
+                utils.set_title(window, pressed, my_stopwatch, my_countdown, current_time)
             case "-TIME_TYPES-":                                                                    #  Another choice selected from the combo box.
                 window.disappear()
                 time_type = values["-TIME_TYPES-"]
@@ -137,7 +137,6 @@ def run_klock(my_logger, my_config):
                 stopwatch.run_stopwatch(event, window, my_stopwatch)
             case ("-+15-"|"-+30-"|"-+45-"|"-+60-"|"-COUNTDOWN_START-"|"-COUNTDOWN_STOP-"|"-COUNTDOWN_TARGET-"|"-COUNTDOWN_EVENT-"):
                 #  Countdown functions called - pass to my_countdown.
-                print("at event loop -COUNTDOWN_EVENT-")
                 countdown.run_countdown(event, window, my_countdown, values)
             case "-WORLD_ZONE-":
                 #  World Klock functions called - pass to my_countdown.

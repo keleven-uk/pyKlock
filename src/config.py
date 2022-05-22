@@ -176,7 +176,7 @@ class Config():
         st_toml = toml.dumps(self.config)
 
         with open(self.FILE_NAME, "w") as configFile:       # In context manager.
-            configFile.write("#   Configure file for pyDigitalKlock.py \n")
+            configFile.write("#   Configure file for pyKlock.py \n")
             configFile.write(f"#   (c) Kevin Scott   Written {written}\n")
             configFile.write("#\n")
             configFile.write("#   true and false are lower case \n")
@@ -194,7 +194,7 @@ class Config():
         written = strNow.strftime("%A %d %B %Y  %H:%M:%S")
         config  = dict()
 
-        config['INFO'] = {"myVERSION": "2022.44",
+        config['INFO'] = {"myVERSION": "2022.45",
                           "myNAME"   : "pyKlock"}
 
         config["COLOUR"] = {"theme":"Dark"}
@@ -213,7 +213,7 @@ class Config():
         st_toml = toml.dumps(config)
 
         with open(self.FILE_NAME, "w") as configFile:       # In context manager.
-            configFile.write("#   DEFAULT Configure file for pyDigitalKlock.py \n")
+            configFile.write("#   DEFAULT Configure file for pyKlock.py \n")
             configFile.write(f"#   (c) Kevin Scott   Written {written}\n")
             configFile.write("#\n")
             configFile.write("#   true and false are lower case \n")

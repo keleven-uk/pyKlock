@@ -112,7 +112,7 @@ def update_status_bar(window):
     window['-CURRENT-IDLE-'].update(get_idle_duration())
 
 
-def set_title(window, view, my_stopwatch, my_countdown):
+def set_title(window, view, my_stopwatch, my_countdown, current_time):
     """  Set the window title to an appropriate thing.
          Adds on the stopwatch value, if running.
     """
@@ -134,6 +134,9 @@ def set_title(window, view, my_stopwatch, my_countdown):
     if my_countdown.countdown_running:
         down_arrow = u"\u2193"
         title += (f" {symbol} {down_arrow}{my_countdown.elapsed_time}")
+
+
+    title += (f" {symbol} {current_time.getLocalTime()}")
 
     window.set_title(f" {title}")
 

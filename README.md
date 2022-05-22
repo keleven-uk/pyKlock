@@ -11,13 +11,16 @@ The first view is Fuzzy Time.
         i.e. in Words, in Hex, in Roman Numerals, in Binary etc.
     The font of the time can also be changed.
 
-The second view completed in Stopwatch
+The second view completed in Stopwatch.
     This consists a clock face to display hours, minutes and seconds and a row of buttons.
     The buttons allow for the timer to be started, stopped, resumed, paused and cleared.
 
-The third view completed is Countdown.
+The third view completed is a Countdown Timer.
     This allows a time interval to be set, either via a spin control or pre-set buttons,
     and the time will count down to zero.
+
+The fourth view is a World Klock.
+    This displays the time in a given time zone, that is selected from a drop down list.
 
 
 or will be [similar to lazKlock & klock.vb], at the moment a trying ground for ideas.

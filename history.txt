@@ -8,6 +8,14 @@
        pyDigitalKlock_psg    - built with pySimpleGUI
 
 
+V2022.45
+
+    Added the local time to the title bar.
+    Amended some referances pyDigitalKlock to pyKlock in src/config.py
+    Removed some debugging lines.
+    Updated README.md
+
+
 V2022.44
 
     Implemented the World Klock view.
