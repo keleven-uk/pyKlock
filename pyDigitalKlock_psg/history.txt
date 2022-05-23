@@ -2,6 +2,14 @@
     Version numbers are taken from the main project.
 
 
+V2022.47
+
+    There was a bug in re-creating the window when ever the font, theme or time type was changed.
+        This resulting in more then on window existing.  This was because I used to
+        disappear the window, create a new one and then appear the original.
+        I now close the first window before creating the second.
+
+
 V2022.32.9be69de
 
     There was a problem with applying and saving transparency, should be save as a Boolean and not a string.

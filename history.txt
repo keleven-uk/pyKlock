@@ -8,6 +8,10 @@
        pyDigitalKlock_psg    - built with pySimpleGUI
 
 
+V2022.47
+
+    Corrected the multiple windows bug in pyDigitalKlock_psg.
+
 
 V2022.46
 

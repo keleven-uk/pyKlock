@@ -68,9 +68,11 @@ def run_klock(my_logger, my_config):
                 window.disappear()
                 new_font, font_name, window_length, window_height = fonts.run_fonts()
                 if new_font:                            #  Cancel was selected in font window, or no font selected.
+                    window.close()
                     window = klock.win_layout(win_colour, txt_colour, my_config, window_length, window_height, transparancy)
                     window['-CURRENT_TIME-'].update(font=new_font)
-                window.reappear()
+                else:
+                    window.reappear()
             case "License":
                 window.disappear()
                 license.run_license(my_config.NAME, my_config.VERSION)
@@ -80,35 +82,30 @@ def run_klock(my_logger, my_config):
                 sg.popup(my_config.NAME, f"V {my_config.VERSION}", "PySimpleGUI Version", sg.version, grab_anywhere=True)
                 window.reappear()
             case "Foreground":
-                window.disappear()
+                window.close()
                 for_colour = askcolor(title="Choose colour of foreground")
                 txt_colour = for_colour[1]
                 klock.update_text_colour(window, txt_colour)
-                window.reappear()
             case "Background":
-                window.disappear()
+                window.close()
                 bac_colour = askcolor(title="Choose colour of background")
                 win_colour = bac_colour[1]
                 window = klock.win_layout(win_colour, txt_colour, my_config, window_length, window_height, transparancy)
-                window.reappear()
             case "Theme":
-                window.disappear()
+                window.close()
                 my_config.THEME = theme.run_theme()
                 sg.theme(my_config.THEME)
                 window = klock.win_layout(win_colour, txt_colour, my_config, window_length, window_height, transparancy, change_theme=True)
                 txt_colour = sg.theme_text_color()
                 win_colour = sg.theme_background_color()
-                window.reappear()
             case "Transparent":
-                window.disappear()
+                window.close()
                 transparancy = True
                 window = klock.win_layout(win_colour, txt_colour, my_config, window_length, window_height, transparancy)
-                window.reappear()
             case "Normal":
-                window.disappear()
+                window.close()
                 transparancy = False
                 window = klock.win_layout(win_colour, txt_colour, my_config, window_length, window_height, transparancy)
-                window.reappear()
             case "-STARTMOVE-":                                                                      #  Left click, start move.
                 off_x = window.CurrentLocation()[0] - window.mouse_location()[0]                     #  Offset from window top left hand corner
                 off_y = window.CurrentLocation()[1] - window.mouse_location()[1]                     #  to mouse position.
