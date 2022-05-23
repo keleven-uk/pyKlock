@@ -28,23 +28,23 @@ PROJECT_PATH  = pathlib.Path(__file__).parent
 MAIN_PATH     = pathlib.Path(__file__).parent.parent
 
 #  If running as an executable i.e. from using auto-py-to-exe.
-#  Some of the paths needs to be toe working directory.
+#  Some of the paths needs to be the working directory.
 if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
     CONFIG_PATH   = "config.toml"
-    LOGGER_PATH   = "pyDigitalKlock.log"
+    LOGGER_PATH   = "pyKlock.log"
     FONTS_PATH    = "fonts"
     RESOURCE_PATH = "resources"
 else:
     CONFIG_PATH   = MAIN_PATH / "config.toml"
-    LOGGER_PATH   = MAIN_PATH / "logs/pyDigitalKlock.log"
+    LOGGER_PATH   = MAIN_PATH / "logs/pyKlock.log"
     FONTS_PATH    = MAIN_PATH / "fonts"
     RESOURCE_PATH = MAIN_PATH / "resources"
 
 
-start_image  = RESOURCE_PATH / "Start.png"
-resume_image = RESOURCE_PATH / "Resume.png"
-stop_image   = RESOURCE_PATH / "Stop.png"
-pause_image  = RESOURCE_PATH / "Pause.png"
-clear_image  = RESOURCE_PATH / "Clear.png"
-klock_icon   = RESOURCE_PATH / "Klock.ico"
+start_image  = r"resources/Start.png"
+resume_image = r"resources/Resume.png"
+stop_image   = r"resources/Stop.png"
+pause_image  = r"resources/Pause.png"
+clear_image  = r"resources/Clear.png"
+klock_icon   = r"resources/Klock.ico"
 

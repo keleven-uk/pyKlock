@@ -97,13 +97,12 @@ def run_klock(my_logger, my_config):
                 pr_button = pressed
                 utils.set_title(window, pressed, my_stopwatch, my_countdown, current_time)
             case "-TIME_TYPES-":                                                                    #  Another choice selected from the combo box.
-                window.disappear()
+                window.close()
                 time_type = values["-TIME_TYPES-"]
                 ret_font, font_name, font_size = fu.set_font(font_name, time_type)  #  Returns a font object.
                 window = klock.win_layout(my_config, my_world_klock, win_location, win_size, current_time.timeTypes, font_name, font_size, time_type)
                 window["-CURRENT_TIME-"].update(current_time.getTime(time_type))
                 my_logger.debug(f"Time Type {time_type}  Font name = {font_name}  Font size = {font_size}")
-                window.reappear()
             case "LCD Klock":                                                                       #  Run the sub project pyDigitalKlock_psg have to
                 window.hide()                                                                       #  hide window, if use disappear the window
                 sg.execute_py_file(pyfile="main.py", cwd="pyDigitalKlock_psg", wait=True)           #  appears almost immediately.  Probably because
@@ -117,21 +116,22 @@ def run_klock(my_logger, my_config):
                 sg.popup(my_config.NAME, f"V {my_config.VERSION}", "PySimpleGUI Version", sg.version, grab_anywhere=True)
                 window.reappear()
             case "Theme":                                                                           #  Change the theme, triggered from the menu option.
-                window.disappear()
+                window.close()
                 sg.theme(theme.run_theme())
                 window = klock.win_layout(my_config, my_world_klock, win_location, win_size, current_time.timeTypes, font_name, font_size, time_type)
                 window["-CURRENT_TIME-"].update(current_time.getTime(time_type))
-                window.reappear()
             case "Font":
                 #  Change the font, triggered from the menu option.
                     window.disappear()
                     new_font, font_name, font_size = fonts.run_fonts(time_type)
                     if new_font:                            #  Cancel was selected in font window, or no font selected.
+                        window.close()
                         window = klock.win_layout(my_config, my_world_klock, win_location, win_size, current_time.timeTypes, font_name, font_size, time_type)
                         window['-CURRENT_TIME-'].update(font=new_font)
                         window["-CURRENT_TIME-"].update(current_time.getTime(time_type))
                         my_logger.debug(f"Font name = {font_name}  Font size = {font_size}")
-                    window.reappear()
+                    else:
+                        window.reappear()
             case ("-TIMER_START-"|"-TIMER_RESUME-"|"-TIMER_STOP-"|"-TIMER_PAUSE-"|"-TIMER_CLEAR-"):
                 #  Stopwatch functions called - pass to my_stopwatch.
                 stopwatch.run_stopwatch(event, window, my_stopwatch)

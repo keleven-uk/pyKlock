@@ -137,5 +137,7 @@ pyDigitalKlock_pygubu/bin/*.log.*
 pyDigitalKlock_pygubu/bin/fonts/
 pyDigitalKlock_psg/bin/*.log.*
 pyDigitalKlock_psg/bin/fonts/
+bin/fonts
+bin/resources
 
 # End of https://www.gitignore.io/api/python,windows

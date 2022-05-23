@@ -1,15 +1,15 @@
 #   Configure file for pyKlock.py 
-#   (c) Kevin Scott   Written Monday 23 May 2022  13:52:12
+#   (c) Kevin Scott   Written Monday 23 May 2022  13:39:52
 #
 #   true and false are lower case 
 #   location needs double \ i.e. c:\tmp\music - well, on windows any way. 
 #
 [INFO]
-myVERSION = "2022.46"
+myVERSION = "2022.46.beta"
 myNAME = "pyKlock"
 
 [COLOUR]
-theme = "BlueMono"
+theme = "DarkBlue"
 foreground = "#ff0000"
 background = "#80ff80"
 transparent = "false"
@@ -21,8 +21,8 @@ x_pos = -899
 y_pos = -256
 
 [FONT]
-size = 32
+size = 40
 name = "Twobit"
 
 [TIME]
-type = "Time in Words"
+type = "GMT Time"

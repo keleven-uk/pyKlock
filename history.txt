@@ -8,10 +8,22 @@
        pyDigitalKlock_psg    - built with pySimpleGUI
 
 
+
+V2022.46
+
+    Created a bin directory to hole the pyInstaller created executable of pyKlock.
+        Used auto-py-to-exe as the fron end, the settings file is bin\pyKlock.json.
+        pyInstaller didn't like some of the path, changed to raw strings.
+    There was a bug in re-creating the window when ever the font, theme or time type was changed.
+        This resulting in more then on window existing.  This was because I used to
+        disappear the window, create a new one and then appear the original.
+        I now close the first window before creating the second.
+
+
 V2022.45
 
     Added the local time to the title bar.
-    Amended some referances pyDigitalKlock to pyKlock in src/config.py
+    Amended some references pyDigitalKlock to pyKlock in src/config.py
     Removed some debugging lines.
     Updated README.md
 
