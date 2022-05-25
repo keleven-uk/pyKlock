@@ -1,7 +1,6 @@
 ###############################################################################################################
-#    projectPaths.py   Copyright (C) <2022>  <Kevin Scott>                                                    #                                                                                                             #                                                                                                             #
-#    Holds common directory paths for the project.                                                            #
-#        Must sit in src directory                                                                            #
+#     reminder.py   Copyright (C) <2022>  <Kevin Scott>                                                      #                                                                                                             #                                                                                                             #
+#     A simple class that holds the data for a reminder.                                                             #
 #                                                                                                             #
 #     For changes see history.txt                                                                             #
 #                                                                                                             #
@@ -21,36 +20,61 @@
 #                                                                                                             #
 ###############################################################################################################
 
-import sys
-import pathlib
+import shelve
 
-PROJECT_PATH  = pathlib.Path(__file__).parent
-MAIN_PATH     = pathlib.Path(__file__).parent.parent
-
-#  If running as an executable i.e. from using auto-py-to-exe.
-#  Some of the paths needs to be the working directory.
-if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
-    CONFIG_PATH   = "config.toml"
-    LOGGER_PATH   = "pyKlock.log"
-    FONTS_PATH    = "fonts"
-    RESOURCE_PATH = "resources"
-    DATA_PATH     = "data"
-else:
-    CONFIG_PATH   = MAIN_PATH / "config.toml"
-    LOGGER_PATH   = MAIN_PATH / "logs/pyKlock.log"
-    FONTS_PATH    = MAIN_PATH / "fonts"
-    RESOURCE_PATH = MAIN_PATH / "resources"
-    DATA_PATH     = MAIN_PATH / "data"
+from src.projectPaths import *
 
 
-#  Use raw strings, when compiled using pyinstaller, does not like paths.
-start_image  = r"resources/Start.png"
-resume_image = r"resources/Resume.png"
-stop_image   = r"resources/Stop.png"
-pause_image  = r"resources/Pause.png"
-clear_image  = r"resources/Clear.png"
-klock_icon   = r"resources/Klock.ico"
+class reminder():
+    """   The simple template for an individual reminder.
+    """
+    def __init__(self, key, description, date_due, time_due, recuring):
+        self.id            = "0"
+        self.reminder_name = reminder_name
+        self.reminder_type = reminder_type
+        self.description   = description
+        self.date_due      = date_due
+        self.time_due      = time_due
+        self.recuring      = recuring
 
-backward_file_path = r"data/backward"
-reminder_data_file = r"data/reminders"
+    def __str__(self):
+        return f"{self.reminder_name}  {self.description}  {self.reminder_type} {self.date_due}  {self.time_due} {self.recuring}"
+
+
+
+class reminders():
+    """  Adds individual reminders to a reminders database.
+         The reminders are stored as pickles on a shelve.
+    """
+
+    def __init__(self):
+        self.no_of_reminders = 0
+
+
+    def add(self, reminder):
+        """  Adds the reminder to the reminders database.
+        """
+        self.database = shelve.open(reminder_data_file)
+        self.no_of_reminders =+ 1
+        reminder.id = str(self.no_of_reminders)
+        try:
+            self.database[reminder.id] = reminder
+        finally:
+            self.database.close()
+
+
+    def list_reminders(self):
+        """  Creates a list of the individual reminders for display.
+        """
+        self.database = shelve.open(reminder_data_file)
+
+        reminder_list = []
+        for reminder in self.database:
+            reminder_list.append(reminder)
+
+        return reminder_list
+
+        self.database.close()
+
+
 

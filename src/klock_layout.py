@@ -44,8 +44,7 @@ def win_layout(my_config, my_world_klock, win_location, win_size, timetypes, fon
                 ]
 
     #  Fuzzy Time GUI definitions
-    fuzzy_left_row_layout= [[sg.VPush(), sg.Combo(list(timetypes), key="-TIME_TYPES-", default_value=time_type, enable_events=True, readonly=True)]]
-
+    fuzzy_left_row_layout  = [[sg.VPush(), sg.Combo(list(timetypes), key="-TIME_TYPES-", default_value=time_type, enable_events=True, readonly=True)]]
     fuzzy_right_row_layout = [[sg.VPush(), sg.Text("00:00:00", key="-CURRENT_TIME-", font=(font_name,font_size))]]
 
     fuzzy_time_layout = [[sg.Text(" ")],
@@ -62,11 +61,8 @@ def win_layout(my_config, my_world_klock, win_location, win_size, timetypes, fon
     #  Countdown GUI definitions
     actions = ["None", "Notify", "Notify + Sound", "Pop Up", "Shutdown PC", "Log Out PC"]
     countdown_top_left_layout    = [sg.Spin([x+1 for x in range(120)], key="-COUNTDOWN_TARGET-", size=(8,1),  font=("TkDefaultFont", 16))]
-
     countdown_bottom_left_layout = [sg.Combo(actions, key="-COUNTDOWN_ACTION-", default_value=actions[0], size=(14,1),  font=("TkDefaultFont", 10))]
-
     countdown_middle_left_layout = [sg.Text("")]
-
     countdown_column_left_layout = [countdown_top_left_layout, countdown_middle_left_layout, countdown_bottom_left_layout]
 
     countdown_layout = [[sg.Column(countdown_column_left_layout),
@@ -99,12 +95,22 @@ def win_layout(my_config, my_world_klock, win_location, win_size, timetypes, fon
                                image_filename=clear_image,  image_size=(100, 100), tooltip="Clear the Timer")]
                    ]
 
+    #  Reminder GUI definitions
+    reminder_top_button     = [sg.Button("Add", key="-REMINDER_ADD-", size=(5,2))]
+    reminder_middle_button  = [sg.Text("     ")]
+    reminder_bottom_button  = [sg.Button("Delete", key="-_REMINDER_DELETE-", size=(5,2))]
+    reminder_button_layout  = [reminder_top_button, reminder_middle_button, reminder_bottom_button]
+
+    reminder_layout = [[sg.Column(reminder_button_layout),
+                        sg.Text("      "),
+                        sg.Listbox(values="", size=(80, 5), horizontal_scroll=True, select_mode="LISTBOX_SELECT_MODE_SINGLE", key="-REMINDERS_LIST-")]]
 
     #  Buttons GUI definitions
     button_layout = [[sg.Button("Fuzzy Time",  key="-BTN_FUZZY-"),
                       sg.Button("World Klock", key="-BTN_WORLD-"),
                       sg.Button("Countdown",   key="-BTN_COUNTDOWN-"),
                       sg.Button("Timer",       key="-BTN_TIMER-"),
+                      sg.Button("Reminder",    key="-BTN_REMINDER-"),
                       sg.Button("Hide",        key="-HIDE-"),
                       sg.Button("Exit",        key="-EXIT-")]]
 
@@ -112,7 +118,8 @@ def win_layout(my_config, my_world_klock, win_location, win_size, timetypes, fon
     screen_layout = [sg.Column(fuzzy_time_layout,  visible=True,  key="-FUZZY-"),
                      sg.Column(world_klock_layout, visible=False, key="-WORLD-"),
                      sg.Column(countdown_layout,   visible=False, key="-COUNTDOWN-"),
-                     sg.Column(timer_layout,       visible=False, key="-TIMER-")]
+                     sg.Column(timer_layout,       visible=False, key="-TIMER-"),
+                     sg.Column(reminder_layout,    visible=False, key="-REMINDER-")]
 
 
     #  Status Bar GUI definitions

@@ -8,12 +8,23 @@
        pyDigitalKlock_psg    - built with pySimpleGUI
 
 
-V2022.47
+V2022.48
+
+    Implementing the Reminder view, not complete yet.
+    Finished the main view that will display the reminders, with buttons to add and remove reminders.
+    Finished the add window, which is a separate window that open when the add button is selected.
+        The reminders will be stored in a database using the python pickles on a shelve.
+        The basics of this has been implemented.
+    Changed the order of some of the code in the event loop.
+        This was so the "EXIT" could be in the match statement.
+
+
+V2022.47.9506dca
 
     Corrected the multiple windows bug in pyDigitalKlock_psg.
+git aa
 
-
-V2022.46
+V2022.46.0fe08f3
 
     Created a bin directory to hole the pyInstaller created executable of pyKlock.
         Used auto-py-to-exe as the fron end, the settings file is bin\pyKlock.json.
@@ -24,7 +35,7 @@ V2022.46
         I now close the first window before creating the second.
 
 
-V2022.45
+V2022.45.4ef0ac5
 
     Added the local time to the title bar.
     Amended some references pyDigitalKlock to pyKlock in src/config.py
@@ -32,7 +43,7 @@ V2022.45
     Updated README.md
 
 
-V2022.44
+V2022.44.71aa87e
 
     Implemented the World Klock view.
     A new file pyklock\src\world_klock.py holds the world_klock class.
@@ -40,14 +51,14 @@ V2022.44
     Added two files to the requirements directory - development_pyklock & product_pyklock
 
 
-V2022.43
+V2022.43.88a5097
 
     Added actions to the countdown, choices are selected from a combo box.
         Choices are "None", "Notify", "Notify + Sound", "Pop Up", "Shutdown PC", "Log Out PC".
         More actions will be added when needed.
 
 
-V2022.42
+V2022.42,895f4e5
 
     Amended the countdown class, so that a copy of the window object is passed in.
     This allows countdown to raise an event when finished that can be read in the main event loop.
@@ -58,8 +69,7 @@ V2022.42
     Removed button_color=sg.TRANSPARENT_BUTTON from all buttons - look better now.
 
 
-V2022.41
-
+V2022.41.fe755ca
     Implemented the countdown view.
     A new file pyklock\src\countdown.py holds the countdown class.
     This allows a time interval to be set, either via a spin control or pre-set buttons,
@@ -71,7 +81,7 @@ V2022.41
     Added two new fonts DIXIE & Harry P.
 
 
-V2022.40
+V2022.40.cc2fd4f
 
     Implemented the stopwatch view.
     A new file pyklock\src\stopwatch.py holds the stopwatch class.
@@ -130,7 +140,7 @@ pyKlock\src\utils\license_text.py                                               
 SUM:                                                                             734           1172           2290
 ------------------------------------------------------------------------------------------------------------------
 
-V2022.39
+V2022.39.c68ed15
 
     Theme & Font now reside in the settings menu.
     Used sg.VPush to centre Fuzzy Time text & Time Types combo box.

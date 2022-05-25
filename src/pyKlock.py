@@ -37,6 +37,8 @@ import src.stopwatch    as stopwatch
 import src.countdown    as countdown
 import src.world_klock  as world_klock
 
+import src.reminder.reminder_gui as reminder_gui
+
 import src.utils.fonts_utils as fu
 import src.utils.klock_utils as utils
 
@@ -49,7 +51,7 @@ def run_klock(my_logger, my_config):
     """
     current_time   = time.SelectTime()                                           #  Object with the varied time codes.
     my_stopwatch   = stopwatch.timer()
-    my_world_klock = world_klock.world_klock()
+    my_world_klock = world_klock.world_klock(backward_file_path)
 
     font_name    = my_config.FONT_NAME                                         #  Initial name of the font used.
     font_size    = my_config.FONT_SIZE                                         #  Initial size of the font used.
@@ -74,28 +76,17 @@ def run_klock(my_logger, my_config):
     while True:
         event, values = window.read(timeout=1000)
 
-        if event in (sg.WIN_CLOSED, 'Exit', "-EXIT-"):            # if user closes window or clicks quit
-            break
-
-        if my_stopwatch.timer_running:
-            window["-TIMER_TEXT-"].update(my_stopwatch.elapsed_time)
-        if my_countdown.countdown_running:
-            window["-COUNTDOWN_TEXT-"].update(my_countdown.tick())
-        if pr_button == "-WORLD-":
-            timezone = values["-WORLD_ZONE-"]
-            window["-WORLD_TEXT-"].update(my_world_klock.get_local_time(timezone))
-
-        utils.set_title(window, pr_button, my_stopwatch, my_countdown, current_time)
-        utils.update_status_bar(window)
-        window["-CURRENT_TIME-"].update(current_time.getTime(time_type))
-
         match event:
-            case ("-BTN_FUZZY-"|"-BTN_WORLD-"|"-BTN_COUNTDOWN-"|"-BTN_TIMER-"):                     #  Button pressed, change views.
+            case (sg.WIN_CLOSED|"Exit"|"-EXIT-"):
+                break
+
+            case ("-BTN_FUZZY-"|"-BTN_WORLD-"|"-BTN_COUNTDOWN-"|"-BTN_TIMER-"|"-BTN_REMINDER-"):    #  Button pressed, change views.
                 pressed = "-" + event[5:-1] +"-"
                 window[pr_button].update(visible=False)
                 window[pressed].update(visible=True)
                 pr_button = pressed
                 utils.set_title(window, pressed, my_stopwatch, my_countdown, current_time)
+
             case "-TIME_TYPES-":                                                                    #  Another choice selected from the combo box.
                 window.close()
                 time_type = values["-TIME_TYPES-"]
@@ -103,23 +94,28 @@ def run_klock(my_logger, my_config):
                 window = klock.win_layout(my_config, my_world_klock, win_location, win_size, current_time.timeTypes, font_name, font_size, time_type)
                 window["-CURRENT_TIME-"].update(current_time.getTime(time_type))
                 my_logger.debug(f"Time Type {time_type}  Font name = {font_name}  Font size = {font_size}")
+
             case "LCD Klock":                                                                       #  Run the sub project pyDigitalKlock_psg have to
                 window.hide()                                                                       #  hide window, if use disappear the window
                 sg.execute_py_file(pyfile="main.py", cwd="pyDigitalKlock_psg", wait=True)           #  appears almost immediately.  Probably because
                 window.un_hide()                                                                    #  running an .py file and not a internal sg call.
+
             case "License":                                                                         #  Display License info.
                 window.disappear()
                 license.run_license(my_config.NAME, my_config.VERSION)
                 window.reappear()
+
             case "About":                                                                           #  Display About info, triggered from the menu option.
                 window.disappear()
                 sg.popup(my_config.NAME, f"V {my_config.VERSION}", "PySimpleGUI Version", sg.version, grab_anywhere=True)
                 window.reappear()
+
             case "Theme":                                                                           #  Change the theme, triggered from the menu option.
                 window.close()
                 sg.theme(theme.run_theme())
                 window = klock.win_layout(my_config, my_world_klock, win_location, win_size, current_time.timeTypes, font_name, font_size, time_type)
                 window["-CURRENT_TIME-"].update(current_time.getTime(time_type))
+
             case "Font":
                 #  Change the font, triggered from the menu option.
                     window.disappear()
@@ -132,22 +128,40 @@ def run_klock(my_logger, my_config):
                         my_logger.debug(f"Font name = {font_name}  Font size = {font_size}")
                     else:
                         window.reappear()
+
             case ("-TIMER_START-"|"-TIMER_RESUME-"|"-TIMER_STOP-"|"-TIMER_PAUSE-"|"-TIMER_CLEAR-"):
                 #  Stopwatch functions called - pass to my_stopwatch.
                 stopwatch.run_stopwatch(event, window, my_stopwatch)
+
             case ("-+15-"|"-+30-"|"-+45-"|"-+60-"|"-COUNTDOWN_START-"|"-COUNTDOWN_STOP-"|"-COUNTDOWN_TARGET-"|"-COUNTDOWN_EVENT-"):
                 #  Countdown functions called - pass to my_countdown.
                 countdown.run_countdown(event, window, my_countdown, values)
+
             case "-WORLD_ZONE-":
-                #  World Klock functions called - pass to my_countdown.
+                #  World Klock functions called - pass to my_world_klock.
                 timezone = values["-WORLD_ZONE-"]
                 window["-WORLD_TEXT-"].update(my_world_klock.get_local_time(timezone))
 
+            case "-REMINDER_ADD-":
+                reminder_list = reminder_gui.run_reminders()
+                print(f":{len(reminder_list)} :")
+                #window["-REMINDERS_LIST-"].update(reminder_list)
+
+        #  Update stuff at the end of the event loop.
+        if my_stopwatch.timer_running:
+            window["-TIMER_TEXT-"].update(my_stopwatch.elapsed_time)
+        if my_countdown.countdown_running:
+            window["-COUNTDOWN_TEXT-"].update(my_countdown.tick())
+        if pr_button == "-WORLD-":
+            timezone = values["-WORLD_ZONE-"]
+            window["-WORLD_TEXT-"].update(my_world_klock.get_local_time(timezone))
+
+        utils.set_title(window, pr_button, my_stopwatch, my_countdown, current_time)
+        utils.update_status_bar(window)
+        window["-CURRENT_TIME-"].update(current_time.getTime(time_type))
 
 
-
-
-
+#   Outside of event loop.
     try:                                                                                #  Saves the current configuration and closes app.
         my_config.FONT_NAME  = font_name                                                #  Final name of the font used.
         my_config.FONT_SIZE  = font_size                                                #  Final size of the font used.

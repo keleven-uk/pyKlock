@@ -38,13 +38,13 @@ class world_klock:
 
         The returned list is not only sorted alphabetically, but also has had old and depreciated entries removed.
         Thanks to https://adamj.eu/tech/2021/05/06/how-to-list-all-timezones-in-python/
-        The file backwards [which resides in the src directory] is from the download at https://www.iana.org/time-zones
+        The file backwards [which resides in the pth "backward_file"] is from the download at https://www.iana.org/time-zones
 
         Need to install tzdata  i.e.  pip install tzdata
     """
 
-    def __init__(self):
-        self.tzlist = sorted(self.get_timezones())      #  Sorted() returns a list, which is want we want.  :-)
+    def __init__(self, backward_file):
+        self.tzlist    = sorted(self.get_timezones(backward_file))      #  Sorted() returns a list, which is want we want.  :-)
 
     @property
     def available_timezones(self):
@@ -56,9 +56,9 @@ class world_klock:
         return dt
 
 
-    def deprecated_aliases(self):
+    def deprecated_aliases(self, backward_file):
         aliases = set()
-        with open("backward", "r") as fp:
+        with open(backward_file, "r") as fp:
             for line_full in fp:
                 line = line_full.strip()
                 if not line.startswith("Link\t"):
@@ -67,5 +67,5 @@ class world_klock:
                 aliases.add(source)
         return aliases
 
-    def get_timezones(self):
-        return zoneinfo.available_timezones() - self.deprecated_aliases()
+    def get_timezones(self, backward_file):
+        return zoneinfo.available_timezones() - self.deprecated_aliases(backward_file)
