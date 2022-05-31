@@ -22,61 +22,65 @@
 import PySimpleGUI as sg
 
 import src.reminder.reminder as reminder
+import src.reminder.reminder_utils as ru
 
 
-def run_reminders():
+def run_reminders(window):
     """  A Simple dialog.
          Collects the data for a reminder - key, description, date/time due.
+
+         if window is True then display window - if false just return list of reminders.
     """
-
-
-    sg.theme("SandyBeach")
-
-    layout = [
-        [sg.Text("Please enter your reminder")],
-        [sg.Text("Key",               size =(15, 1)), sg.InputText(key="-REMINDER_KEY-")],
-        [sg.Text("Description",       size =(15, 1)), sg.InputText(key="-REMINDER_DESCRIPTION-")],
-        [sg.Text("Date Due",          size =(15, 1)), sg.Input(key="-REMINDER_DATE_DUE-", size=(20,1)),
-         sg.CalendarButton("Choose Date",  target="-REMINDER_DATE_DUE-", format="%d-%m-%y")],
-        [sg.Text("Time Due",          size =(15, 1)),
-         sg.Spin([x+1 for x in range(23)], key="-REMINDER_DUE_TIME_HOURS-", size=(6,1),  font=("TkDefaultFont", 12), initial_value=0),
-         sg.Spin([x+1 for x in range(59)], key="-REMINDER_DUE_TIME_MINS-",  size=(6,1),  font=("TkDefaultFont", 12), initial_value=0)],
-        [sg.Text("Recuring reminder", size =(15, 1)), sg.Checkbox("", key="-REMINDER_RECURING-", default=False)],
-        [sg.Submit(), sg.Cancel()]
-        ]
-
-    #  Create window
-    window = sg.Window("Reminders", layout)
 
     #  Create reminders database
     reminder_db = reminder.reminders()
 
-    # Event Loop to process "events" and get the "values" of the inputs
-    while True:
-        event, values = window.read(timeout=1000)
+    if window:
+        #  Create the reminder event type list.
+        events = ru.get_events()
 
-        match event:
-            case (sg.WIN_CLOSED|"Cancel"):
-                break
-            case "Submit":
-                key         = values["-REMINDER_KEY-"]
-                description = values["-REMINDER_DESCRIPTION-"]
-                date_due    = values["-REMINDER_DATE_DUE-"]
-                hrs         = values["-REMINDER_DUE_TIME_HOURS-"]
-                mns         = values["-REMINDER_DUE_TIME_MINS-"]
-                time_due    = f"{hrs}:{mns}"
-                recuring    = values["-REMINDER_RECURING-"]
+        sg.theme("SandyBeach")
 
-                new_reminder = reminder.reminder(key, description, date_due, time_due, recuring)
+        layout = [
+            [sg.Text("Please enter your reminder")],
+            [sg.Text("Event",       size =(15, 1)),sg.Combo(events, key="-REMIDER_EVENT-", default_value=events[0], size=(14,1),  font=("TkDefaultFont", 10))],
+            [sg.Text("Description", size =(15, 1)), sg.InputText(key="-REMINDER_DESCRIPTION-")],
+            [sg.Text("Date Due",    size =(15, 1)), sg.Input(key="-REMINDER_DATE_DUE-", size=(20,1)),
+            sg.CalendarButton("Choose Date",  target="-REMINDER_DATE_DUE-", format="%d-%m-%y")],
+            [sg.Text("Time Due",          size =(15, 1)),
+            sg.Spin([x+1 for x in range(23)], key="-REMINDER_DUE_TIME_HOURS-", size=(6,1),  font=("TkDefaultFont", 12), initial_value=0),
+            sg.Spin([x+1 for x in range(59)], key="-REMINDER_DUE_TIME_MINS-",  size=(6,1),  font=("TkDefaultFont", 12), initial_value=0)],
+            [sg.Text("Recuring reminder", size =(15, 1)), sg.Checkbox("", key="-REMINDER_RECURING-", default=False)],
+            [sg.Submit(), sg.Cancel()]
+            ]
 
-                reminder_db.add(new_reminder)
+        #  Create window
+        window = sg.Window("Reminders", layout)
 
-                print(str(new_reminder))
+        # Event Loop to process "events" and get the "values" of the inputs
+        while True:
+            event, values = window.read(timeout=1000)
 
-                break
+            match event:
+                case (sg.WIN_CLOSED|"Cancel"):
+                    break
+                case "Submit":
+                    event       = values["-REMIDER_EVENT-"]
+                    description = values["-REMINDER_DESCRIPTION-"]
+                    date_due    = values["-REMINDER_DATE_DUE-"]
+                    hrs         = values["-REMINDER_DUE_TIME_HOURS-"]
+                    mns         = values["-REMINDER_DUE_TIME_MINS-"]
+                    time_due    = f"{hrs}:{mns}"
+                    recuring    = values["-REMINDER_RECURING-"]
+
+                    new_reminder = reminder.reminder(event, description, date_due, time_due, recuring)
+
+                    reminder_db.add(new_reminder)
+
+                    break
 
 
-    window.close(); del window
+        window.close(); del window
 
     return reminder_db.list_reminders()
 

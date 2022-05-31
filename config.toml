@@ -1,11 +1,11 @@
 #   Configure file for pyKlock.py 
-#   (c) Kevin Scott   Written Tuesday 24 May 2022  21:42:59
+#   (c) Kevin Scott   Written Tuesday 31 May 2022  22:28:02
 #
 #   true and false are lower case 
 #   location needs double \ i.e. c:\tmp\music - well, on windows any way. 
 #
 [INFO]
-myVERSION = "2022.48"
+myVERSION = "2022.49.beta"
 myNAME = "pyKlock"
 
 [COLOUR]
@@ -17,8 +17,8 @@ transparent = "false"
 [WINDOW]
 width = 875
 height = 200
-x_pos = 568
-y_pos = -621
+x_pos = -900
+y_pos = -266
 
 [FONT]
 size = 32

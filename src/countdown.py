@@ -75,7 +75,6 @@ class countdown():
         """
 
         if self.target == 0:
-            print("at 0 -COUNTDOWN_EVENT-")
             self.window.write_event_value("-COUNTDOWN_EVENT-", ("Finished"))
             self.is_running = False
             return "00:00:00"

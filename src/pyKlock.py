@@ -87,6 +87,11 @@ def run_klock(my_logger, my_config):
                 pr_button = pressed
                 utils.set_title(window, pressed, my_stopwatch, my_countdown, current_time)
 
+                if not "-REMINDER-":                                                                #  Tries to stop the table refresh for every event loop.
+                    refresh_reminder_table = False
+                else:
+                    refresh_reminder_table = True
+
             case "-TIME_TYPES-":                                                                    #  Another choice selected from the combo box.
                 window.close()
                 time_type = values["-TIME_TYPES-"]
@@ -143,9 +148,8 @@ def run_klock(my_logger, my_config):
                 window["-WORLD_TEXT-"].update(my_world_klock.get_local_time(timezone))
 
             case "-REMINDER_ADD-":
-                reminder_list = reminder_gui.run_reminders()
-                print(f":{len(reminder_list)} :")
-                #window["-REMINDERS_LIST-"].update(reminder_list)
+                reminder_list = reminder_gui.run_reminders(window=True)
+                window["-REMINDER_TABLE-"].update(reminder_list)
 
         #  Update stuff at the end of the event loop.
         if my_stopwatch.timer_running:
@@ -155,6 +159,14 @@ def run_klock(my_logger, my_config):
         if pr_button == "-WORLD-":
             timezone = values["-WORLD_ZONE-"]
             window["-WORLD_TEXT-"].update(my_world_klock.get_local_time(timezone))
+        if pr_button == "-REMINDER-":
+            if refresh_reminder_table:                                                 #  Should fire first time around.
+                reminder_list = reminder_gui.run_reminders(window=False)
+                window["-REMINDER_TABLE-"].update(values=reminder_list)
+                refresh_reminder_table = False
+
+
+
 
         utils.set_title(window, pr_button, my_stopwatch, my_countdown, current_time)
         utils.update_status_bar(window)

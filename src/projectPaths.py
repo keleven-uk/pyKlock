@@ -51,6 +51,7 @@ pause_image  = r"resources/Pause.png"
 clear_image  = r"resources/Clear.png"
 klock_icon   = r"resources/Klock.ico"
 
-backward_file_path = r"data/backward"
-reminder_data_file = r"data/reminders"
+backward_file_path   = r"data/backward"
+reminder_data_file   = r"data/reminders"
+reminder_events_file = r"data/events.txt"
 

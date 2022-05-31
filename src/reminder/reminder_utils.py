@@ -1,6 +1,6 @@
 ###############################################################################################################
-#     reminder.py   Copyright (C) <2022>  <Kevin Scott>                                                      #                                                                                                             #                                                                                                             #
-#     A simple class that holds the data for a reminder.                                                             #
+#     reminder_utils.py   Copyright (C) <2022>  <Kevin Scott>                                                 #                                                                                                             #                                                                                                             #
+#     Utility functions for the reminders.                                                                    #
 #                                                                                                             #
 #     For changes see history.txt                                                                             #
 #                                                                                                             #
@@ -20,66 +20,16 @@
 #                                                                                                             #
 ###############################################################################################################
 
-import shelve
-
 from src.projectPaths import *
 
+def get_events():
+    """  Read a list of event types from a text file and return in list form.
 
-class reminder():
-    """   The simple template for an individual reminder.
+         the path to the text file is held in reminder_events_file, from projectPaths
     """
-    def __init__(self, event, description, date_due, time_due, recuring):
-        self.id          = "0"
-        self.event       = event
-        self.description = description
-        self.date_due    = date_due
-        self.time_due    = time_due
-        self.recuring    = recuring
+    events = []
+    with open (reminder_events_file) as event_file:
+        for line in event_file:
+            events.append(line.strip())
 
-    def items_list(self):
-        return [self.id, self.event, self.description, self.date_due, self.time_due, self.recuring]
-
-    #def __str__(self):
-        #return f"{self.id}:{self.event}:{self.description}:{self.date_due}:{self.time_due}:{self.recuring}"
-
-
-
-class reminders():
-    """  Adds individual reminders to a reminders database.
-         The reminders are stored as pickles on a shelve.
-    """
-
-    def __init__(self):
-        self.no_of_reminders = 0
-
-
-    def add(self, reminder):
-        """  Adds the reminder to the reminders database.
-        """
-        self.database = shelve.open(reminder_data_file, writeback=True)
-        self.no_of_reminders = len(self.database) + 1
-        reminder.id = str(self.no_of_reminders)
-        try:
-            self.database[reminder.id] = reminder.items_list()
-        finally:
-            self.database.close()
-
-
-    def list_reminders(self):
-        """  Creates a list of the individual reminder items for display.
-        """
-        self.database = shelve.open(reminder_data_file, writeback=True)
-
-        reminder_list = []
-
-        try:
-            for items in self.database.items():
-                reminder_list.append(items[1])
-        finally:
-            self.database.close()
-
-        return reminder_list
-
-
-
-
+    return events

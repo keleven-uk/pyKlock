@@ -96,14 +96,28 @@ def win_layout(my_config, my_world_klock, win_location, win_size, timetypes, fon
                    ]
 
     #  Reminder GUI definitions
-    reminder_top_button     = [sg.Button("Add", key="-REMINDER_ADD-", size=(5,2))]
-    reminder_middle_button  = [sg.Text("     ")]
-    reminder_bottom_button  = [sg.Button("Delete", key="-_REMINDER_DELETE-", size=(5,2))]
+    data = [['' for row in range(15)]for col in range(6)]
+    headings = ["ID", "Event", "Description", "Date Due", "Time Due", "Recuring"]
+
+    reminder_top_button     = [sg.Button("Add",    key="-REMINDER_ADD-",    size=(5,2))]
+    reminder_middle_button  = [sg.Button("Edit",   key="-REMINDER_EDIT-",   size=(5,2))]
+    reminder_bottom_button  = [sg.Button("Delete", key="-REMINDER_DELETE-", size=(5,2))]
     reminder_button_layout  = [reminder_top_button, reminder_middle_button, reminder_bottom_button]
 
     reminder_layout = [[sg.Column(reminder_button_layout),
                         sg.Text("      "),
-                        sg.Listbox(values="", size=(80, 5), horizontal_scroll=True, select_mode="LISTBOX_SELECT_MODE_SINGLE", key="-REMINDERS_LIST-")]]
+                        sg.Table(values=data,
+                                 headings=headings,
+                                 max_col_width=45,
+                                 background_color="light blue",
+                                 auto_size_columns=True,
+                                 display_row_numbers=False,
+                                 justification="left",
+                                 num_rows=5,
+                                 alternating_row_color="lightyellow",
+                                 key="-REMINDER_TABLE-",
+                                 row_height=15,
+                                 tooltip="Reminders Entered")]]
 
     #  Buttons GUI definitions
     button_layout = [[sg.Button("Fuzzy Time",  key="-BTN_FUZZY-"),
