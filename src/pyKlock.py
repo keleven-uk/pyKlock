@@ -151,6 +151,19 @@ def run_klock(my_logger, my_config):
                 reminder_list = reminder_gui.run_reminders(window=True)
                 window["-REMINDER_TABLE-"].update(reminder_list)
 
+            case "-REMINDER_EDIT-":
+                if values["-REMINDER_TABLE-"] != []:                                    #  Check a row has been selected.
+                    line_number = values["-REMINDER_TABLE-"][0]
+                    reminder_list = reminder_gui.run_reminders(True, "EDIT", line_number)
+                    window["-REMINDER_TABLE-"].update(reminder_list)
+
+            case "-REMINDER_DELETE-":
+                if values["-REMINDER_TABLE-"] != []:                                    #  Check a row has been selected.
+                    line_number = values["-REMINDER_TABLE-"][0]
+                    reminder_list = reminder_gui.run_reminders(True, "DELETE", line_number)
+                    window["-REMINDER_TABLE-"].update(reminder_list)
+
+
         #  Update stuff at the end of the event loop.
         if my_stopwatch.timer_running:
             window["-TIMER_TEXT-"].update(my_stopwatch.elapsed_time)

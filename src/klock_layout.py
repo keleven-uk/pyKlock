@@ -99,18 +99,20 @@ def win_layout(my_config, my_world_klock, win_location, win_size, timetypes, fon
     data = [['' for row in range(15)]for col in range(6)]
     headings = ["ID", "Event", "Description", "Date Due", "Time Due", "Recuring"]
 
-    reminder_top_button     = [sg.Button("Add",    key="-REMINDER_ADD-",    size=(5,2))]
-    reminder_middle_button  = [sg.Button("Edit",   key="-REMINDER_EDIT-",   size=(5,2))]
-    reminder_bottom_button  = [sg.Button("Delete", key="-REMINDER_DELETE-", size=(5,2))]
+    reminder_top_button     = [sg.Button("Add",    key="-REMINDER_ADD-",    size=(5,1), pad=(1,1))]
+    reminder_middle_button  = [sg.Button("Edit",   key="-REMINDER_EDIT-",   size=(5,1), pad=(1,1))]
+    reminder_bottom_button  = [sg.Button("Delete", key="-REMINDER_DELETE-", size=(5,1), pad=(1,1))]
     reminder_button_layout  = [reminder_top_button, reminder_middle_button, reminder_bottom_button]
 
     reminder_layout = [[sg.Column(reminder_button_layout),
                         sg.Text("      "),
                         sg.Table(values=data,
                                  headings=headings,
-                                 max_col_width=45,
+                                 col_widths=[5, 15, 25, 10, 10, 10],
+                                 enable_events=True,
+                                 select_mode=sg.TABLE_SELECT_MODE_BROWSE,
                                  background_color="light blue",
-                                 auto_size_columns=True,
+                                 auto_size_columns=False,
                                  display_row_numbers=False,
                                  justification="left",
                                  num_rows=5,

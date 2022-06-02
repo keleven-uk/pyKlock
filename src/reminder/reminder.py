@@ -47,6 +47,8 @@ class reminder():
 class reminders():
     """  Adds individual reminders to a reminders database.
          The reminders are stored as pickles on a shelve.
+
+         NOTE - key and all fields in  shelve are strings
     """
 
     def __init__(self):
@@ -65,6 +67,16 @@ class reminders():
             self.database.close()
 
 
+    def save(self, line_no, event, description, date_due, time_due, recuring):
+        """  Saves an existing reminder with amended data.
+        """
+        self.database = shelve.open(reminder_data_file, writeback=True)
+        try:
+            self.database[line_no] = [line_no, event, description, date_due, time_due, recuring]
+        finally:
+            self.database.close()
+
+
     def list_reminders(self):
         """  Creates a list of the individual reminder items for display.
         """
@@ -79,6 +91,22 @@ class reminders():
             self.database.close()
 
         return reminder_list
+
+
+    def get_reminder(self, line_no):
+        """  Return a single reminder at position line_no.
+
+             If an error occurs on read, will return an empty reminder.
+        """
+        rem = []
+        self.database = shelve.open(reminder_data_file)
+        try:
+            rem = self.database[line_no]
+        finally:
+            self.database.close()
+
+        return rem
+
 
 
 

@@ -8,6 +8,15 @@
        pyDigitalKlock_psg    - built with pySimpleGUI
 
 
+V2022.50
+
+    Added the edit button for the reminder view, this uses an amended add form.
+        The add form now takes two extra arguments - mode & line no.
+        If the mode is "EDIT" then this allows the reminder at row line no the be edited.
+        Added two ne methods to the reminders class - save & get reminder.
+    Also, may have solved the table size problem.
+
+
 V2022.49
 
     Amended the add form, so that the event type is a drop down list.
