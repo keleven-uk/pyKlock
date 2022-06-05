@@ -48,18 +48,15 @@ class reminders():
     """  Adds individual reminders to a reminders database.
          The reminders are stored as pickles on a shelve.
 
-         NOTE - key and all fields in  shelve are strings
+         NOTE - key and all fields in shelve are strings
+         NOTE - also no __init__
     """
-
-    def __init__(self):
-        self.no_of_reminders = 0
-
 
     def add(self, reminder):
         """  Adds the reminder to the reminders database.
         """
         self.database = shelve.open(reminder_data_file, writeback=True)
-        self.no_of_reminders = len(self.database) + 1
+        self.no_of_reminders = len(self.database)
         reminder.id = str(self.no_of_reminders)
         try:
             self.database[reminder.id] = reminder.items_list()
@@ -73,6 +70,17 @@ class reminders():
         self.database = shelve.open(reminder_data_file, writeback=True)
         try:
             self.database[line_no] = [line_no, event, description, date_due, time_due, recuring]
+        finally:
+            self.database.close()
+
+
+    def delete(self, line_no):
+        """  Deletes an existing reminder at position line_no.
+        """
+        self.database = shelve.open(reminder_data_file, writeback=True)
+        try:
+            self.database.pop(line_no)  # DELETE
+            self.renumber_reminders()
         finally:
             self.database.close()
 
@@ -106,6 +114,32 @@ class reminders():
             self.database.close()
 
         return rem
+
+
+    def renumber_reminders(self):
+        """  After a reminder has been deleted, it leaves a hole in the sequential ID.
+             This method is called to readdress that probem.
+             It goes through all the reminders in order and sets ID back in order.
+        """
+        self.database = shelve.open(reminder_data_file)
+        new_db  = {}
+        db_keys = self.database.keys()
+        new_id  = 0
+
+        try:
+            for _id in db_keys:
+                items = self.database[_id]
+                items[0] = str(new_id)
+                new_db[str(new_id)] = items
+
+                new_id += 1
+
+            #  Dangerous stuff.
+            self.database.clear()
+            self.database.update(new_db)
+        finally:
+            self.database.close()
+
 
 
 

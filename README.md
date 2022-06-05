@@ -22,6 +22,10 @@ The third view completed is a Countdown Timer.
 The fourth view is a World Klock.
     This displays the time in a given time zone, that is selected from a drop down list.
 
+The fifth view is reminders.
+    This allows a reminder to be entered with eiter a due dat or due time {or both].
+    A notification is displayed when the reminder is due.
+
 
 or will be [similar to lazKlock & klock.vb], at the moment a trying ground for ideas.
 Stuff that I come across that might be useful.

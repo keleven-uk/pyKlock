@@ -50,12 +50,12 @@ def run_reminders(window, mode="",  line_no=-1):
             [sg.Text("Event",       size =(15, 1)),sg.Combo(events, key="-REMIDER_EVENT-", default_value=events[0], size=(14,1),  font=("TkDefaultFont", 10))],
             [sg.Text("Description", size =(15, 1)), sg.InputText(key="-REMINDER_DESCRIPTION-")],
             [sg.Text("Date Due",    size =(15, 1)), sg.Input(key="-REMINDER_DATE_DUE-", size=(20,1)),
-            sg.CalendarButton("Choose Date",  target="-REMINDER_DATE_DUE-", format="%d-%m-%y")],
+             sg.CalendarButton("Choose Date",  target="-REMINDER_DATE_DUE-", format="%d-%m-%y")],
             [sg.Text("Time Due",          size =(15, 1)),
-            sg.Spin([x+1 for x in range(23)], key="-REMINDER_DUE_TIME_HOURS-", size=(6,1),  font=("TkDefaultFont", 12), initial_value=0),
-            sg.Spin([x+1 for x in range(59)], key="-REMINDER_DUE_TIME_MINS-",  size=(6,1),  font=("TkDefaultFont", 12), initial_value=0)],
+             sg.Spin([x+1 for x in range(23)], key="-REMINDER_DUE_TIME_HOURS-", size=(6,1),  font=("TkDefaultFont", 12), initial_value=0),
+             sg.Spin([x+1 for x in range(59)], key="-REMINDER_DUE_TIME_MINS-",  size=(6,1),  font=("TkDefaultFont", 12), initial_value=0)],
             [sg.Text("Recuring reminder", size =(15, 1)), sg.Checkbox("", key="-REMINDER_RECURING-", default=False)],
-            [sg.Submit(), sg.Cancel()]
+            [sg.Button("Delete", key="-DELETE-",  visible=False), sg.Button("Submit", key="-SUBMIT-",  visible=True), sg.Cancel()]
             ]
 
         #  Create window
@@ -70,11 +70,11 @@ def run_reminders(window, mode="",  line_no=-1):
         #           4 = reminder due time
         #           5 = reminder recuring
 
-        if mode == "EDIT":
-            disp_reminder = reminder_db.get_reminder(str(line_no+1))
+        if mode in ("EDIT", "DELETE"):
+            disp_reminder = reminder_db.get_reminder(str(line_no))
             hrs, min = disp_reminder[4].split(":")
 
-            window["-FORM_TEXT-"].update("Please edit your reminder")
+            window["-FORM_TEXT-"].update("Please chose your reminder to EDIT")
             window["-REMIDER_EVENT-"].update(value=disp_reminder[1])
             window["-REMINDER_DESCRIPTION-"].update(disp_reminder[2])
             window["-REMINDER_DATE_DUE-"].update(disp_reminder[3])
@@ -82,6 +82,10 @@ def run_reminders(window, mode="",  line_no=-1):
             window["-REMINDER_DUE_TIME_MINS-"].update(value=min)
             window["-REMINDER_RECURING-"].update(disp_reminder[5])
 
+        if mode == "DELETE":
+            window["-FORM_TEXT-"].update("Please chose your reminder to DELETE")
+            window["-DELETE-"].update(visible=True)
+            window["-SUBMIT-"].update(visible=False)
 
         # Event Loop to process "events" and get the "values" of the inputs
         while True:
@@ -90,7 +94,7 @@ def run_reminders(window, mode="",  line_no=-1):
             match event:
                 case (sg.WIN_CLOSED|"Cancel"):
                     break
-                case "Submit":
+                case "-SUBMIT-":
                     event       = values["-REMIDER_EVENT-"]
                     description = values["-REMINDER_DESCRIPTION-"]
                     date_due    = values["-REMINDER_DATE_DUE-"]
@@ -102,12 +106,17 @@ def run_reminders(window, mode="",  line_no=-1):
                     new_reminder = reminder.reminder(event, description, date_due, time_due, recuring)
 
                     if mode == "EDIT":
-                        reminder_db.save(str(line_no+1), event, description, date_due, time_due, recuring)
+                        print(line_no)
+                        reminder_db.save(str(line_no), event, description, date_due, time_due, recuring)
                     else:
                         reminder_db.add(new_reminder)
+                    break
+                case "-DELETE-":
+                    choice = sg.popup_ok_cancel('Do you really want to delete?')
+                    if choice == "OK":
+                        reminder_db.delete(str(line_no))
 
                     break
-
 
         window.close(); del window
 
