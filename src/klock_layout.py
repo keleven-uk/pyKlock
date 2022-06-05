@@ -108,7 +108,7 @@ def win_layout(my_config, my_world_klock, win_location, win_size, timetypes, fon
                         sg.Text("      "),
                         sg.Table(values=data,
                                  headings=headings,
-                                 col_widths=[5, 15, 25, 10, 10, 10],
+                                 col_widths=[5, 15, 25, 16, 10, 10],
                                  enable_events=True,
                                  select_mode=sg.TABLE_SELECT_MODE_BROWSE,
                                  background_color="light blue",

@@ -21,6 +21,8 @@
 
 import PySimpleGUI as sg
 
+from datetime import date
+
 import src.reminder.reminder as reminder
 import src.reminder.reminder_utils as ru
 
@@ -50,7 +52,7 @@ def run_reminders(window, mode="",  line_no=-1):
             [sg.Text("Event",       size =(15, 1)),sg.Combo(events, key="-REMIDER_EVENT-", default_value=events[0], size=(14,1),  font=("TkDefaultFont", 10))],
             [sg.Text("Description", size =(15, 1)), sg.InputText(key="-REMINDER_DESCRIPTION-")],
             [sg.Text("Date Due",    size =(15, 1)), sg.Input(key="-REMINDER_DATE_DUE-", size=(20,1)),
-             sg.CalendarButton("Choose Date",  target="-REMINDER_DATE_DUE-", format="%d-%m-%y")],
+             sg.CalendarButton("Choose Date",  target="-REMINDER_DATE_DUE-", format="%d %B %Y")],
             [sg.Text("Time Due",          size =(15, 1)),
              sg.Spin([x+1 for x in range(23)], key="-REMINDER_DUE_TIME_HOURS-", size=(6,1),  font=("TkDefaultFont", 12), initial_value=0),
              sg.Spin([x+1 for x in range(59)], key="-REMINDER_DUE_TIME_MINS-",  size=(6,1),  font=("TkDefaultFont", 12), initial_value=0)],
@@ -100,16 +102,15 @@ def run_reminders(window, mode="",  line_no=-1):
                     date_due    = values["-REMINDER_DATE_DUE-"]
                     hrs         = values["-REMINDER_DUE_TIME_HOURS-"]
                     mns         = values["-REMINDER_DUE_TIME_MINS-"]
-                    time_due    = f"{hrs}:{mns}"
+                    time_due    = f"{hrs:02}:{mns:02}"
                     recuring    = values["-REMINDER_RECURING-"]
 
-                    new_reminder = reminder.reminder(event, description, date_due, time_due, recuring)
+                    items = [str(line_no), event, description, date_due, time_due, recuring]
 
                     if mode == "EDIT":
-                        print(line_no)
-                        reminder_db.save(str(line_no), event, description, date_due, time_due, recuring)
+                        reminder_db.save(items)
                     else:
-                        reminder_db.add(new_reminder)
+                        reminder_db.add(items)
                     break
                 case "-DELETE-":
                     choice = sg.popup_ok_cancel('Do you really want to delete?')

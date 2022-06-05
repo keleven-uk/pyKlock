@@ -25,25 +25,6 @@ import shelve
 from src.projectPaths import *
 
 
-class reminder():
-    """   The simple template for an individual reminder.
-    """
-    def __init__(self, event, description, date_due, time_due, recuring):
-        self.id          = "0"
-        self.event       = event
-        self.description = description
-        self.date_due    = date_due
-        self.time_due    = time_due
-        self.recuring    = recuring
-
-    def items_list(self):
-        return [self.id, self.event, self.description, self.date_due, self.time_due, self.recuring]
-
-    #def __str__(self):
-        #return f"{self.id}:{self.event}:{self.description}:{self.date_due}:{self.time_due}:{self.recuring}"
-
-
-
 class reminders():
     """  Adds individual reminders to a reminders database.
          The reminders are stored as pickles on a shelve.
@@ -52,24 +33,24 @@ class reminders():
          NOTE - also no __init__
     """
 
-    def add(self, reminder):
+    def add(self, items):
         """  Adds the reminder to the reminders database.
         """
         self.database = shelve.open(reminder_data_file, writeback=True)
-        self.no_of_reminders = len(self.database)
-        reminder.id = str(self.no_of_reminders)
+        no_of_reminders = str(len(self.database))
+        items[0] = no_of_reminders
         try:
-            self.database[reminder.id] = reminder.items_list()
+            self.database[no_of_reminders] = items
         finally:
             self.database.close()
 
 
-    def save(self, line_no, event, description, date_due, time_due, recuring):
+    def save(self, items):
         """  Saves an existing reminder with amended data.
         """
         self.database = shelve.open(reminder_data_file, writeback=True)
         try:
-            self.database[line_no] = [line_no, event, description, date_due, time_due, recuring]
+            self.database[items[0]] = items
         finally:
             self.database.close()
 

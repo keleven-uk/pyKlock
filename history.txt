@@ -8,6 +8,16 @@
        pyDigitalKlock_psg    - built with pySimpleGUI
 
 
+V2022.52
+
+    The shelve is a class reminders which was a collection of reminder classes.
+    I spent some time converting the reminder class to a list so it would display in the table.
+    So, I have dispensed with the reminder class and just save the list on the shelve.
+        If the list gets complex, the reminder class may return - see how it goes.
+    Finally worked out how to save four digit years, and the months properly i.e in words.
+        Amended the column widths of the table to accommodate.
+
+
 V2022.51
 
     Added the delete button for the reminder view, this also uses the add form.
