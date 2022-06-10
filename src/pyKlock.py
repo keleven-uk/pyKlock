@@ -23,8 +23,9 @@ import PySimpleGUI as sg
 
 from tkinter.colorchooser import askcolor
 
+import datetime
 import platform
-import subprocess
+import threading
 
 import src.theme        as theme
 import src.fonts        as fonts
@@ -37,6 +38,7 @@ import src.stopwatch    as stopwatch
 import src.countdown    as countdown
 import src.world_klock  as world_klock
 
+import src.reminder.reminder     as reminder
 import src.reminder.reminder_gui as reminder_gui
 
 import src.utils.fonts_utils as fu
@@ -58,15 +60,21 @@ def run_klock(my_logger, my_config):
     win_location = (my_config.X_POS, my_config.Y_POS)                          #  Initial windows location.
     win_size     = (my_config.WIN_WIDTH, my_config.WIN_HEIGHT)                 #  Initial windows size.
     time_type    = my_config.TIME_TYPE                                         #  Initial time type.
-    sg.theme(my_config.THEME)                                                  #  Initial theme.
     pr_button    = "-FUZZY-"                                                   #  Initial view.
+    pressed      = "-FUZZY-"
+    sg.theme(my_config.THEME)                                                  #  Initial theme.
 
     sg.SetOptions(element_padding=(0, 0))
 
     # Create the Window
     window = klock.win_layout(my_config, my_world_klock, win_location, win_size, current_time.timeTypes, font_name, font_size, time_type)  #  Creates the initial window.
 
+    #  Create my_countdown
     my_countdown = countdown.countdown(window)
+
+    #  Create reminders database
+    reminder_db    = reminder.reminders()
+    reminder_db.check_due()
 
     utils.set_title(window, pr_button, my_stopwatch, my_countdown, current_time)
     utils.update_status_bar(window)
@@ -74,7 +82,10 @@ def run_klock(my_logger, my_config):
 
     # Event Loop to process "events" and get the "values" of the inputs
     while True:
-        event, values = window.read(timeout=1000)
+        win, event, values = sg.read_all_windows(timeout=1000)      #  Use read_all_windows - so, we can read and close the reminders.
+
+        if event in ("-REMINDER_CLEAR-", sg.WINDOW_CLOSED):         #  This should work in the match loop, but doesn't.
+            win.close()
 
         match event:
             case (sg.WIN_CLOSED|"Exit"|"-EXIT-"):
@@ -147,44 +158,45 @@ def run_klock(my_logger, my_config):
                 timezone = values["-WORLD_ZONE-"]
                 window["-WORLD_TEXT-"].update(my_world_klock.get_local_time(timezone))
 
-            case "-REMINDER_ADD-":
-                reminder_list = reminder_gui.run_reminders(window=True)
+            case "-REMINDER_ADD-":                                                      #  Doesn't need a row selected.
+                reminder_list = reminder_gui.run_reminders(True, reminder_db)
                 window["-REMINDER_TABLE-"].update(reminder_list)
 
-            case "-REMINDER_EDIT-":
+            case ("-REMINDER_EDIT-"|"-REMINDER_DELETE-"):
                 if values["-REMINDER_TABLE-"] != []:                                    #  Check a row has been selected.
                     line_number = values["-REMINDER_TABLE-"][0]
-                    reminder_list = reminder_gui.run_reminders(True, "EDIT", line_number)
-                    window["-REMINDER_TABLE-"].update(reminder_list)
 
-            case "-REMINDER_DELETE-":
-                if values["-REMINDER_TABLE-"] != []:                                    #  Check a row has been selected.
-                    line_number = values["-REMINDER_TABLE-"][0]
-                    reminder_list = reminder_gui.run_reminders(True, "DELETE", line_number)
-                    window["-REMINDER_TABLE-"].update(reminder_list)
-
+                    if event == "-REMINDER_EDIT-":
+                        item_list = reminder_gui.run_reminders(True, reminder_db, "EDIT", line_number)
+                    else:  # must be delete.
+                         item_list = reminder_gui.run_reminders(True, reminder_db, "DELETE", line_number)
+                    window["-REMINDER_TABLE-"].update(item_list)
 
         #  Update stuff at the end of the event loop.
+        if pressed == "-FUZZY-":
+            window["-CURRENT_TIME-"].update(current_time.getTime(time_type))
         if my_stopwatch.timer_running:
             window["-TIMER_TEXT-"].update(my_stopwatch.elapsed_time)
         if my_countdown.countdown_running:
             window["-COUNTDOWN_TEXT-"].update(my_countdown.tick())
-        if pr_button == "-WORLD-":
+        if pressed == "-WORLD-":
             timezone = values["-WORLD_ZONE-"]
             window["-WORLD_TEXT-"].update(my_world_klock.get_local_time(timezone))
-        if pr_button == "-REMINDER-":
+        if pressed == "-REMINDER-":
             if refresh_reminder_table:                                                 #  Should fire first time around.
-                reminder_list = reminder_gui.run_reminders(window=False)
+                reminder_list = reminder_gui.run_reminders(False, reminder_db)
                 window["-REMINDER_TABLE-"].update(values=reminder_list)
                 refresh_reminder_table = False
 
-
-
+        #  Check for any reminders due every 10 minutes.
+        min_now = datetime.datetime.now().minute
+        sec_now = datetime.datetime.now().second
+        if min_now % 10 == 0 and sec_now == 0:
+            print(min_now, sec_now)
+            reminder_db.check_due()
 
         utils.set_title(window, pr_button, my_stopwatch, my_countdown, current_time)
         utils.update_status_bar(window)
-        window["-CURRENT_TIME-"].update(current_time.getTime(time_type))
-
 
 #   Outside of event loop.
     try:                                                                                #  Saves the current configuration and closes app.

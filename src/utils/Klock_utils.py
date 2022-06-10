@@ -60,7 +60,6 @@ def get_state():
     return state
 
 
-
 class LASTINPUTINFO(Structure):
     _fields_ = [
         ('cbSize', c_uint),
@@ -86,8 +85,6 @@ def get_idle_duration():
         return "      "
 
 
-
-
 def formatSeconds(seconds):
     """  Formats number of seconds into a human readable form i.e. hours:minutes:seconds
     """
@@ -100,7 +97,6 @@ def formatSeconds(seconds):
         return f"{minutes}m:{seconds}s"
     else:
         return f"{seconds}s"
-
 
 
 def update_status_bar(window):
@@ -146,6 +142,13 @@ def set_title(window, view, my_stopwatch, my_countdown, current_time):
 def run_action(action):
     """  Play sound file in a separate thread
          (don't block current thread)
+
+         /s = shut down PC
+         /r = reboot PC
+         /h = Hibernate PC
+         /l = log off current user
+
+         /a = attempts to cancel reboot
     """
     print(action)
     warning_sound = RESOURCE_PATH / "alarm-fatal.mp3"
@@ -166,12 +169,7 @@ def run_action(action):
             os.system("shutdown /l")
 
 
-#/s = shut down PC
-#/r = reboot PC
-#/h = Hibernate PC
-#/l = log off current user
 
-#/a = attemps to cancel reboot
 
 
 

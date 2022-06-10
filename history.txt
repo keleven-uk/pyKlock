@@ -8,6 +8,16 @@
        pyDigitalKlock_psg    - built with pySimpleGUI
 
 
+V2022.53
+
+    Added the ability to display a notification when a reminder is due.
+        The notification is displayed in the top left hand cornet of the main screen.
+        If there is more then one notification, they are displayed one under the other.
+        If a reminder is past, then a notification is displayed in red asked for it to be deleted.
+        The reminders are checked at start up and every ten minutes there after.
+        The reminder is a stripped down sg window with no title bar and no border.
+
+
 V2022.52
 
     The shelve is a class reminders which was a collection of reminder classes.
@@ -21,7 +31,9 @@ V2022.52
 V2022.51
 
     Added the delete button for the reminder view, this also uses the add form.
-        When a reminder is deleted, all the remaining reminders are re numbered.
+        When a reminder is deleted, all the remaining reminders are renumbered.
+        If the mode is "DELETS" then this allows the reminder at row line no the be deleted.
+        Added two methods to the reminders class - delete & renumber_reminders
 
 
 V2022.50

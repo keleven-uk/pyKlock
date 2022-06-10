@@ -27,7 +27,7 @@ import src.reminder.reminder as reminder
 import src.reminder.reminder_utils as ru
 
 
-def run_reminders(window, mode="",  line_no=-1):
+def run_reminders(window, reminder_db, mode="", line_no=-1):
     """  A Simple dialog.
          Collects the data for a reminder - key, description, date/time due.
 
@@ -37,9 +37,6 @@ def run_reminders(window, mode="",  line_no=-1):
             mode = "DELETE" will delete the reminder.
         line_no will gibe the row number of the reminder to edited/deleted.
     """
-
-    #  Create reminders database
-    reminder_db    = reminder.reminders()
 
     if window:
         #  Create the reminder event type list.
@@ -56,7 +53,7 @@ def run_reminders(window, mode="",  line_no=-1):
             [sg.Text("Time Due",          size =(15, 1)),
              sg.Spin([x+1 for x in range(23)], key="-REMINDER_DUE_TIME_HOURS-", size=(6,1),  font=("TkDefaultFont", 12), initial_value=0),
              sg.Spin([x+1 for x in range(59)], key="-REMINDER_DUE_TIME_MINS-",  size=(6,1),  font=("TkDefaultFont", 12), initial_value=0)],
-            [sg.Text("Recuring reminder", size =(15, 1)), sg.Checkbox("", key="-REMINDER_RECURING-", default=False)],
+            [sg.Text("Recurring reminder", size =(15, 1)), sg.Checkbox("", key="-REMINDER_RECURRING-", default=False)],
             [sg.Button("Delete", key="-DELETE-",  visible=False), sg.Button("Submit", key="-SUBMIT-",  visible=True), sg.Cancel()]
             ]
 
@@ -70,10 +67,10 @@ def run_reminders(window, mode="",  line_no=-1):
         #           2 = reminder description
         #           3 = reminder due date
         #           4 = reminder due time
-        #           5 = reminder recuring
+        #           5 = reminder recurring
 
         if mode in ("EDIT", "DELETE"):
-            disp_reminder = reminder_db.get_reminder(str(line_no))
+            disp_reminder = reminder_db.get_reminder(str(line_no))      #  now a list.
             hrs, min = disp_reminder[4].split(":")
 
             window["-FORM_TEXT-"].update("Please chose your reminder to EDIT")
@@ -82,7 +79,7 @@ def run_reminders(window, mode="",  line_no=-1):
             window["-REMINDER_DATE_DUE-"].update(disp_reminder[3])
             window["-REMINDER_DUE_TIME_HOURS-"].update(value=hrs)
             window["-REMINDER_DUE_TIME_MINS-"].update(value=min)
-            window["-REMINDER_RECURING-"].update(disp_reminder[5])
+            window["-REMINDER_RECURRING-"].update(disp_reminder[5])
 
         if mode == "DELETE":
             window["-FORM_TEXT-"].update("Please chose your reminder to DELETE")
@@ -103,9 +100,9 @@ def run_reminders(window, mode="",  line_no=-1):
                     hrs         = values["-REMINDER_DUE_TIME_HOURS-"]
                     mns         = values["-REMINDER_DUE_TIME_MINS-"]
                     time_due    = f"{hrs:02}:{mns:02}"
-                    recuring    = values["-REMINDER_RECURING-"]
+                    recurring   = values["-REMINDER_RECURRING-"]
 
-                    items = [str(line_no), event, description, date_due, time_due, recuring]
+                    items = [str(line_no), event, description, date_due, time_due, recurring]
 
                     if mode == "EDIT":
                         reminder_db.save(items)

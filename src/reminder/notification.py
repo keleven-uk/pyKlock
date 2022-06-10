@@ -1,11 +1,11 @@
 ###############################################################################################################
-#    main.py   Copyright (C) <2022>  <Kevin Scott>                                                            #                                                                                                             #                                                                                                             #
-#     launch pyKlock.                    .                                                                    #
+#     notification.py   Copyright (C) <2022>  <Kevin Scott>                                                   #                                                                                                             #                                                                                                             #
+#     displays a toast [pop up] notification.                                                                 #
 #                                                                                                             #
 #     For changes see history.txt                                                                             #
 #                                                                                                             #
 ###############################################################################################################
-#    Copyright (C) <2020-2021>  <2022>                                                                        #
+#    Copyright (C) <2022>  <Kevin Scott>                                                                      #
 #                                                                                                             #
 #    This program is free software: you can redistribute it and/or modify it under the terms of the           #
 #    GNU General Public License as published by the Free Software Foundation, either Version 3 of the         #
@@ -20,8 +20,33 @@
 #                                                                                                             #
 ###############################################################################################################
 
-#  Import pyKlock
-import src.pyKlock
 
-#  Run pyKlock
-src.pyKlock.main()
+import PySimpleGUI as sg
+
+
+GREEN  = "#B9DA8C"
+YELLOW = "#D7DA97"
+BLUE   = "#00FDFF"
+RED    = "#DA8C8C"
+BLACK  = "#000000"
+
+
+"""  Displays a toast [pop up] notification.
+
+     The message, x_pos, y_pos and background colour can be specified.
+"""
+
+def popup(message, x_pos, y_pos, reminder_colour):
+    sg.Window("", [[sg.Text(message, background_color=reminder_colour, text_color=BLACK)],
+                   [sg.Button("Clear", key="-REMINDER_CLEAR-")]],
+              background_color=reminder_colour,
+              location=(x_pos, y_pos),
+              size=(600,60),
+              no_titlebar=True,
+              alpha_channel=0.6,
+              finalize=True,
+              keep_on_top=True)
+
+
+
+
