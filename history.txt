@@ -8,10 +8,17 @@
        pyDigitalKlock_psg    - built with pySimpleGUI
 
 
+V2022.55
+
+    Corrected the bug in reminder auto-delete.
+       The auto-delete flag being stored as a Boolean, all fields in the shelve must be strings.
+    Also, a sound is [hopefully] played when a notification is displayed - using winsound.
+
+
 V2022.54
 
     Corrected a bug with the reminder delete,
-        the remunber_reminders() was not being called correctly.
+        the renumber_reminders() was not being called correctly.
     Corrected a but in the reminder due calculation,
         use round() so that the minutes are rounds to the nearest integer.
     Modified the reminders so they are only displayed once.
@@ -68,7 +75,7 @@ V2022.49
         The reminder tabled is correctly populated whenever the reminder view is selected.
 
 
-V2022.48 form
+V2022.48
 
     Implementing the Reminder view, not complete yet.
     Finished the main view that will display the reminders, with buttons to add and remove reminders.

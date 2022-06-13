@@ -73,7 +73,7 @@ def run_klock(my_logger, my_config):
     my_countdown = countdown.countdown(window)
 
     #  Create reminders database
-    reminder_db    = reminder.reminders()
+    reminder_db = reminder.reminders()
     reminder_db.check_due()
 
     utils.set_title(window, pr_button, my_stopwatch, my_countdown, current_time)
@@ -192,7 +192,6 @@ def run_klock(my_logger, my_config):
         min_now = datetime.datetime.now().minute
         sec_now = datetime.datetime.now().second
         if sec_now == 0:
-            print(min_now, sec_now)
             reminder_db.check_due()
             refresh_reminder_table = True
 

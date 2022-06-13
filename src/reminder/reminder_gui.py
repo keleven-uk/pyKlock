@@ -103,8 +103,8 @@ def run_reminders(window, reminder_db, mode="", line_no=-1):
                     hrs         = values["-REMINDER_DUE_TIME_HOURS-"]
                     mns         = values["-REMINDER_DUE_TIME_MINS-"]
                     time_due    = f"{hrs:02}:{mns:02}"
-                    auto_delete = values["-REMINDER_AUTO_DELETE-"]
-                    recurring   = values["-REMINDER_RECURRING-"]
+                    auto_delete = str(values["-REMINDER_AUTO_DELETE-"])
+                    recurring   = str(values["-REMINDER_RECURRING-"])
 
                     items = [str(line_no), event, description, date_due, time_due, auto_delete, recurring]
 

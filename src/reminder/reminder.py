@@ -59,7 +59,6 @@ class reminders():
 
     def __init__(self):
         self.database_name = reminder_data_file
-        print(ID)
 
 
     def add(self, items):
@@ -174,8 +173,6 @@ class reminders():
 
                 due_interval = self.get_interval(items[DATE_DUE], items[TIME_DUE])
 
-                print(items, due_interval)
-
                 match due_interval:
                     case due_interval if due_interval == 0:
                         if items[DISPLAYED] == "False":
@@ -184,14 +181,11 @@ class reminders():
                             y_pos += 65
                     case due_interval if due_interval < 0:
                         if items[AUTO_DELETE] == "True":                   #  If auto delete is set to true
-                            print("auto delete")
-                            self.delete(items[0])                #  items[0] should be the ID number
-                        if items[DISPLAYED] == "False":
+                            self.delete(items[0])                          #  items[0] should be the ID number
+                        elif items[DISPLAYED] == "False":
                             message = f"{items[EVENT ]} : {items[DESCRIPTION]} :: Reminder is past please either delete or amend."
                             notification.popup(message, x_pos, y_pos, RED)
-                            print("Before", items)
                             items[DISPLAYED] = "True"
-                            print("After", items)
                             if y_pos > 10:          #  Only increase y_pos if a reminder has already been displayed.
                                 y_pos += 65
                             self.save(items)
