@@ -20,6 +20,7 @@
 #                                                                                                             #
 ###############################################################################################################
 
+import enum
 import shelve
 import datetime
 
@@ -27,24 +28,38 @@ import src.reminder.notification as notification
 
 from src.projectPaths import *
 
+#  Colours for the reminder background.
 GREEN  = "#B9DA8C"
 YELLOW = "#D7DA97"
 BLUE   = "#00FDFF"
 RED    = "#DA8C8C"
 BLACK  = "#000000"
 
+#  fields in the items list.
+ID           = 0
+EVENT        = 1
+DESCRIPTION  = 2
+DATE_DUE     = 3
+TIME_DUE     = 4
+AUTO_DELETE  = 5
+RECURRING    = 6
+DISPLAYED    = 7
+
+
 class reminders():
     """  Adds individual reminders to a reminders database.
          The reminders are stored as pickles on a shelve.
 
-         the reminders are saved has a list of attributes.
-            items -  [ID, event, description, date_due, time_due, recurring, displayed]
+         The reminders are saved as a list of attributes.
+            items -  [ID, event, description, date_due, time_due, auto delete, recurring, displayed]
 
          NOTE - key and all fields in shelve are strings
     """
 
+
     def __init__(self):
         self.database_name = reminder_data_file
+        print(ID)
 
 
     def add(self, items):
@@ -52,8 +67,9 @@ class reminders():
         """
         database        = shelve.open(self.database_name, writeback=True)
         no_of_reminders = str(len(database))           #  len() is not zero based.
-        items[0]        = no_of_reminders
+        items[ID]        = no_of_reminders
         items.append("False")
+
         try:
             database[no_of_reminders] = items
         finally:
@@ -64,8 +80,10 @@ class reminders():
         """  Saves an existing reminder with amended data.
         """
         database = shelve.open(self.database_name, writeback=True)
+
         try:
-            database[items[0]] = items
+            database[items[ID]] = items
+            items.append("False")           #  If reminder is save, set displayed flag to false.
         finally:
             database.close()
 
@@ -75,18 +93,19 @@ class reminders():
              After delete, which creates a hole, the reminders a renumbered.
         """
         database = shelve.open(self.database_name, writeback=True)
+
         try:
             database.pop(line_no)       #  DELETE.
-            self.renumber_reminders()   #  Renumber.
         finally:
             database.close()
+
+        self.renumber_reminders()   #  Renumber.
 
 
     def list_reminders(self):
         """  Creates a list of the individual reminder items for display.
         """
-        database = shelve.open(self.database_name, writeback=True)
-
+        database      = shelve.open(self.database_name, writeback=True)
         reminder_list = []
 
         try:
@@ -103,8 +122,9 @@ class reminders():
 
              If an error occurs on read, will return an empty list.
         """
-        rem = []
+        rem      = []
         database = shelve.open(self.database_name)
+
         try:
             rem = database[line_no]
         finally:
@@ -118,7 +138,7 @@ class reminders():
              This method is called to readdress that probem.
              It goes through all the reminders in order and sets ID back in order.
         """
-        database = shelve.open(self.database_name)
+        database = shelve.open(self.database_name, writeback=True)
         new_db  = {}
         db_keys = database.keys()
         new_id  = 0
@@ -126,7 +146,7 @@ class reminders():
         try:
             for _id in db_keys:
                 items = database[_id]
-                items[0] = str(new_id)
+                items[ID] = str(new_id)
                 new_db[str(new_id)] = items
 
                 new_id += 1
@@ -141,35 +161,39 @@ class reminders():
     def check_due(self):
         """  For each reminder determine the time left before it's due.
              Issue a warning if any are due now.
+             Unless auto delete is checked, then delete reminder.
         """
         database = shelve.open(self.database_name)
         db_keys  = database.keys()
-        x_pos = 10
-        y_pos = 10
+        x_pos    = 10
+        y_pos    = 10
 
         try:
             for _id in db_keys:
                 items = database[_id]
-                print(items, len(items))
-                if len(items) == 6:
-                    items.append("False")
 
-                due_interval = self.get_interval(items[3], items[4])
+                due_interval = self.get_interval(items[DATE_DUE], items[TIME_DUE])
+
+                print(items, due_interval)
 
                 match due_interval:
-                    case due_interval if due_interval <5 and due_interval >0:
-                        if items[6] == "False":
-                            message = f"{items[1]} : {items[2]} :: Reminder Due in less then five minutes."
+                    case due_interval if due_interval == 0:
+                        if items[DISPLAYED] == "False":
+                            message = f"{items[EVENT]} : {items[DESCRIPTION]} :: Reminder is Due."
                             notification.popup(message, x_pos, y_pos, YELLOW)
-                            items[6] = "True"
                             y_pos += 65
-                            self.save(items)
-                    case due_interval if due_interval <0:
-                        if items[6] == "False":
-                            message = f"{items[1]} : {items[2]} :: Reminder is past please either delete or amend."
+                    case due_interval if due_interval < 0:
+                        if items[AUTO_DELETE] == "True":                   #  If auto delete is set to true
+                            print("auto delete")
+                            self.delete(items[0])                #  items[0] should be the ID number
+                        if items[DISPLAYED] == "False":
+                            message = f"{items[EVENT ]} : {items[DESCRIPTION]} :: Reminder is past please either delete or amend."
                             notification.popup(message, x_pos, y_pos, RED)
-                            items[6] = "True"
-                            y_pos += 65
+                            print("Before", items)
+                            items[DISPLAYED] = "True"
+                            print("After", items)
+                            if y_pos > 10:          #  Only increase y_pos if a reminder has already been displayed.
+                                y_pos += 65
                             self.save(items)
         finally:
             database.close()
@@ -186,9 +210,8 @@ class reminders():
         due_date_time = f"{due_date} {due_time}"
 
         target_date  = datetime.datetime.strptime(due_date_time, "%d %B %Y %H:%M")       #  Combine the date and time into one.
-        return int((target_date - _now).total_seconds() / 60)                            #  Return to minutes
 
-
+        return round((target_date - _now).total_seconds() / 60)                          #  Return to minutes, rounded to nearest integer.
 
 
 

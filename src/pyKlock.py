@@ -188,12 +188,13 @@ def run_klock(my_logger, my_config):
                 window["-REMINDER_TABLE-"].update(values=reminder_list)
                 refresh_reminder_table = False
 
-        #  Check for any reminders due every 10 minutes.
+        #  Check for any reminders due every 1 minutes.
         min_now = datetime.datetime.now().minute
         sec_now = datetime.datetime.now().second
-        if min_now % 10 == 0 and sec_now == 0:
+        if sec_now == 0:
             print(min_now, sec_now)
             reminder_db.check_due()
+            refresh_reminder_table = True
 
         utils.set_title(window, pr_button, my_stopwatch, my_countdown, current_time)
         utils.update_status_bar(window)

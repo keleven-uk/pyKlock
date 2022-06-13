@@ -8,10 +8,22 @@
        pyDigitalKlock_psg    - built with pySimpleGUI
 
 
+V2022.54
+
+    Corrected a bug with the reminder delete,
+        the remunber_reminders() was not being called correctly.
+    Corrected a but in the reminder due calculation,
+        use round() so that the minutes are rounds to the nearest integer.
+    Modified the reminders so they are only displayed once.
+    Started work on the reminder auto delete function - not quite there yet.
+    Use named constants for the reminder items positions.
+    The reminder check is not run every minute.
+
+
 V2022.53
 
     Added the ability to display a notification when a reminder is due.
-        The notification is displayed in the top left hand cornet of the main screen.
+        The notification is displayed in the top left hand corner of the main screen.
         If there is more then one notification, they are displayed one under the other.
         If a reminder is past, then a notification is displayed in red asked for it to be deleted.
         The reminders are checked at start up and every ten minutes there after.

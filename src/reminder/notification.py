@@ -39,13 +39,13 @@ BLACK  = "#000000"
 def popup(message, x_pos, y_pos, reminder_colour):
     sg.Window("", [[sg.Text(message, background_color=reminder_colour, text_color=BLACK)],
                    [sg.Button("Clear", key="-REMINDER_CLEAR-")]],
-              background_color=reminder_colour,
-              location=(x_pos, y_pos),
-              size=(600,60),
-              no_titlebar=True,
-              alpha_channel=0.6,
-              finalize=True,
-              keep_on_top=True)
+                    background_color=reminder_colour,
+                    location=(x_pos, y_pos),
+                    size=(600,60),
+                    no_titlebar=True,
+                    alpha_channel=0.6,
+                    finalize=True,
+                    keep_on_top=True)
 
 
 

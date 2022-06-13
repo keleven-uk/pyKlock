@@ -96,8 +96,8 @@ def win_layout(my_config, my_world_klock, win_location, win_size, timetypes, fon
                    ]
 
     #  Reminder GUI definitions
-    data = [['' for row in range(15)]for col in range(6)]
-    headings = ["ID", "Event", "Description", "Date Due", "Time Due", "Recuring"]
+    data = [['' for row in range(15)]for col in range(7)]
+    headings = ["ID", "Event", "Description", "Date Due", "Time Due", "Auto Delete", "Recurring"]
 
     reminder_top_button     = [sg.Button("Add",    key="-REMINDER_ADD-",    size=(5,1), pad=(1,1))]
     reminder_middle_button  = [sg.Button("Edit",   key="-REMINDER_EDIT-",   size=(5,1), pad=(1,1))]
@@ -108,7 +108,7 @@ def win_layout(my_config, my_world_klock, win_location, win_size, timetypes, fon
                         sg.Text("      "),
                         sg.Table(values=data,
                                  headings=headings,
-                                 col_widths=[5, 15, 25, 16, 10, 10],
+                                 col_widths=[5, 12, 20, 12, 10, 10, 10],
                                  enable_events=True,
                                  select_mode=sg.TABLE_SELECT_MODE_BROWSE,
                                  background_color="light blue",
