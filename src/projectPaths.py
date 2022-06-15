@@ -55,3 +55,13 @@ backward_file_path   = r"data/backward"
 reminder_data_file   = r"data/reminders"
 reminder_events_file = r"data/events.txt"
 
+#  fields in the items list.
+ID           = 0
+EVENT        = 1
+DESCRIPTION  = 2
+DATE_DUE     = 3
+TIME_DUE     = 4
+AUTO_DELETE  = 5
+RECURRING    = 6
+DISPLAYED    = 7
+

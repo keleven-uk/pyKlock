@@ -26,6 +26,7 @@ from datetime import date
 import src.reminder.reminder as reminder
 import src.reminder.reminder_utils as ru
 
+from src.projectPaths import *
 
 def run_reminders(window, reminder_db, mode="", line_no=-1):
     """  A Simple dialog.
@@ -59,8 +60,8 @@ def run_reminders(window, reminder_db, mode="", line_no=-1):
             ]
 
         #  Create window
-        window = sg.Window("Reminders", layout)
-        window.finalize()
+        rem_window = sg.Window("Reminders", layout)
+        rem_window.finalize()
 
         #  get_reminder returns a list of the attributes of the reminder
         #  position 0 = ID
@@ -69,44 +70,53 @@ def run_reminders(window, reminder_db, mode="", line_no=-1):
         #           3 = reminder due date
         #           4 = reminder due time
         #           5 = Auto Delete
-        #           6 = reminder recurring
+        #           6 = Reminder recurring
+        #           7 = Displayed
 
         if mode in ("EDIT", "DELETE"):
             disp_reminder = reminder_db.get_reminder(str(line_no))      #  now a list.
-            hrs, min = disp_reminder[4].split(":")
+            hrs, min = disp_reminder[TIME_DUE].split(":")
 
-            window["-FORM_TEXT-"].update("Please chose your reminder to EDIT")
-            window["-REMIDER_EVENT-"].update(value=disp_reminder[1])
-            window["-REMINDER_DESCRIPTION-"].update(disp_reminder[2])
-            window["-REMINDER_DATE_DUE-"].update(disp_reminder[3])
-            window["-REMINDER_DUE_TIME_HOURS-"].update(value=hrs)
-            window["-REMINDER_DUE_TIME_MINS-"].update(value=min)
-            window["-REMINDER_AUTO_DELETE-"].update(disp_reminder[5])
-            window["-REMINDER_RECURRING-"].update(disp_reminder[6])
+            reminder_displayed = disp_reminder[DISPLAYED]
+            auto_delete        = ru.str_to_bool(disp_reminder[AUTO_DELETE])
+            recurring          = ru.str_to_bool(disp_reminder[RECURRING])
+
+            rem_window["-FORM_TEXT-"].update("Please chose your reminder to EDIT")
+            rem_window["-REMIDER_EVENT-"].update(value=disp_reminder[EVENT])
+            rem_window["-REMINDER_DESCRIPTION-"].update(disp_reminder[DESCRIPTION])
+            rem_window["-REMINDER_DATE_DUE-"].update(disp_reminder[DATE_DUE])
+            rem_window["-REMINDER_DUE_TIME_HOURS-"].update(value=hrs)
+            rem_window["-REMINDER_DUE_TIME_MINS-"].update(value=min)
+            rem_window["-REMINDER_AUTO_DELETE-"].update(auto_delete)
+            rem_window["-REMINDER_RECURRING-"].update(recurring)
 
         if mode == "DELETE":
-            window["-FORM_TEXT-"].update("Please chose your reminder to DELETE")
-            window["-DELETE-"].update(visible=True)
-            window["-SUBMIT-"].update(visible=False)
+            rem_window["-FORM_TEXT-"].update("Please chose your reminder to DELETE")
+            rem_window["-DELETE-"].update(visible=True)
+            rem_window["-SUBMIT-"].update(visible=False)
 
         # Event Loop to process "events" and get the "values" of the inputs
         while True:
-            event, values = window.read(timeout=1000)
+            event, values = rem_window.read(timeout=1000)
 
             match event:
                 case (sg.WIN_CLOSED|"Cancel"):
                     break
                 case "-SUBMIT-":
-                    event       = values["-REMIDER_EVENT-"]
-                    description = values["-REMINDER_DESCRIPTION-"]
-                    date_due    = values["-REMINDER_DATE_DUE-"]
-                    hrs         = values["-REMINDER_DUE_TIME_HOURS-"]
-                    mns         = values["-REMINDER_DUE_TIME_MINS-"]
-                    time_due    = f"{hrs:02}:{mns:02}"
-                    auto_delete = str(values["-REMINDER_AUTO_DELETE-"])
-                    recurring   = str(values["-REMINDER_RECURRING-"])
+                    event              = values["-REMIDER_EVENT-"]
+                    description        = values["-REMINDER_DESCRIPTION-"]
+                    date_due           = values["-REMINDER_DATE_DUE-"]
+                    hrs                = values["-REMINDER_DUE_TIME_HOURS-"]
+                    mns                = values["-REMINDER_DUE_TIME_MINS-"]
+                    time_due           = f"{hrs:02}:{mns:02}"
+                    auto_delete        = str(values["-REMINDER_AUTO_DELETE-"])
+                    recurring          = str(values["-REMINDER_RECURRING-"])
+                    reminder_displayed = "False"
 
-                    items = [str(line_no), event, description, date_due, time_due, auto_delete, recurring]
+                    if recurring == "True":                                         #  If recurring, check date is in the past,
+                        date_due = ru.check_date(values["-REMINDER_DATE_DUE-"])     #  if so add one year.
+
+                    items = [str(line_no), event, description, date_due, time_due, auto_delete, recurring, reminder_displayed]
 
                     if mode == "EDIT":
                         reminder_db.save(items)
@@ -120,7 +130,7 @@ def run_reminders(window, reminder_db, mode="", line_no=-1):
 
                     break
 
-        window.close(); del window
+        rem_window.close(); del rem_window
 
     return reminder_db.list_reminders()
 

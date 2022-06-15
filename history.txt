@@ -15,6 +15,20 @@ V2022.55
     Also, a sound is [hopefully] played when a notification is displayed - using winsound.
 
 
+V2022.55
+
+    Amended requirement files, version of bottle has to be greater then 1.12.20.
+        Security warning from Github.
+    Moved the items position constants into projectPath file, used by more then one module.
+    Moved the adding of the displayed flag to when the items list is created.
+        Removed from reminder add and save routines.
+    Finished the auto delete function - seems to work.
+    Added the recurring function.
+        If a reminder is set to recurring, when due the year is incremented and re-posted.
+    Renamed the reminder window to rem_window, to differentiate from the main klock window.
+    Added a custom str_to_bool function to convert strings to Booleans.
+
+
 V2022.54
 
     Corrected a bug with the reminder delete,

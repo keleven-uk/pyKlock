@@ -20,7 +20,6 @@
 #                                                                                                             #
 ###############################################################################################################
 
-import enum
 import shelve
 import datetime
 
@@ -34,16 +33,6 @@ YELLOW = "#D7DA97"
 BLUE   = "#00FDFF"
 RED    = "#DA8C8C"
 BLACK  = "#000000"
-
-#  fields in the items list.
-ID           = 0
-EVENT        = 1
-DESCRIPTION  = 2
-DATE_DUE     = 3
-TIME_DUE     = 4
-AUTO_DELETE  = 5
-RECURRING    = 6
-DISPLAYED    = 7
 
 
 class reminders():
@@ -66,8 +55,7 @@ class reminders():
         """
         database        = shelve.open(self.database_name, writeback=True)
         no_of_reminders = str(len(database))           #  len() is not zero based.
-        items[ID]        = no_of_reminders
-        items.append("False")
+        items[ID]       = no_of_reminders
 
         try:
             database[no_of_reminders] = items
@@ -81,8 +69,8 @@ class reminders():
         database = shelve.open(self.database_name, writeback=True)
 
         try:
+            items[DISPLAYED] = "False"       #  If reminder is saved, set displayed flag to false.
             database[items[ID]] = items
-            items.append("False")           #  If reminder is save, set displayed flag to false.
         finally:
             database.close()
 
@@ -179,9 +167,15 @@ class reminders():
                             message = f"{items[EVENT]} : {items[DESCRIPTION]} :: Reminder is Due."
                             notification.popup(message, x_pos, y_pos, YELLOW)
                             y_pos += 65
-                    case due_interval if due_interval < 0:
-                        if items[AUTO_DELETE] == "True":                   #  If auto delete is set to true
+
+                    case due_interval if due_interval < 0:                 #  Reminder is set to recurring
+                        if items[RECURRING] == "True":                     #  add one to the year.
+                            new_date = ru.add_one_year(d)
+                            items[DATE_DUE]  = new_date
+
+                        elif items[AUTO_DELETE] == "True":                 #  If auto delete is set to true
                             self.delete(items[0])                          #  items[0] should be the ID number
+
                         elif items[DISPLAYED] == "False":
                             message = f"{items[EVENT ]} : {items[DESCRIPTION]} :: Reminder is past please either delete or amend."
                             notification.popup(message, x_pos, y_pos, RED)
