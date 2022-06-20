@@ -23,8 +23,7 @@ import PySimpleGUI as sg
 
 import os
 import datetime
-
-import miniaudio
+import winsound
 
 from win32api import GetKeyState
 from win32con import VK_CAPITAL, VK_SCROLL, VK_NUMLOCK
@@ -111,6 +110,10 @@ def update_status_bar(window):
 def set_title(window, view, my_stopwatch, my_countdown, current_time):
     """  Set the window title to an appropriate thing.
          Adds on the stopwatch value, if running.
+
+         u"\u2609" = circle with dot in the middle.
+         u"\u2191" = up arrow.
+         u"\u2193" = down arrow.
     """
     match view:
         case "-FUZZY-":
@@ -140,25 +143,18 @@ def set_title(window, view, my_stopwatch, my_countdown, current_time):
 
 
 def run_action(action):
-    """  Play sound file in a separate thread
-         (don't block current thread)
-
-         /s = shut down PC
+    """  /s = shut down PC
          /r = reboot PC
          /h = Hibernate PC
          /l = log off current user
 
          /a = attempts to cancel reboot
     """
-    print(action)
-    warning_sound = RESOURCE_PATH / "alarm-fatal.mp3"
 
     match action:
         case "Notify + Sound":
-            stream = miniaudio.stream_file(warning_sound)
-            with miniaudio.PlaybackDevice() as device:
-                device.start(stream)
-                sg.SystemTray.notify("Countdown", "Countdown had finished.")
+            winsound.PlaySound("Notification", winsound.SND_ALIAS)
+            sg.SystemTray.notify("Countdown", "Countdown had finished.")
         case "Notify":
             sg.SystemTray.notify("Countdown", "Countdown had finished.")
         case "Pop Up":

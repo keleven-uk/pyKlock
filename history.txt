@@ -8,6 +8,14 @@
        pyDigitalKlock_psg    - built with pySimpleGUI
 
 
+V2022.56
+
+    Added various extra fonts.
+    Changed the way a notification sound is generated.  Now uses winsound instead of miniaudio.
+        Removed miniaudio & ffmpeg-python from requirements.
+
+
+
 V2022.55
 
     Corrected the bug in reminder auto-delete.

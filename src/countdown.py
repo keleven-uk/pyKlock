@@ -146,7 +146,6 @@ def run_countdown(event, window, my_countdown, values):
             window["-COUNTDOWN_TARGET-"].update(value=1)
             my_countdown.clear()
         case "-COUNTDOWN_EVENT-":
-            print("at case -COUNTDOWN_EVENT-")
             window["-COUNTDOWN_START-"].update(visible=True)
             window["-COUNTDOWN_STOP-"].update(visible=False)
             window["-+15-"].update(visible=True)

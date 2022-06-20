@@ -2,14 +2,12 @@ altgraph==0.17.2
 auto-py-to-exe==2.19.0
 bottle==0.12.20
 bottle-websocket==0.2.9
-cffi==1.15.0
+cffi
 Eel==0.12.4
-ffmpeg-python==0.2.0
 future==0.18.2
 gevent==21.12.0
 gevent-websocket==0.10.1
 greenlet==1.1.2
-miniaudio==1.46
 pefile==2021.9.3
 pycparser==2.21
 PySimpleGUI==4.59.0
