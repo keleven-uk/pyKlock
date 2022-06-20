@@ -25,6 +25,10 @@ import datetime
 
 from src.projectPaths import *
 
+#  Used to build the tray object in pyKlock.py - hides here.
+tray_menu    = ["", ["Show pyKlock","---","Exit"]]
+tray_tooltip = "pyKlock"
+
 def win_layout(my_config, my_world_klock, win_location, win_size, timetypes, font_name, font_size, time_type):
     """  Sets up the windows and menu layout.
          Returns a finalized windows object.

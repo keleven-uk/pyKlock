@@ -20,6 +20,7 @@
 ###############################################################################################################
 
 import PySimpleGUI as sg
+from psgtray import SystemTray
 
 from tkinter.colorchooser import askcolor
 
@@ -55,19 +56,21 @@ def run_klock(my_logger, my_config):
     my_stopwatch   = stopwatch.timer()
     my_world_klock = world_klock.world_klock(backward_file_path)
 
-    font_name    = my_config.FONT_NAME                                         #  Initial name of the font used.
-    font_size    = my_config.FONT_SIZE                                         #  Initial size of the font used.
-    win_location = (my_config.X_POS, my_config.Y_POS)                          #  Initial windows location.
-    win_size     = (my_config.WIN_WIDTH, my_config.WIN_HEIGHT)                 #  Initial windows size.
-    time_type    = my_config.TIME_TYPE                                         #  Initial time type.
-    pr_button    = "-FUZZY-"                                                   #  Initial view.
-    pressed      = "-FUZZY-"
+    font_name      = my_config.FONT_NAME                                         #  Initial name of the font used.
+    font_size      = my_config.FONT_SIZE                                         #  Initial size of the font used.
+    win_location   = (my_config.X_POS, my_config.Y_POS)                          #  Initial windows location.
+    win_size       = (my_config.WIN_WIDTH, my_config.WIN_HEIGHT)                 #  Initial windows size.
+    time_type      = my_config.TIME_TYPE                                         #  Initial time type.
+    pr_button      = "-FUZZY-"                                                   #  Initial view.
+    pressed        = "-FUZZY-"
+    tray_displayed = False
     sg.theme(my_config.THEME)                                                  #  Initial theme.
 
     sg.SetOptions(element_padding=(0, 0))
 
-    # Create the Window
-    window = klock.win_layout(my_config, my_world_klock, win_location, win_size, current_time.timeTypes, font_name, font_size, time_type)  #  Creates the initial window.
+    # Create the Window and Tray.
+    window = klock.win_layout(my_config, my_world_klock, win_location, win_size, current_time.timeTypes, font_name, font_size, time_type)    #  Creates the initial window.
+    tray   = SystemTray(klock.tray_menu, single_click_events=False, window=window, tooltip=klock.tray_tooltip, icon=sg.DEFAULT_BASE64_ICON)  #  Create the tray.
 
     #  Create my_countdown
     my_countdown = countdown.countdown(window)
@@ -84,9 +87,12 @@ def run_klock(my_logger, my_config):
     while True:
         win, event, values = sg.read_all_windows(timeout=1000)      #  Use read_all_windows - so, we can read and close the reminders.
 
-        if event in ("-REMINDER_CLEAR-", sg.WINDOW_CLOSED):         #  This should work in the match loop, but doesn't.
-            win.close()
+        # IMPORTANT step. It's not required, but convenient. Set event to value from tray
+        # if it's a tray event, change the event variable to be whatever the tray sent
+        if event == tray.key:
+            event = values[event]       # use the System Tray's event as if was from the window
 
+        print(event)
         match event:
             case (sg.WIN_CLOSED|"Exit"|"-EXIT-"):
                 break
@@ -102,6 +108,18 @@ def run_klock(my_logger, my_config):
                     refresh_reminder_table = False
                 else:
                     refresh_reminder_table = True
+
+            case "-HIDE-":
+                tray.change_icon(sg.EMOJI_BASE64_HAPPY_JOY)                                         #  Sad icon.
+                #tray.change_icon(sg.EMOJI_BASE64_FRUSTRATED)                                       #  Sad icon.
+                window.hide()
+                tray.show_icon()        # if hiding window, better make sure the icon is visible
+                tray_displayed = True
+
+            case "Show pyKlock":
+                window.un_hide()
+                window.bring_to_front()
+                tray_displayed = False
 
             case "-TIME_TYPES-":                                                                    #  Another choice selected from the combo box.
                 window.close()
@@ -195,6 +213,9 @@ def run_klock(my_logger, my_config):
             reminder_db.check_due()
             refresh_reminder_table = True
 
+        if tray_displayed and (min_now % 10 == 0) and (sec_now == 0):
+            tray.show_message(title="PyKlock - Current Time", message=current_time.getTime(time_type))
+
         utils.set_title(window, pr_button, my_stopwatch, my_countdown, current_time)
         utils.update_status_bar(window)
 
@@ -212,6 +233,7 @@ def run_klock(my_logger, my_config):
     except Exception as e:
         my_logger.debug(f" Error occurred during saving of config: {e}")
 
+    tray.close()
     window.close(); del window
 
 

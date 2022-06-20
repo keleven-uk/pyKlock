@@ -8,6 +8,14 @@
        pyDigitalKlock_psg    - built with pySimpleGUI
 
 
+V2022.57
+
+    Implemented the Hide button, pyKlock becomes an icon in the system tray.
+        A couple of lines of code thanks to pySimpleGUI.
+        The tray icon only shows two menu options - Show pyKlocn and Exit.
+    When the system tray is active, a notification will show the current time every 10 minutes.
+
+
 V2022.56
 
     Added various extra fonts.

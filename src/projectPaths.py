@@ -21,6 +21,9 @@
 #                                                                                                             #
 ###############################################################################################################
 
+"""  A place to hold all the common project paths.
+     Also, holds some common constants used in the project.
+"""
 import sys
 import pathlib
 
