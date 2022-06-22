@@ -58,13 +58,26 @@ backward_file_path   = r"data/backward"
 reminder_data_file   = r"data/reminders"
 reminder_events_file = r"data/events.txt"
 
-#  fields in the items list.
-ID           = 0
-EVENT        = 1
-DESCRIPTION  = 2
-DATE_DUE     = 3
-TIME_DUE     = 4
-AUTO_DELETE  = 5
-RECURRING    = 6
-DISPLAYED    = 7
+contacts_data_file   = r"data/contacts"
+
+#  fields in the reminder items list.
+REMINDER_ID           = 0
+REMINDER_EVENT        = 1
+REMINDER_DESCRIPTION  = 2
+REMINDER_DATE_DUE     = 3
+REMINDER_TIME_DUE     = 4
+REMINDER_AUTO_DELETE  = 5
+REMINDER_RECURRING    = 6
+REMINDER_DISPLAYED    = 7
+
+#  fields in the contact items list
+CONTACT_ID          = 0
+CONTACT_LAST_NAME   = 1
+CONTACT_MIDDLE_NAME = 2
+CONTACT_FIRST_NAME  = 3
+CONTACT_TAL_NO      = 4
+CONTACT_DOB         = 5
+CONTACT_ADDRESS     = 6
+CONTACT_Post_CODE   = 7
+
 

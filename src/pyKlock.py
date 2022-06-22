@@ -42,6 +42,9 @@ import src.world_klock  as world_klock
 import src.reminder.reminder     as reminder
 import src.reminder.reminder_gui as reminder_gui
 
+import src.contacts.contacts     as contacts
+import src.contacts.contacts_gui as contacts_gui
+
 import src.utils.fonts_utils as fu
 import src.utils.klock_utils as utils
 
@@ -79,6 +82,9 @@ def run_klock(my_logger, my_config):
     reminder_db = reminder.reminders()
     reminder_db.check_due()
 
+    #  Create contacts database.
+    contacts_db = contacts.contacts()
+
     utils.set_title(window, pr_button, my_stopwatch, my_countdown, current_time)
     utils.update_status_bar(window)
     window["-CURRENT_TIME-"].update(current_time.getTime(time_type))
@@ -92,12 +98,11 @@ def run_klock(my_logger, my_config):
         if event == tray.key:
             event = values[event]       # use the System Tray's event as if was from the window
 
-        print(event)
         match event:
             case (sg.WIN_CLOSED|"Exit"|"-EXIT-"):
                 break
 
-            case ("-BTN_FUZZY-"|"-BTN_WORLD-"|"-BTN_COUNTDOWN-"|"-BTN_TIMER-"|"-BTN_REMINDER-"):    #  Button pressed, change views.
+            case ("-BTN_FUZZY-"|"-BTN_WORLD-"|"-BTN_COUNTDOWN-"|"-BTN_TIMER-"|"-BTN_REMINDER-"|"-BTN_CONTACT-"):    #  Button pressed, change views.
                 pressed = "-" + event[5:-1] +"-"
                 window[pr_button].update(visible=False)
                 window[pressed].update(visible=True)
@@ -108,6 +113,11 @@ def run_klock(my_logger, my_config):
                     refresh_reminder_table = False
                 else:
                     refresh_reminder_table = True
+
+                if not "-REMINDER-":                                                                #  Tries to stop the table refresh for every event loop.
+                    refresh_contacts_table = False
+                else:
+                    refresh_contacts_table = True
 
             case "-HIDE-":
                 tray.change_icon(sg.EMOJI_BASE64_HAPPY_JOY)                                         #  Sad icon.
@@ -190,6 +200,11 @@ def run_klock(my_logger, my_config):
                          item_list = reminder_gui.run_reminders(True, reminder_db, "DELETE", line_number)
                     window["-REMINDER_TABLE-"].update(item_list)
 
+            case "-CONTACT_ADD-":                                                      #  Doesn't need a row selected.
+                contacts_list = contacts_gui.run_contacts(True, contacts_db)
+                window["-CONTACT_TABLE-"].update(contacts_list)
+
+
         #  Update stuff at the end of the event loop.
         if pressed == "-FUZZY-":
             window["-CURRENT_TIME-"].update(current_time.getTime(time_type))
@@ -205,6 +220,11 @@ def run_klock(my_logger, my_config):
                 reminder_list = reminder_gui.run_reminders(False, reminder_db)
                 window["-REMINDER_TABLE-"].update(values=reminder_list)
                 refresh_reminder_table = False
+        if pressed == "-CONTACT-":
+            if refresh_contacts_table:                                                 #  Should fire first time around.
+                contacts_list = contacts_gui.run_contacts(False, contacts_db)
+                window["-CONTACT_TABLE-"].update(values=contacts_list)
+                refresh_contacts_table = False
 
         #  Check for any reminders due every 1 minutes.
         min_now = datetime.datetime.now().minute

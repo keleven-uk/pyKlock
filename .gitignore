@@ -139,5 +139,6 @@ pyDigitalKlock_psg/bin/*.log.*
 pyDigitalKlock_psg/bin/fonts/
 bin/fonts
 data/reminders.*
+data/contacts.*
 
 # End of https://www.gitignore.io/api/python,windows

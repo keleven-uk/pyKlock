@@ -126,6 +126,8 @@ def set_title(window, view, my_stopwatch, my_countdown, current_time):
             title = " Stopwatch"
         case "-REMINDER-":
             title = " Reminder"
+        case "-CONTACT-":
+            title = " Contacts"
 
     symbol = u"\u2609"
     if my_stopwatch.timer_running:

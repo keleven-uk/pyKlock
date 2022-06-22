@@ -1,30 +1,55 @@
-   History file of the main project - pyKlock
-   All entries to main project - unless stated.
-   Main project to be initially built using pySimpleGUI
+###############################################################################################################
+#     history.txt   Copyright (C) <2022>  <Kevin Scott>                                                       #                                                                                                             #                                                                                                             #
+#    History file of the main project - pyKlock                                                               #
+#    All entries to main project - unless stated.                                                             #
+#    Main project to be initially built using pySimpleGUI                                                     #
+#                                                                                                             #
+#    Contains a sub-projects in two parts.                                                                    #
+#        pyDigitalKlock - An attempt to re-create a LCD Klock.                                                #
+#            pyDigitalKlock_pygubu - built with pygubu.                                                       #
+#            pyDigitalKlock_psg    - built with pySimpleGUI [Used in main pyKlock]                            #
+#                                                                                                             #
+###############################################################################################################
+#    Copyright (C) <2022>  <Kevin Scott>                                                                      #
+#                                                                                                             #
+#    This program is free software: you can redistribute it and/or modify it under the terms of the           #
+#    GNU General Public License as published by the Free Software Foundation, either Version 3 of the         #
+#    License, or (at your option) any later Version.                                                          #
+#                                                                                                             #
+#    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without        #
+#    even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the               #
+#    GNU General Public License for more details.                                                             #
+#                                                                                                             #
+#    You should have received a copy of the GNU General Public License along with this program.               #
+#    If not, see <http://www.gnu.org/licenses/>.                                                              #
+#                                                                                                             #
+###############################################################################################################
 
-   Contains a sub-projects in two parts.
-     pyDigitalKlock - An attempt to re-create a LCD Klock.
-       pyDigitalKlock_pygubu - built with pygubu.
-       pyDigitalKlock_psg    - built with pySimpleGUI
+
+V2022.59
+
+    Started implemented the contacts view.  Borrows heavily from the reminders view. ;-)
+        New files - src\contacts\contacts.py & src\contacts_gui.py.
+        New contact layout in src\klock_layout.py
 
 
-V2022.57
+V2022.58
 
     Implemented the Hide button, pyKlock becomes an icon in the system tray.
         A couple of lines of code thanks to pySimpleGUI.
-        The tray icon only shows two menu options - Show pyKlocn and Exit.
+        The tray icon only shows two menu options - Show pyKlock and Exit.
     When the system tray is active, a notification will show the current time every 10 minutes.
+        Also when the tray is active, the reminders are checked - Not true when the LED Klock is running [yet].
 
 
-V2022.56
+V2022.57
 
     Added various extra fonts.
     Changed the way a notification sound is generated.  Now uses winsound instead of miniaudio.
         Removed miniaudio & ffmpeg-python from requirements.
 
 
-
-V2022.55
+V2022.56
 
     Corrected the bug in reminder auto-delete.
        The auto-delete flag being stored as a Boolean, all fields in the shelve must be strings.
@@ -81,7 +106,7 @@ V2022.51
 
     Added the delete button for the reminder view, this also uses the add form.
         When a reminder is deleted, all the remaining reminders are renumbered.
-        If the mode is "DELETS" then this allows the reminder at row line no the be deleted.
+        If the mode is "DELETE" then this allows the reminder at row line no the be deleted.
         Added two methods to the reminders class - delete & renumber_reminders
 
 
@@ -108,6 +133,8 @@ V2022.49
 V2022.48
 
     Implementing the Reminder view, not complete yet.
+        New files src\reminder.py, src\reminder\reminder_gui.py & src\reminder\reminder_utils.py.
+        New reminder layout in src\klock_layout.py
     Finished the main view that will display the reminders, with buttons to add and remove reminders.
     Finished the add window, which is a separate window that open when the add button is selected.
         The reminders will be stored in a database using the python pickles on a shelve.

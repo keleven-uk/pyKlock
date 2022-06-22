@@ -125,21 +125,49 @@ def win_layout(my_config, my_world_klock, win_location, win_size, timetypes, fon
                                  row_height=15,
                                  tooltip="Reminders Entered")]]
 
+    #  Contacts GUI definitions
+    data = [['' for row in range(15)]for col in range(7)]
+    headings = ["ID", "Last Name", "First Name", "Tel No", "D.O.B", "Address", "Post Code"]
+
+    contact_top_button     = [sg.Button("Add",    key="-CONTACT_ADD-",    size=(5,1), pad=(1,1))]
+    contact_middle_button  = [sg.Button("Edit",   key="-CONTACT_EDIT-",   size=(5,1), pad=(1,1))]
+    contact_bottom_button  = [sg.Button("Delete", key="-CONTACT_DELETE-", size=(5,1), pad=(1,1))]
+    contact_button_layout  = [contact_top_button, contact_middle_button, contact_bottom_button]
+
+    contact_layout = [[sg.Column(contact_button_layout),
+                        sg.Text("      "),
+                        sg.Table(values=data,
+                                 headings=headings,
+                                 col_widths=[5, 12, 20, 12, 10, 10, 10],
+                                 enable_events=True,
+                                 select_mode=sg.TABLE_SELECT_MODE_BROWSE,
+                                 background_color="light blue",
+                                 auto_size_columns=False,
+                                 display_row_numbers=False,
+                                 justification="left",
+                                 num_rows=5,
+                                 alternating_row_color="lightyellow",
+                                 key="-CONTACT_TABLE-",
+                                 row_height=15,
+                                 tooltip="Contacts Entered")]]
+
     #  Buttons GUI definitions
-    button_layout = [[sg.Button("Fuzzy Time",  key="-BTN_FUZZY-"),
-                      sg.Button("World Klock", key="-BTN_WORLD-"),
-                      sg.Button("Countdown",   key="-BTN_COUNTDOWN-"),
-                      sg.Button("Timer",       key="-BTN_TIMER-"),
-                      sg.Button("Reminder",    key="-BTN_REMINDER-"),
-                      sg.Button("Hide",        key="-HIDE-"),
-                      sg.Button("Exit",        key="-EXIT-")]]
+    button_layout = [[sg.Button("Fuzzy Time",  key="-BTN_FUZZY-", pad=(1,1)),
+                      sg.Button("World Klock", key="-BTN_WORLD-", pad=(1,1)),
+                      sg.Button("Countdown",   key="-BTN_COUNTDOWN-", pad=(1,1)),
+                      sg.Button("Timer",       key="-BTN_TIMER-", pad=(1,1)),
+                      sg.Button("Reminder",    key="-BTN_REMINDER-", pad=(1,1)),
+                      sg.Button("Contacts",    key="-BTN_CONTACT-", pad=(1,1)),
+                      sg.Button("Hide",        key="-HIDE-", pad=(1,1)),
+                      sg.Button("Exit",        key="-EXIT-", pad=(1,1))]]
 
     #  Build the screen, only one view visible.
     screen_layout = [sg.Column(fuzzy_time_layout,  visible=True,  key="-FUZZY-"),
                      sg.Column(world_klock_layout, visible=False, key="-WORLD-"),
                      sg.Column(countdown_layout,   visible=False, key="-COUNTDOWN-"),
                      sg.Column(timer_layout,       visible=False, key="-TIMER-"),
-                     sg.Column(reminder_layout,    visible=False, key="-REMINDER-")]
+                     sg.Column(reminder_layout,    visible=False, key="-REMINDER-"),
+                     sg.Column(contact_layout,     visible=False, key="-CONTACT-")]
 
 
     #  Status Bar GUI definitions

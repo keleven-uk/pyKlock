@@ -1,6 +1,6 @@
 ###############################################################################################################
-#     reminder.py   Copyright (C) <2022>  <Kevin Scott>                                                      #                                                                                                             #                                                                                                             #
-#     A simple class that holds the data for a reminder.                                                             #
+#     reminder.py   Copyright (C) <2022>  <Kevin Scott>                                                       #                                                                                                             #                                                                                                             #
+#     A simple class that holds the data for a reminder.                                                      #
 #                                                                                                             #
 #     For changes see history.txt                                                                             #
 #                                                                                                             #
@@ -77,7 +77,7 @@ class reminders():
 
     def delete(self, line_no):
         """  Deletes an existing reminder at position line_no.
-             After delete, which creates a hole, the reminders a renumbered.
+             After delete, which creates a hole, the reminders are renumbered.
         """
         database = shelve.open(self.database_name, writeback=True)
 
@@ -105,7 +105,7 @@ class reminders():
 
 
     def get_reminder(self, line_no):
-        """  Return a all the reminder items as a list.
+        """  Return the items on a reminder at line_no as a list.
 
              If an error occurs on read, will return an empty list.
         """
@@ -122,7 +122,7 @@ class reminders():
 
     def renumber_reminders(self):
         """  After a reminder has been deleted, it leaves a hole in the sequential ID.
-             This method is called to readdress that probem.
+             This method is called to readdress that problem.
              It goes through all the reminders in order and sets ID back in order.
         """
         database = shelve.open(self.database_name, writeback=True)
@@ -159,27 +159,27 @@ class reminders():
             for _id in db_keys:
                 items = database[_id]
 
-                due_interval = self.get_interval(items[DATE_DUE], items[TIME_DUE])
+                due_interval = self.get_interval(items[REMINDER_DATE_DUE], items[REMINDER_TIME_DUE])
 
                 match due_interval:
                     case due_interval if due_interval == 0:
-                        if items[DISPLAYED] == "False":
-                            message = f"{items[EVENT]} : {items[DESCRIPTION]} :: Reminder is Due."
+                        if items[REMINDER_DISPLAYED] == "False":
+                            message = f"{items[REMINDER_EVENT]} : {items[REMINDER_DESCRIPTION]} :: Reminder is Due."
                             notification.popup(message, x_pos, y_pos, YELLOW)
                             y_pos += 65
 
                     case due_interval if due_interval < 0:                 #  Reminder is set to recurring
-                        if items[RECURRING] == "True":                     #  add one to the year.
+                        if items[REMINDER_RECURRING] == "True":                     #  add one to the year.
                             new_date = ru.add_one_year(d)
-                            items[DATE_DUE]  = new_date
+                            items[REMINDER_DATE_DUE]  = new_date
 
-                        elif items[AUTO_DELETE] == "True":                 #  If auto delete is set to true
+                        elif items[REMINDER_AUTO_DELETE] == "True":                 #  If auto delete is set to true
                             self.delete(items[0])                          #  items[0] should be the ID number
 
                         elif items[DISPLAYED] == "False":
-                            message = f"{items[EVENT ]} : {items[DESCRIPTION]} :: Reminder is past please either delete or amend."
+                            message = f"{items[REMINDER_EVENT]} : {items[REMINDER_DESCRIPTION]} :: Reminder is past please either delete or amend."
                             notification.popup(message, x_pos, y_pos, RED)
-                            items[DISPLAYED] = "True"
+                            items[REMINDER_DISPLAYED] = "True"
                             if y_pos > 10:          #  Only increase y_pos if a reminder has already been displayed.
                                 y_pos += 65
                             self.save(items)
