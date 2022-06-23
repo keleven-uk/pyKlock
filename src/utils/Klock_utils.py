@@ -166,6 +166,18 @@ def run_action(action):
         case "Log Out PC":
             os.system("shutdown /l")
 
+def right_alignment_tables(window):
+    """  Right aligns the table headers.
+    """
+    # Alignment for in reminder table Headings
+    table = window["-REMINDER_TABLE-"].Widget
+    for cid, anchor in enumerate(["w", "w", "w", "w", "w", "w", "w"]):
+        table.heading(cid, anchor=anchor)
+
+    # Alignment for in contact table Headings
+    table = window["-CONTACT_TABLE-"].Widget
+    for cid, anchor in enumerate(["w", "w", "w", "w", "w", "w", "w", "w", "w", "w", "w", "w", "w", "w", "w", "w"]):
+        table.heading(cid, anchor=anchor)
 
 
 

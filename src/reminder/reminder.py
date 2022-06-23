@@ -27,20 +27,20 @@ import src.reminder.notification as notification
 
 from src.projectPaths import *
 
-#  Colours for the reminder background.
-GREEN  = "#B9DA8C"
-YELLOW = "#D7DA97"
-BLUE   = "#00FDFF"
-RED    = "#DA8C8C"
-BLACK  = "#000000"
-
-
 class reminders():
     """  Adds individual reminders to a reminders database.
          The reminders are stored as pickles on a shelve.
 
          The reminders are saved as a list of attributes.
-            items -  [ID, event, description, date_due, time_due, auto delete, recurring, displayed]
+                REMINDER_ID           = 0
+                REMINDER_EVENT        = 1
+                REMINDER_DESCRIPTION  = 2
+                REMINDER_DATE_DUE     = 3
+                REMINDER_TIME_DUE     = 4
+                REMINDER_AUTO_DELETE  = 5
+                REMINDER_RECURRING    = 6
+                REMINDER_DISPLAYED    = 7
+
 
          NOTE - key and all fields in shelve are strings
     """

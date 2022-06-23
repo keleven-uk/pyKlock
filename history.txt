@@ -26,6 +26,14 @@
 ###############################################################################################################
 
 
+V2022.60
+
+    Finished most of the logic for the contacts.
+        Implemented the add, edit & delete functions.
+        Amended the add form to include tel no, email, dob & address etc.
+    Added a tkinter hack to right align the table headers, found on the web.
+
+
 V2022.59
 
     Started implemented the contacts view.  Borrows heavily from the reminders view. ;-)

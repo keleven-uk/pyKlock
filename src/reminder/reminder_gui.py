@@ -37,6 +37,17 @@ def run_reminders(window, reminder_db, mode="", line_no=-1):
             mode = "EDIT" will allow the reminder to be edited,
             mode = "DELETE" will delete the reminder.
         line_no will gibe the row number of the reminder to edited/deleted.
+
+        #  fields in the reminder items list.
+            REMINDER_ID           = 0
+            REMINDER_EVENT        = 1
+            REMINDER_DESCRIPTION  = 2
+            REMINDER_DATE_DUE     = 3
+            REMINDER_TIME_DUE     = 4
+            REMINDER_AUTO_DELETE  = 5
+            REMINDER_RECURRING    = 6
+            REMINDER_DISPLAYED    = 7
+
     """
 
     if window:
@@ -47,31 +58,21 @@ def run_reminders(window, reminder_db, mode="", line_no=-1):
 
         layout = [
             [sg.Text("Please enter your reminder", key="-FORM_TEXT-")],
-            [sg.Text("Event",       size =(15, 1)),sg.Combo(events, key="-REMIDER_EVENT-", default_value=events[0], font=("TkDefaultFont", 10))],
-            [sg.Text("Description", size =(15, 1)), sg.InputText(key="-REMINDER_DESCRIPTION-")],
-            [sg.Text("Date Due",    size =(15, 1)), sg.Input(key="-REMINDER_DATE_DUE-", size=(20,1)),
-             sg.CalendarButton("Choose Date",  target="-REMINDER_DATE_DUE-", format="%d %B %Y")],
-            [sg.Text("Time Due",          size =(15, 1)),
+            [sg.Text("Event",       size=(15, 1)), sg.Combo(events, key="-REMIDER_EVENT-", default_value=events[0], font=("TkDefaultFont", 10))],
+            [sg.Text("Description", size=(15, 1)), sg.InputText(key="-REMINDER_DESCRIPTION-")],
+            [sg.Text("Date Due",    size=(15, 1)), sg.Input(key="-REMINDER_DATE_DUE-", size=(20,1)),
+             sg.CalendarButton("Choose Date",      target="-REMINDER_DATE_DUE-",       format="%d %B %Y")],
+            [sg.Text("Time Due",    size =(15, 1)),
              sg.Spin([x+1 for x in range(23)], key="-REMINDER_DUE_TIME_HOURS-", size=(6,1),  font=("TkDefaultFont", 12), initial_value=0),
              sg.Spin([x+1 for x in range(59)], key="-REMINDER_DUE_TIME_MINS-",  size=(6,1),  font=("TkDefaultFont", 12), initial_value=0)],
-            [sg.Text("Recurring reminder", size =(15, 1), justification="right"), sg.Checkbox("", key="-REMINDER_RECURRING-", default=False),
-             sg.Text("Auto Delete", size =(15, 1), justification="right"), sg.Checkbox("", key="-REMINDER_AUTO_DELETE-", default=False)],
-            [sg.Button("Delete", key="-DELETE-",  visible=False), sg.Button("Submit", key="-SUBMIT-",  visible=True), sg.Cancel()]
+            [sg.Text("Recurring reminder", size=(15, 1), justification="right"), sg.Checkbox("", key="-REMINDER_RECURRING-",   default=False),
+             sg.Text("Auto Delete",        size=(15, 1), justification="right"), sg.Checkbox("", key="-REMINDER_AUTO_DELETE-", default=False)],
+            [sg.Button("Delete", key="-DELETE-",  visible=False, pad=(1,1)), sg.Button("Submit", key="-SUBMIT-",  visible=True, pad=(1,1)), sg.Cancel(pad=(1,1))]
             ]
 
         #  Create window
         rem_window = sg.Window("Reminders", layout)
         rem_window.finalize()
-
-        #  get_reminder returns a list of the attributes of the reminder
-        #  position 0 = ID
-        #           1 = reminder type
-        #           2 = reminder description
-        #           3 = reminder due date
-        #           4 = reminder due time
-        #           5 = Auto Delete
-        #           6 = Reminder recurring
-        #           7 = Displayed
 
         if mode in ("EDIT", "DELETE"):
             disp_reminder = reminder_db.get_reminder(str(line_no))      #  now a list.
@@ -104,7 +105,7 @@ def run_reminders(window, reminder_db, mode="", line_no=-1):
                     break
                 case "-SUBMIT-":
                     event              = values["-REMIDER_EVENT-"]
-                    description        = values["-REMINDER_DESCRIPTION-"]
+                    description        = values["-REMINDER_DESCRIPTION-"].capitalize()
                     date_due           = values["-REMINDER_DATE_DUE-"]
                     hrs                = values["-REMINDER_DUE_TIME_HOURS-"]
                     mns                = values["-REMINDER_DUE_TIME_MINS-"]

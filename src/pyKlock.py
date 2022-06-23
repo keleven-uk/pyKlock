@@ -85,6 +85,8 @@ def run_klock(my_logger, my_config):
     #  Create contacts database.
     contacts_db = contacts.contacts()
 
+    utils.right_alignment_tables(window)
+
     utils.set_title(window, pr_button, my_stopwatch, my_countdown, current_time)
     utils.update_status_bar(window)
     window["-CURRENT_TIME-"].update(current_time.getTime(time_type))
@@ -197,12 +199,22 @@ def run_klock(my_logger, my_config):
                     if event == "-REMINDER_EDIT-":
                         item_list = reminder_gui.run_reminders(True, reminder_db, "EDIT", line_number)
                     else:  # must be delete.
-                         item_list = reminder_gui.run_reminders(True, reminder_db, "DELETE", line_number)
+                        item_list = reminder_gui.run_reminders(True, reminder_db, "DELETE", line_number)
                     window["-REMINDER_TABLE-"].update(item_list)
 
             case "-CONTACT_ADD-":                                                      #  Doesn't need a row selected.
                 contacts_list = contacts_gui.run_contacts(True, contacts_db)
                 window["-CONTACT_TABLE-"].update(contacts_list)
+
+            case ("-CONTACT_EDIT-"|"-CONTACT_DELETE-"):
+                if values["-CONTACT_TABLE-"] != []:                                    #  Check a row has been selected.
+                    line_number = values["-CONTACT_TABLE-"][0]
+
+                    if event == "-CONTACT_EDIT-":
+                        item_list = contacts_gui.run_contacts(True, contacts_db, "EDIT", line_number)
+                    else:  # must be delete.
+                        item_list = contacts_gui.run_contacts(True, contacts_db, "DELETE", line_number)
+                    window["-CONTACT_TABLE-"].update(item_list)
 
 
         #  Update stuff at the end of the event loop.

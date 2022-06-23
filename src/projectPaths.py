@@ -60,6 +60,13 @@ reminder_events_file = r"data/events.txt"
 
 contacts_data_file   = r"data/contacts"
 
+#  Colours for the reminder background.
+GREEN  = "#B9DA8C"
+YELLOW = "#D7DA97"
+BLUE   = "#00FDFF"
+RED    = "#DA8C8C"
+BLACK  = "#000000"
+
 #  fields in the reminder items list.
 REMINDER_ID           = 0
 REMINDER_EVENT        = 1
@@ -72,12 +79,23 @@ REMINDER_DISPLAYED    = 7
 
 #  fields in the contact items list
 CONTACT_ID          = 0
-CONTACT_LAST_NAME   = 1
-CONTACT_MIDDLE_NAME = 2
-CONTACT_FIRST_NAME  = 3
-CONTACT_TAL_NO      = 4
-CONTACT_DOB         = 5
-CONTACT_ADDRESS     = 6
-CONTACT_Post_CODE   = 7
+CONTACT_TITLE       = 1
+CONTACT_LAST_NAME   = 2
+CONTACT_MIDDLE_NAME = 3
+CONTACT_FIRST_NAME  = 4
+CONTACT_TEL_NO      = 5
+CONTACT_EMAIL       = 6
+CONTACT_DOB         = 7
+CONTACT_HOUSE_NO    = 8
+CONTACT_STREET      = 9
+CONTACT_ADDRESS_1   = 10
+CONTACT_ADDRESS_2   = 11
+CONTACT_COUNTY      = 12
+CONTACT_POST_CODE   = 13
+CONTACT_COUNTRY     = 14
+CONTACT_NOTE        = 14
+
+
+
 
 

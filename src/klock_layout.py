@@ -100,6 +100,15 @@ def win_layout(my_config, my_world_klock, win_location, win_size, timetypes, fon
                    ]
 
     #  Reminder GUI definitions
+    #  REMINDER_ID           = 0
+    #  REMINDER_EVENT        = 1
+    #  REMINDER_DESCRIPTION  = 2
+    #  REMINDER_DATE_DUE     = 3
+    #  REMINDER_TIME_DUE     = 4
+    #  REMINDER_AUTO_DELETE  = 5
+    #  REMINDER_RECURRING    = 6
+    #  REMINDER_DISPLAYED    = 7  - not displayed in table.
+
     data = [['' for row in range(15)]for col in range(7)]
     headings = ["ID", "Event", "Description", "Date Due", "Time Due", "Auto Delete", "Recurring"]
 
@@ -126,8 +135,25 @@ def win_layout(my_config, my_world_klock, win_location, win_size, timetypes, fon
                                  tooltip="Reminders Entered")]]
 
     #  Contacts GUI definitions
-    data = [['' for row in range(15)]for col in range(7)]
-    headings = ["ID", "Last Name", "First Name", "Tel No", "D.O.B", "Address", "Post Code"]
+    #  CONTACT_ID          = 0
+    #  CONTACT_TITLE       = 1
+    #  CONTACT_LAST_NAME   = 2
+    #  CONTACT_MIDDLE_NAME = 3
+    #  CONTACT_FIRST_NAME  = 4
+    #  CONTACT_TEL_NO      = 5
+    #  CONTACT_EMAIL       = 6
+    #  CONTACT_DOB         = 7
+    #  CONTACT_HOUSE_NO    = 8
+    #  CONTACT_STREET      = 9
+    #  CONTACT_ADDRESS_1   = 10
+    #  CONTACT_ADDRESS_2   = 11
+    #  CONTACT_COUNTY      = 12
+    #  CONTACT_POST_CODE   = 13
+    #  CONTACT_COUNTRY     = 14
+    #  CONTACT_NOTE        = 15
+
+    data = [['' for row in range(17)]for col in range(7)]
+    headings = ["ID", "Title", "Last Name", "Middle name", "First name", "Tel No", "eMail", "D.O.B", "House", "Street", "Add 1", "Add 2", "County", "Post Code", "Country", "Note"]
 
     contact_top_button     = [sg.Button("Add",    key="-CONTACT_ADD-",    size=(5,1), pad=(1,1))]
     contact_middle_button  = [sg.Button("Edit",   key="-CONTACT_EDIT-",   size=(5,1), pad=(1,1))]
@@ -138,12 +164,13 @@ def win_layout(my_config, my_world_klock, win_location, win_size, timetypes, fon
                         sg.Text("      "),
                         sg.Table(values=data,
                                  headings=headings,
-                                 col_widths=[5, 12, 20, 12, 10, 10, 10],
+                                 col_widths=[4, 5, 12, 12, 12, 12, 15, 10, 6, 10, 12, 12, 10, 10, 10, 20],
                                  enable_events=True,
                                  select_mode=sg.TABLE_SELECT_MODE_BROWSE,
                                  background_color="light blue",
                                  auto_size_columns=False,
                                  display_row_numbers=False,
+                                 vertical_scroll_only=False,
                                  justification="left",
                                  num_rows=5,
                                  alternating_row_color="lightyellow",

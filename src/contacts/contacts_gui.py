@@ -35,6 +35,24 @@ def run_contacts(window, contacts_db, mode="", line_no=-1):
             mode = "EDIT" will allow the contact to be edited,
             mode = "DELETE" will delete the contact.
         line_no will gibe the row number of the contact to edited/deleted.
+
+        #  fields in the contact items list
+            CONTACT_ID          = 0
+            CONTACT_TITLE       = 1
+            CONTACT_LAST_NAME   = 2
+            CONTACT_MIDDLE_NAME = 3
+            CONTACT_FIRST_NAME  = 4
+            CONTACT_TEL_NO      = 5
+            CONTACT_EMAIL       = 6
+            CONTACT_DOB         = 7
+            CONTACT_HOUSE_NO    = 8
+            CONTACT_STREET      = 9
+            CONTACT_ADDRESS_1   = 10
+            CONTACT_ADDRESS_2   = 11
+            CONTACT_COUNTY      = 12
+            CONTACT_POST_CODE   = 13
+            CONTACT_COUNTRY     = 14
+            CONTACT_NOTE        = 14
     """
 
     if window:
@@ -43,53 +61,81 @@ def run_contacts(window, contacts_db, mode="", line_no=-1):
 
         layout = [
             [sg.Text("Please enter your contact", key="-FORM_TEXT-")],
-            [sg.Text("Last Name",   size =(15, 1)), sg.InputText(key="-CONTACT-LAST-NAME-")],
-            [sg.Text("Middle Name", size =(15, 1)), sg.InputText(key="-CONTACT-MIDDLE-NAME-")],
-            [sg.Text("First Name",  size =(15, 1)), sg.InputText(key="-CONTACT-LAST-NAME-")],
-            [sg.Button("Delete", key="-DELETE-",  visible=False), sg.Button("Submit", key="-SUBMIT-",  visible=True), sg.Cancel()]
+            [sg.Text("")],
+            [sg.Text("Title          ", size=(12, 1)), sg.InputText(key="-CONTACT-TITLE-",       size=(18, 1)),
+             sg.Text("Last Name      ", size=(12, 1)), sg.InputText(key="-CONTACT-LAST-NAME-",   size=(18, 1))],
+            [sg.Text("Middle Name    ", size=(12, 1)), sg.InputText(key="-CONTACT-MIDDLE-NAME-", size=(18, 1)),
+             sg.Text("First Name     ", size=(12, 1)), sg.InputText(key="-CONTACT-FIRST-NAME-",  size=(18, 1))],
+            [sg.Text("Tel. No.       ", size=(12, 1)), sg.InputText(key="-CONTACT-TEL-NO-",      size=(18, 1)),
+             sg.Text("eMail          ", size=(12, 1)), sg.InputText(key="-CONTACT-EMAIL-",       size=(18, 1))],
+            [sg.Text("D.O.B.         ", size=(12, 1)), sg.InputText(key="-CONTACT-DOB-",         size=(18, 1)),
+             sg.Text("               ", size=(12, 1)), sg.CalendarButton("Choose Date",          target="-CONTACT-DOB-", format="%d %B %Y")],
+            [sg.Text("House No.      ", size=(12, 1)), sg.InputText(key="-CONTACT-HOUSE-NO-",    size=(18, 1)),
+             sg.Text("Street         ", size=(12, 1)), sg.InputText(key="-CONTACT-STREET-",      size=(18, 1))],
+            [sg.Text("Address Line 1 ", size=(12, 1)), sg.InputText(key="-CONTACT-ADDRESS-1-",   size=(18, 1)),
+             sg.Text("Address Line 2 ", size=(12, 1)), sg.InputText(key="-CONTACT-ADDRESS-2-",   size=(18, 1))],
+            [sg.Text("County         ", size=(12, 1)), sg.InputText(key="-CONTACT-COUNTY-",      size=(18, 1)),
+             sg.Text("Post Code      ", size=(12, 1)), sg.InputText(key="-CONTACT-POST-CODE-",   size=(18, 1))],
+            [sg.Text("Country        ", size=(12, 1)), sg.InputText(key="-CONTACT-COUNTRY-",     size=(18, 1))],
+            [sg.Text("Note           ", size=(12, 1)), sg.InputText(key="-CONTACT-NOTE-",        size=(51, 1))],
+            [sg.Text("")],
+            [sg.Button("Delete", key="-DELETE-",  visible=False, pad=(1,1)), sg.Button("Submit", key="-SUBMIT-",  visible=True, pad=(1,1)), sg.Cancel(pad=(1,1))]
             ]
 
         #  Create window
-        rem_window = sg.Window("contacts", layout)
-        rem_window.finalize()
-
-        #  get_contact returns a list of the attributes of the reminder
-        #  position 0 = ID
-        #           1 = Last Name
-        #           2 = First Name
-        #           3 = Tel. No.
-        #           4 = D.O.B.
-        #           5 = Address
-        #           6 = Post Code
+        contact_window = sg.Window("contacts", layout)
+        contact_window.finalize()
 
         if mode in ("EDIT", "DELETE"):
             disp_contacts = contacts_db.get_contact(str(line_no))      #  now a list.
-            hrs, min = disp_reminder[TIME_DUE].split(":")
 
-            reminder_displayed = disp_reminder[DISPLAYED]
-            auto_delete        = ru.str_to_bool(disp_reminder[AUTO_DELETE])
-            recurring          = ru.str_to_bool(disp_reminder[RECURRING])
+            contact_window["-CONTACT-TITLE-"].update(disp_contacts[CONTACT_TITLE])
+            contact_window["-CONTACT-LAST-NAME-"].update(disp_contacts[CONTACT_LAST_NAME])
+            contact_window["-CONTACT-MIDDLE-NAME-"].update(disp_contacts[CONTACT_MIDDLE_NAME])
+            contact_window["-CONTACT-FIRST-NAME-"].update(disp_contacts[CONTACT_FIRST_NAME])
+            contact_window["-CONTACT-TEL-NO-"].update(disp_contacts[CONTACT_TEL_NO])
+            contact_window["-CONTACT-EMAIL-"].update(disp_contacts[CONTACT_EMAIL])
+            contact_window["-CONTACT-DOB-"].update(disp_contacts[CONTACT_DOB])
+            contact_window["-CONTACT-HOUSE-NO-"].update(disp_contacts[CONTACT_HOUSE_NO])
+            contact_window["-CONTACT-STREET-"].update(disp_contacts[CONTACT_STREET])
+            contact_window["-CONTACT-ADDRESS-1-"].update(disp_contacts[CONTACT_ADDRESS_1])
+            contact_window["-CONTACT-ADDRESS-2-"].update(disp_contacts[CONTACT_ADDRESS_2])
+            contact_window["-CONTACT-COUNTY-"].update(disp_contacts[CONTACT_COUNTY])
+            contact_window["-CONTACT-POST-CODE-"].update(disp_contacts[CONTACT_POST_CODE])
+            contact_window["-CONTACT-COUNTRY-"].update(disp_contacts[CONTACT_COUNTRY])
+            contact_window["-CONTACT-NOTE-"].update(disp_contacts[CONTACT_NOTE])
 
 
         if mode == "DELETE":
-            rem_window["-FORM_TEXT-"].update("Please chose your reminder to DELETE")
-            rem_window["-DELETE-"].update(visible=True)
-            rem_window["-SUBMIT-"].update(visible=False)
+            contact_window["-FORM_TEXT-"].update("Please chose your reminder to DELETE")
+            contact_window["-DELETE-"].update(visible=True)
+            contact_window["-SUBMIT-"].update(visible=False)
 
-        # Event Loop to process "events" and get the "values" of the inputs
+        # Event Loop to process "contacts" and get the "values" of the inputs
         while True:
-            event, values = rem_window.read(timeout=1000)
+            event, values = contact_window.read(timeout=1000)
 
             match event:
                 case (sg.WIN_CLOSED|"Cancel"):
                     break
                 case "-SUBMIT-":
-                    last_name   = values["-CONTACT-LAST-NAME-"]
-                    middle_name = values["-CONTACT-MIDDLE-NAME-"]
-                    first_name  = values["-CONTACT-LAST-NAME-"]
+                    title       = values["-CONTACT-TITLE-"]
+                    last_name   = values["-CONTACT-LAST-NAME-"].capitalize()
+                    middle_name = values["-CONTACT-MIDDLE-NAME-"].capitalize()
+                    first_name  = values["-CONTACT-FIRST-NAME-"].capitalize()
+                    tel_no      = values["-CONTACT-TEL-NO-"]
+                    email       = values["-CONTACT-EMAIL-"]
+                    dob         = values["-CONTACT-DOB-"]
+                    house_no    = values["-CONTACT-HOUSE-NO-"]
+                    street      = values["-CONTACT-STREET-"].capitalize()
+                    add_1       = values["-CONTACT-ADDRESS-1-"].capitalize()
+                    add_2       = values["-CONTACT-ADDRESS-2-"].capitalize()
+                    county      = values["-CONTACT-COUNTY-"].capitalize()
+                    post_code   = values["-CONTACT-POST-CODE-"]
+                    country     = values["-CONTACT-COUNTRY-"].capitalize()
+                    note        = values["-CONTACT-NOTE-"]
 
-
-                    items = [str(line_no), last_name, middle_name, first_name]
+                    items = [str(line_no), title, last_name, middle_name, first_name, tel_no, email, dob, house_no, street, add_1, add_2, county, post_code, country, note]
 
                     if mode == "EDIT":
                         contacts_db.save(items)
@@ -103,7 +149,7 @@ def run_contacts(window, contacts_db, mode="", line_no=-1):
 
                     break
 
-        rem_window.close(); del rem_window
+        contact_window.close(); del contact_window
 
     return contacts_db.list_contacts()
 

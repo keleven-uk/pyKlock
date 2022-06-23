@@ -31,7 +31,23 @@ class contacts():
          The contacts are stored as pickles on a shelve.
 
          The contacts are saved as a list of attributes.
-            items -  [ID, Last Name, First Name, Tel. No, D.O.B., Address, Post ]
+            CONTACT_ID          = 0
+            CONTACT_TITLE       = 1
+            CONTACT_LAST_NAME   = 2
+            CONTACT_MIDDLE_NAME = 3
+            CONTACT_FIRST_NAME  = 4
+            CONTACT_TEL_NO      = 5
+            CONTACT_EMAIL       = 6
+            CONTACT_DOB         = 7
+            CONTACT_HOUSE_NO    = 8
+            CONTACT_STREET      = 9
+            CONTACT_ADDRESS_1   = 10
+            CONTACT_ADDRESS_2   = 11
+            CONTACT_COUNTY      = 12
+            CONTACT_POST_CODE   = 13
+            CONTACT_COUNTRY     = 14
+            CONTACT_NOTE        = 15
+
 
          NOTE - key and all fields in shelve are strings
     """
@@ -99,15 +115,15 @@ class contacts():
 
              If an error occurs on read, will return an empty list.
         """
-        rem      = []
+        contact      = []
         database = shelve.open(self.database_name)
 
         try:
-            rem = database[line_no]
+            contact = database[line_no]
         finally:
             database.close()
 
-        return rem
+        return contact
 
 
     def renumber_contacts(self):
