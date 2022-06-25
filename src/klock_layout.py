@@ -41,10 +41,11 @@ def win_layout(my_config, my_world_klock, win_location, win_size, timetypes, fon
 
     #  Menu definitions
 
-    menu_def = [["File",  ["---", "Exit"]],
+    menu_def = [["File",     ["---", "Exit"]],
                 ["Settings", ["Theme", "Font"]],
-                ["Time", ["LCD Klock"]],
-                ["Help",  ["License", "About"]]
+                ["Time",     ["LCD Klock"]],
+                ["Archive",  ["Reminders", ["Save Reminders", "Load Reminders"], "Contacts", ["Save Contacts", "Load Contacts"]]],
+                ["Help",     ["License", "About"]]
                 ]
 
     #  Fuzzy Time GUI definitions

@@ -26,6 +26,12 @@
 ###############################################################################################################
 
 
+V2022.61
+
+    Implemented the menu options to save and load both databases [reminders & contacts]
+        Implemented in a new file src\utils\archive.py
+
+
 V2022.60
 
     Finished most of the logic for the contacts.

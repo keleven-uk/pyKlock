@@ -47,6 +47,7 @@ import src.contacts.contacts_gui as contacts_gui
 
 import src.utils.fonts_utils as fu
 import src.utils.klock_utils as utils
+import src.utils.archive     as archive
 
 from src.projectPaths import *
 
@@ -99,6 +100,7 @@ def run_klock(my_logger, my_config):
         # if it's a tray event, change the event variable to be whatever the tray sent
         if event == tray.key:
             event = values[event]       # use the System Tray's event as if was from the window
+
 
         match event:
             case (sg.WIN_CLOSED|"Exit"|"-EXIT-"):
@@ -174,6 +176,18 @@ def run_klock(my_logger, my_config):
                         my_logger.debug(f"Font name = {font_name}  Font size = {font_size}")
                     else:
                         window.reappear()
+
+            case "Save Reminders":
+                archive.save_database("reminders")
+
+            case "Save Contacts":
+                archive.save_database("contacts")
+
+            case "Load Reminders":
+                archive.load_database("reminders")
+
+            case "Load Contacts":
+                archive.load_database("contacts")
 
             case ("-TIMER_START-"|"-TIMER_RESUME-"|"-TIMER_STOP-"|"-TIMER_PAUSE-"|"-TIMER_CLEAR-"):
                 #  Stopwatch functions called - pass to my_stopwatch.
