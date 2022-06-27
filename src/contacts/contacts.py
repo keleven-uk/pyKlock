@@ -23,6 +23,8 @@
 import shelve
 import datetime
 
+from operator import itemgetter
+
 from src.projectPaths import *
 
 
@@ -57,15 +59,28 @@ class contacts():
         self.database_name = contacts_data_file
 
 
+    def no_of_contacts(self):
+        """  Return the number of contacts, length of database.
+        """
+        database = shelve.open(self.database_name)
+
+        try:
+            _length = str(len(database))
+        finally:
+            database.close()
+
+        return _length
+
+
     def add(self, items):
         """  Adds the contact to the contacts database.
         """
         database          = shelve.open(self.database_name, writeback=True)
-        no_of_contacts    = str(len(database))           #  len() is not zero based.
-        items[CONTACT_ID] = no_of_contacts
+        _no_of_contacts   = str(len(database))           #  len() is not zero based.
+        items[CONTACT_ID] = _no_of_contacts
 
         try:
-            database[no_of_contacts] = items
+            database[_no_of_contacts] = items
         finally:
             database.close()
 
@@ -107,6 +122,8 @@ class contacts():
         finally:
             database.close()
 
+        contacts_list = sorted(contacts_list, key=itemgetter(2))      #  I love python, oh and the internet as well :-)
+        self.renumber_contacts()   #  Renumber.
         return contacts_list
 
 

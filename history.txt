@@ -26,6 +26,16 @@
 ###############################################################################################################
 
 
+V2022.62
+
+    Added methods to return the number of reminders & contacts.
+        This is then used to show extra information in the title.
+    Amended the method that return a list of contacts, to be sorted by last name.
+        Thanks to python and the internet, this is done with one line!!
+        contacts_list = sorted(contacts_list, key=itemgetter(2))  :=)
+    we now capitalise and title case some of the fields in reminders and contacts.
+
+
 V2022.61
 
     Implemented the menu options to save and load both databases [reminders & contacts]
@@ -38,6 +48,7 @@ V2022.60
         Implemented the add, edit & delete functions.
         Amended the add form to include tel no, email, dob & address etc.
     Added a tkinter hack to right align the table headers, found on the web.
+    Again from the internet, found a hack to removed the ID column from the tables.
 
 
 V2022.59

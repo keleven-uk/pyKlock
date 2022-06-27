@@ -107,7 +107,7 @@ def update_status_bar(window):
     window['-CURRENT-IDLE-'].update(get_idle_duration())
 
 
-def set_title(window, view, my_stopwatch, my_countdown, current_time):
+def set_title(window, view, my_stopwatch, my_countdown, current_time, reminder_db, contacts_db):
     """  Set the window title to an appropriate thing.
          Adds on the stopwatch value, if running.
 
@@ -115,6 +115,8 @@ def set_title(window, view, my_stopwatch, my_countdown, current_time):
          u"\u2191" = up arrow.
          u"\u2193" = down arrow.
     """
+    symbol = u"\u2609"
+
     match view:
         case "-FUZZY-":
             title = " Fuzzy Time"
@@ -125,11 +127,10 @@ def set_title(window, view, my_stopwatch, my_countdown, current_time):
         case "-TIMER-":
             title = " Stopwatch"
         case "-REMINDER-":
-            title = " Reminder"
+            title = f" Reminders  {symbol} {reminder_db.no_of_reminders()} reminders"
         case "-CONTACT-":
-            title = " Contacts"
+            title = f" Contacts  {symbol} {contacts_db.no_of_contacts()} contacts"
 
-    symbol = u"\u2609"
     if my_stopwatch.timer_running:
         up_arrow   = u"\u2191"
         title += (f" {symbol} {up_arrow}{my_stopwatch.elapsed_time}")

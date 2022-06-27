@@ -88,7 +88,7 @@ def run_klock(my_logger, my_config):
 
     utils.right_alignment_tables(window)
 
-    utils.set_title(window, pr_button, my_stopwatch, my_countdown, current_time)
+    utils.set_title(window, pr_button, my_stopwatch, my_countdown, current_time, reminder_db, contacts_db)
     utils.update_status_bar(window)
     window["-CURRENT_TIME-"].update(current_time.getTime(time_type))
 
@@ -111,7 +111,7 @@ def run_klock(my_logger, my_config):
                 window[pr_button].update(visible=False)
                 window[pressed].update(visible=True)
                 pr_button = pressed
-                utils.set_title(window, pressed, my_stopwatch, my_countdown, current_time)
+                utils.set_title(window, pressed, my_stopwatch, my_countdown, current_time, reminder_db, contacts_db)
 
                 if not "-REMINDER-":                                                                #  Tries to stop the table refresh for every event loop.
                     refresh_reminder_table = False
@@ -262,7 +262,7 @@ def run_klock(my_logger, my_config):
         if tray_displayed and (min_now % 10 == 0) and (sec_now == 0):
             tray.show_message(title="PyKlock - Current Time", message=current_time.getTime(time_type))
 
-        utils.set_title(window, pr_button, my_stopwatch, my_countdown, current_time)
+        utils.set_title(window, pr_button, my_stopwatch, my_countdown, current_time, reminder_db, contacts_db)
         utils.update_status_bar(window)
 
 #   Outside of event loop.

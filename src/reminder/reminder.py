@@ -50,6 +50,19 @@ class reminders():
         self.database_name = reminder_data_file
 
 
+    def no_of_reminders(self):
+        """  Return the number of contacts, length of database.
+        """
+        database = shelve.open(self.database_name)
+
+        try:
+            _length = str(len(database))
+        finally:
+            database.close()
+
+        return _length
+
+
     def add(self, items):
         """  Adds the reminder to the reminders database.
         """

@@ -6,6 +6,9 @@ Written in Python 3.10.4
 
 Klock will consist of a number of views, selected by a row of buttons along the bottom.
 
+or will be [similar to lazKlock & klock.vb], at the moment a trying ground for ideas.
+Stuff that I come across that might be useful.
+
 The first view is Fuzzy Time.
     The will display the current time in a number of different modes.
         i.e. in Words, in Hex, in Roman Numerals, in Binary etc.
@@ -23,12 +26,12 @@ The fourth view is a World Klock.
     This displays the time in a given time zone, that is selected from a drop down list.
 
 The fifth view is reminders.
-    This allows a reminder to be entered with eiter a due dat or due time {or both].
+    This allows a reminder to be entered with eiter a due date or due time [or both].
     A notification is displayed when the reminder is due.
 
+The sixth view is concacts.
+    The allows a contact to be entered with name, tel no, email & address.
 
-or will be [similar to lazKlock & klock.vb], at the moment a trying ground for ideas.
-Stuff that I come across that might be useful.
 
 Contains one sub project, pyDigitalKlock.
     This a simple app that tries to reproduce a LED Digital Klock.

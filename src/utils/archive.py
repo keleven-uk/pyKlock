@@ -35,7 +35,7 @@ def save_database(db_type):
          db_type  = type of database to zip, either "reminders" or "contacts"
     """
     filename = sg.popup_get_file(title=f"Save {db_type} database.",
-                                 message=f"Please enter a file name to save {db_type} to.",
+                                 message=f"Please enter a file name to save {db_type} to [Don't forget the .zip].",
                                  save_as=True,
                                  initial_folder=MAIN_PATH)
 

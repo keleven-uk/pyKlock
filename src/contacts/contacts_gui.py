@@ -119,7 +119,7 @@ def run_contacts(window, contacts_db, mode="", line_no=-1):
                 case (sg.WIN_CLOSED|"Cancel"):
                     break
                 case "-SUBMIT-":
-                    title       = values["-CONTACT-TITLE-"]
+                    title       = values["-CONTACT-TITLE-"].capitalize()
                     last_name   = values["-CONTACT-LAST-NAME-"].capitalize()
                     middle_name = values["-CONTACT-MIDDLE-NAME-"].capitalize()
                     first_name  = values["-CONTACT-FIRST-NAME-"].capitalize()
@@ -127,12 +127,12 @@ def run_contacts(window, contacts_db, mode="", line_no=-1):
                     email       = values["-CONTACT-EMAIL-"]
                     dob         = values["-CONTACT-DOB-"]
                     house_no    = values["-CONTACT-HOUSE-NO-"]
-                    street      = values["-CONTACT-STREET-"].capitalize()
-                    add_1       = values["-CONTACT-ADDRESS-1-"].capitalize()
-                    add_2       = values["-CONTACT-ADDRESS-2-"].capitalize()
-                    county      = values["-CONTACT-COUNTY-"].capitalize()
-                    post_code   = values["-CONTACT-POST-CODE-"]
-                    country     = values["-CONTACT-COUNTRY-"].capitalize()
+                    street      = values["-CONTACT-STREET-"].title()
+                    add_1       = values["-CONTACT-ADDRESS-1-"].title()
+                    add_2       = values["-CONTACT-ADDRESS-2-"].title()
+                    county      = values["-CONTACT-COUNTY-"].title()
+                    post_code   = values["-CONTACT-POST-CODE-"].upper()
+                    country     = values["-CONTACT-COUNTRY-"].title()
                     note        = values["-CONTACT-NOTE-"]
 
                     items = [str(line_no), title, last_name, middle_name, first_name, tel_no, email, dob, house_no, street, add_1, add_2, county, post_code, country, note]

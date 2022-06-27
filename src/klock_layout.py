@@ -23,6 +23,8 @@ import PySimpleGUI as sg
 
 import datetime
 
+from copy import deepcopy
+
 from src.projectPaths import *
 
 #  Used to build the tray object in pyKlock.py - hides here.
@@ -165,7 +167,7 @@ def win_layout(my_config, my_world_klock, win_location, win_size, timetypes, fon
                         sg.Text("      "),
                         sg.Table(values=data,
                                  headings=headings,
-                                 col_widths=[4, 5, 12, 12, 12, 12, 15, 10, 6, 10, 12, 12, 10, 10, 10, 20],
+                                 col_widths=[4, 5, 10, 10, 10, 12, 17, 13, 6, 12, 12, 12, 12, 10, 10, 20],
                                  enable_events=True,
                                  select_mode=sg.TABLE_SELECT_MODE_BROWSE,
                                  background_color="light blue",
@@ -173,7 +175,7 @@ def win_layout(my_config, my_world_klock, win_location, win_size, timetypes, fon
                                  display_row_numbers=False,
                                  vertical_scroll_only=False,
                                  justification="left",
-                                 num_rows=5,
+                                 num_rows=4,
                                  alternating_row_color="lightyellow",
                                  key="-CONTACT_TABLE-",
                                  row_height=15,
@@ -217,6 +219,12 @@ def win_layout(my_config, my_world_klock, win_location, win_size, timetypes, fon
     win =  sg.Window('pyKlock', klock_layout, location=win_location, size= win_size, icon="Klock.png")
 
     win.finalize()
+
+    table = win["-CONTACT_TABLE-"]                                #  Code to remove the ID column from the table display.
+    displaycolumns = deepcopy(headings)                           #  The ID is still needed for deleting, but doesn't need to be shown.
+    displaycolumns.remove("ID")
+    table.ColumnsToDisplay = displaycolumns                       #  Again found and used from the internet.
+    table.Widget.configure(displaycolumns=displaycolumns)         #  https://stackoverflow.com/questions/70263893/deleting-hiding-a-column-of-a-table-in-pysimplegui
 
     return win
 
