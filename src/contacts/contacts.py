@@ -32,6 +32,8 @@ class contacts():
     """  Adds individual contact to a contacts database.
          The contacts are stored as pickles on a shelve.
 
+         The contact are held in last name order.
+
          The contacts are saved as a list of attributes.
             CONTACT_ID          = 0
             CONTACT_TITLE       = 1
@@ -52,6 +54,18 @@ class contacts():
 
 
          NOTE - key and all fields in shelve are strings
+
+         contacts_db = contacts.contacts()     #  To initialise a contacts database.
+
+         contacts_db.add(items)                #  Adds a new contact, the attributes of the contact are made up of the list(items).
+         contacts_db.save(items)               #  Save new items to an existing contact at place CONTACT_ID in the shelve.
+         contacts_db.delete(str(line_no))      #  Deletes a contacts at position line_no in the shelve.
+         list_contacts()                       #  Returns a list of all the contacts items, a list of lists.
+         get_contact(line_no)                  #  Returns a list of one contact at position line_no in the shelve.
+
+         renumber_contacts()                   #  Resorts and renumbers the shelve after a contact has been either added or deleted.
+
+         all methods open and close the shelve, the shelve is not left open between method calling.
     """
 
 
@@ -84,6 +98,8 @@ class contacts():
         finally:
             database.close()
 
+        self.renumber_contacts()        #  Resort and renumber contacts, to maintain last name sort order.
+
 
     def save(self, items):
         """  Saves an existing contact with amended data.
@@ -107,7 +123,7 @@ class contacts():
         finally:
             database.close()
 
-        self.renumber_contacts()   #  Renumber.
+        self.renumber_contacts()        #  Resort and renumber contacts, to maintain last name sort order.
 
 
     def list_contacts(self):
@@ -122,8 +138,6 @@ class contacts():
         finally:
             database.close()
 
-        contacts_list = sorted(contacts_list, key=itemgetter(2))      #  I love python, oh and the internet as well :-)
-        self.renumber_contacts()   #  Renumber.
         return contacts_list
 
 
@@ -144,26 +158,20 @@ class contacts():
 
 
     def renumber_contacts(self):
-        """  After a contact has been deleted, it leaves a hole in the sequential ID.
-             This method is called to readdress that problem.
-             It goes through all the contacts in order and sets ID back in order.
+        """  When a contact has either been added or deleted, the sorted order is now incorrect.
+             So, a list is made of the contacts and re-sorted and this is re-written to the shelve.
         """
+        contacts_list = self.list_contacts()
+        contacts_list = sorted(contacts_list, key=itemgetter(CONTACT_LAST_NAME))      #  I love python, oh and the internet as well :-)
         database = shelve.open(self.database_name, writeback=True)
-        new_db  = {}
-        db_keys = database.keys()
-        new_id  = 0
+        new_id   = 0
 
         try:
-            for _id in db_keys:
-                items               = database[_id]
-                items[CONTACT_ID]   = str(new_id)
-                new_db[str(new_id)] = items
+            for items in contacts_list:
+                items[CONTACT_ID]     = str(new_id)
+                database[str(new_id)] = items
 
                 new_id += 1
-
-            #  Dangerous stuff.
-            database.clear()
-            database.update(new_db)
         finally:
             database.close()
 

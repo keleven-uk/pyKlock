@@ -65,12 +65,15 @@ def load_database(db_type):
         if choice == "No":                                          #  Do not overwrite - then return.
             return
 
-    if is_zipfile(filename):
-        if filename != None and filename != "":                     #  filename is None if cancel is selected,
-            with ZipFile(filename, "r") as zip_file:                #  but "" if ok is selected without a files chosen.
-                zip_file.extractall(DATA_PATH)
+        if is_zipfile(filename):
+            if filename != "":                                      #  filename is None if cancel is selected,
+                with ZipFile(filename, "r") as zip_file:
+                    zip_file.extractall(DATA_PATH)
+        else:
+            sg.popup_error(f"Error {filename} is not a zip file.", title="ERROR")
+
     else:
-        sg.popup_error(f"Error {filename} is not a zip file.", title="ERROR")
+        sg.popup_error(f"Error {filename} is not a file.", title="ERROR")
 
 
 

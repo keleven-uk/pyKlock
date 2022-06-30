@@ -1,8 +1,8 @@
 ###############################################################################################################
-#     history.txt   Copyright (C) <2022>  <Kevin Scott>                                                       #                                                                                                             #                                                                                                             #
+#     history.txt   Copyright (C) <2017-2022>  <Kevin Scott>                                                  #                                                                                                             #                                                                                                             #
 #    History file of the main project - pyKlock                                                               #
 #    All entries to main project - unless stated.                                                             #
-#    Main project to be initially built using pySimpleGUI                                                     #
+#    Main project to be initially built using pySimpleGUI [using tkinter].                                    #
 #                                                                                                             #
 #    Contains a sub-projects in two parts.                                                                    #
 #        pyDigitalKlock - An attempt to re-create a LCD Klock.                                                #
@@ -10,7 +10,7 @@
 #            pyDigitalKlock_psg    - built with pySimpleGUI [Used in main pyKlock]                            #
 #                                                                                                             #
 ###############################################################################################################
-#    Copyright (C) <2022>  <Kevin Scott>                                                                      #
+#    Copyright (C) <2017-2022>  <Kevin Scott>                                                                 #
 #                                                                                                             #
 #    This program is free software: you can redistribute it and/or modify it under the terms of the           #
 #    GNU General Public License as published by the Free Software Foundation, either Version 3 of the         #
@@ -26,6 +26,15 @@
 ###############################################################################################################
 
 
+V2022.63
+
+    The display of the contacts had been altered so that they where shown in last name order.
+    The list of contacts was being sorted each time the table was refreshed.
+    Moved the call to sort to the add and delete methods, so that the shelve was always
+        being saved on the required sort order.  This is more efficient, less work.
+    Improved the error handling on saving the contacts/reminders.
+
+
 V2022.62
 
     Added methods to return the number of reminders & contacts.
@@ -37,6 +46,8 @@ V2022.62
 
 
 V2022.61
+
+    Now working against Python V3.10.5
 
     Implemented the menu options to save and load both databases [reminders & contacts]
         Implemented in a new file src\utils\archive.py
@@ -76,13 +87,6 @@ V2022.57
 
 V2022.56
 
-    Corrected the bug in reminder auto-delete.
-       The auto-delete flag being stored as a Boolean, all fields in the shelve must be strings.
-    Also, a sound is [hopefully] played when a notification is displayed - using winsound.
-
-
-V2022.55
-
     Amended requirement files, version of bottle has to be greater then 1.12.20.
         Security warning from Github.
     Moved the items position constants into projectPath file, used by more then one module.
@@ -93,6 +97,13 @@ V2022.55
         If a reminder is set to recurring, when due the year is incremented and re-posted.
     Renamed the reminder window to rem_window, to differentiate from the main klock window.
     Added a custom str_to_bool function to convert strings to Booleans.
+
+
+V2022.55
+
+    Corrected the bug in reminder auto-delete.
+       The auto-delete flag being stored as a Boolean, all fields in the shelve must be strings.
+    Also, a sound is [hopefully] played when a notification is displayed - using winsound.
 
 
 V2022.54
@@ -168,12 +179,12 @@ V2022.48
         This was so the "EXIT" could be in the match statement.
 
 
-V2022.47.9506dca
+V2022.47
 
     Corrected the multiple windows bug in pyDigitalKlock_psg.
 
 
-V2022.46.0fe08f3
+V2022.46
 
     Created a bin directory to hole the pyInstaller created executable of pyKlock.
         Used auto-py-to-exe as the fron end, the settings file is bin\pyKlock.json.
@@ -184,7 +195,7 @@ V2022.46.0fe08f3
         I now close the first window before creating the second.
 
 
-V2022.45.4ef0ac5
+V2022.45
 
     Added the local time to the title bar.
     Amended some references pyDigitalKlock to pyKlock in src/config.py
@@ -200,14 +211,14 @@ V2022.44.71aa87e
     Added two files to the requirements directory - development_pyklock & product_pyklock
 
 
-V2022.43.88a5097
+V2022.43
 
     Added actions to the countdown, choices are selected from a combo box.
         Choices are "None", "Notify", "Notify + Sound", "Pop Up", "Shutdown PC", "Log Out PC".
         More actions will be added when needed.
 
 
-V2022.42,895f4e5
+V2022.42
 
     Amended the countdown class, so that a copy of the window object is passed in.
     This allows countdown to raise an event when finished that can be read in the main event loop.
@@ -218,7 +229,7 @@ V2022.42,895f4e5
     Removed button_color=sg.TRANSPARENT_BUTTON from all buttons - look better now.
 
 
-V2022.41.fe755ca
+V2022.41
     Implemented the countdown view.
     A new file pyklock\src\countdown.py holds the countdown class.
     This allows a time interval to be set, either via a spin control or pre-set buttons,
@@ -230,7 +241,7 @@ V2022.41.fe755ca
     Added two new fonts DIXIE & Harry P.
 
 
-V2022.40.cc2fd4f
+V2022.40
 
     Implemented the stopwatch view.
     A new file pyklock\src\stopwatch.py holds the stopwatch class.
@@ -289,7 +300,7 @@ pyKlock\src\utils\license_text.py                                               
 SUM:                                                                             734           1172           2290
 ------------------------------------------------------------------------------------------------------------------
 
-V2022.39.c68ed15
+V2022.39
 
     Theme & Font now reside in the settings menu.
     Used sg.VPush to centre Fuzzy Time text & Time Types combo box.
@@ -301,7 +312,7 @@ V2022.39.c68ed15
     Added fonts Nancy Blackett semaphore and backwards.
 
 
-V2022.38.130fed1
+V2022.38
 
     Implemented the font menu.
         Because installing font needs administrator privileges and trkinter has not have a  font dialog.
@@ -312,7 +323,7 @@ V2022.38.130fed1
     Also save the window size and location in config.toml, only location is used at the moment.
 
 
-V2022.37.1c928b2
+V2022.37
 
     Added two new menu options - Font to the File menu, not implemented yet.
     Also, A new menu option Time.  The first option is LCD Klock.
@@ -320,7 +331,7 @@ V2022.37.1c928b2
         pyDigitalKlock_psg is loaded from the python source using sg.execute_py_file()
 
 
-V2022.36.3144b47
+V2022.36
 
     Update of pyKlock status bar now work okay, date, key status & idle time.
     Fuzzy Time now works, this now display the current time in many different formats.
@@ -330,7 +341,7 @@ V2022.36.3144b47
         These are passed to the klock layout when the window is created.
 
 
-V2022.35.e660ea2
+V2022.35
 
     The separate layouts in separate modules created a problem.
         Implemented the trick in re-creating the window to apply a change in theme.
@@ -338,7 +349,7 @@ V2022.35.e660ea2
         If the individual layouts are all in one module, the theme change works, if not an error.
 
 
-V2022.34.ee8175c
+V2022.34
 
     Added skeleton window layouts for Fuzzy Time, World Klock, Countdown & timer.
         These live in src\layouts.git add .
@@ -348,13 +359,13 @@ V2022.34.ee8175c
         The License and About display simple info windows.
 
 
-V2022.33.37f936c
+V2022.33
 
     Laid out the basic directory structure of the main project - pyKlock.
     Copied python files from sub projects that will be re-used [modified] in the main project.
 
 
-V2022.32.9be69de
+V2022.32
 
 [pyDigitalKlock.psg]
     There was a problem with applying and saving transparency, should be save as a Boolean and not a string.
@@ -363,7 +374,7 @@ V2022.32.9be69de
         The window size (width, height) has been added to the config file.
 
 
-V2022.31.6547308
+V2022.31
 
 [pyDigitalKlock.psg]
     There was a problem, in that when a new theme was applied the previous foreground and background
@@ -384,7 +395,7 @@ Although pySimpleGui doesn't have the same refinement of layout, it is a lot
 more simpler to use.  Also, seems to have a lot more features.
 
 
-V2022.30.38961ce
+V2022.30
 
 [pyDigitalKlock.psg]
     Implemented the font menu.
@@ -416,7 +427,7 @@ SUM:                                                                          18
 ---------------------------------------------------------------------------------------------------------------
 
 
-V2022.29.0e3ead2
+V2022.29
 
 [pyDigitalKlock.psg]
     Implemented the license menu option.
@@ -427,7 +438,7 @@ V2022.29.0e3ead2
         It also sets the menu text to "normal", which reset the transparency.
 
 
-V2022.28.06e6f69
+V2022.28
 
 [pyDigitalKlock.psg]
     pyDigitalKlock now loads and save certain parameters.
@@ -441,7 +452,7 @@ V2022.28.06e6f69
     A new file, src\klock.py, containing the GUI layout and supporting functions.
 
 
-V2022.27.44b8ccd
+V2022.27
 
 [pyDigitalKlock.psg]
     You can now change the foreground and background colours.
@@ -452,7 +463,7 @@ V2022.27.44b8ccd
           The them options don't seem o work at the mo.
 
 
-V2022.26.92d8238
+V2022.26
 
 [pyDigitalKlock.psg]
     Basic functionality now working.
@@ -460,13 +471,13 @@ V2022.26.92d8238
         key status show the status of the Caps, Num Lock & Scroll Lock keys.
 
 
-V2022.25.5e0b6d6
+V2022.25
 
     Moved pyDigitalKlock to pyDigitalKlock_psgubu
     Created pyDigitalKlock_psg to try pySimple pySimpleGUI
 
 
-V2022.24.cc02227
+V2022.24
 
 [pyDigitalKlock.pygubu]
     Added a new menu option - License.
@@ -497,7 +508,7 @@ SUM:                                                                      230   
 -----------------------------------------------------------------------------------------------------------
 
 
-V0222.23.9de0da2
+V0222.23
 
 [pyDigitalKlock.pygubu]
     It looks like to install a font you need administer privileges on Windows - so abandon for now.
@@ -505,7 +516,7 @@ V0222.23.9de0da2
       if not installed they are coloured red and an error issues if chosen.
 
 
-V2022.22.5cd4165
+V2022.22
 
 [pyDigitalKlock.pygubu]
     Now returns a valid font, all sems to be working.
@@ -516,7 +527,7 @@ V2022.22.5cd4165
       and will change when a new font is selected from the menu's.
 
 
-V2022.21.9cf9169
+V2022.21
 
 [pyKlock]
     font directy currently consists of DS-Digital, Pixel LCD7, itlivesintheswamp & Twobit
@@ -531,7 +542,7 @@ V2022.21.9cf9169
     Currently not returning a valid font object from font form - work to do.
 
 
-V2022.20.cf917da
+V2022.20
 
     [pyDigitalKlock.pygubu]
         Changes so that auto-py-to-ese [pyinstaller] would work.
@@ -539,7 +550,7 @@ V2022.20.cf917da
             in same directory as the executable.
 
 
-V2022.19.93ceb1c
+V2022.19
 
     Now working against Python V3.10.4
 
@@ -552,7 +563,7 @@ V2022.19.93ceb1c
             and transparency are seven between sessions.
 
 
-V202.18.3d4f978
+V202.18
 
     [pyDigitalKlock.pygubu]
         Added the ability to choose the colour of both foreground and background.
@@ -565,7 +576,7 @@ V202.18.3d4f978
         Set meu accelerator to quit menu - can now close app with <Control-q>.
 
 
-V2022.17.93ccf3e
+V2022.17
 
     [pyDigitalKlock.pygubu]
         Created an about dialog - in src\about.py.
@@ -573,7 +584,7 @@ V2022.17.93ccf3e
         Created src\projectPaths to hold relevant paths used throw-out the project.
 
 
-V2022.16.1d7e07d
+V2022.16
 
     [pyDigitalKlock.pygubu]
         Started build of the menus.
@@ -581,7 +592,7 @@ V2022.16.1d7e07d
             Implemented simple action for each.
 
 
-V2022.15.a879173
+V2022.15
 
     [pyKlock]
         Added fonts directory, added fonts DS-DIGI & Pixel LCD-7
@@ -591,7 +602,7 @@ V2022.15.a879173
         Amended to use config and logger files.
 
 
-V2022.14.9ed795a
+V2022.14
 
     [pyKlock]
         Moved requirements.txt to requirements\product.txt
@@ -602,7 +613,7 @@ V2022.14.9ed795a
            This was achieved by using three labels - date, state & idle time.
 
 
-V2022.13.3643d9a
+V2022.13
 
     [pyDigitalKlock.pygubu]
         Added directory - bin - holds any executables.
@@ -614,7 +625,7 @@ V2022.13.3643d9a
             This attempts to space out the three strings using guess work.
 
 
-V2022.12.71f7527
+V2022.12
 
     [pyDigitalKlock.pygubu]
         Added a sub project - pyDigitalKlock.
@@ -626,7 +637,7 @@ V2022.12.71f7527
         keys [caps, scroll & num] and the PC idles time.
 
 
-V2022.11.cdfa0df
+V2022.11
 
     Now working against Python V3.10.2
     Correct but in return string in getSwatchTime()
@@ -634,46 +645,47 @@ V2022.11.cdfa0df
     Removed Eric IDE project files, we now use kate IDE.
 
 
-V2020.10.c2e2c54
+V2020.10
 
     Changed format of version number - now is year.build number. [first] 7 digit git commit ID
+        Dropped git commit ID in V2022.62.
     Added Eric6 project files.
     Renamed LICENSE to LICENSE.txt
     Added logging.
     Added the ability to display the current time using a MS agent. [Claude from Microsoft has to be installed]
 
 
-V2017.9.5a3911a
+V2017.9
 
     Moved GLOBAL variables to timeCodes.py
 
 
-V2017.8.79a8fa
+V2017.8
 
     Added time displayed as Mars, Flow, Percent, Metric and Unix Time.
 
 
-V2017.7.81f9413
+V2017.7
 
     Added display time as Roman Numerals and Morse code time.
 
 
-V2017.6.a10f2d8
+V2017.6
 
     Added time displayed as Julian, Decimal, True Hex, Hex, Oct and Binary times.
 
 
-V2017.5.86862aa
+V2017.5
 
     Added time displayed as Swatch and Net time.
 
 
-V2017.4.4365298
+V2017.4
 
     Added time displayed as Time in words [time correct to the minute]
 
 
-V2017.3.2b8f6f7
+V2017.3
 
     Added time displayed as GMT, Local and UTC.
 
@@ -681,12 +693,12 @@ V2017.3.2b8f6f7
     choice in the drop down box.
 
 
-V2017.2.b48c6db
+V2017.2
 
     Modified the fuzzytime function to use Dictionary look instead of nested if's.
 
 
-V2017.1.c35aa2b
+V2017.1
 
     SelectTime.py will be function that will allow the current local time to
     be display in several formats.

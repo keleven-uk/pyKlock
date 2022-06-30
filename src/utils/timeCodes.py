@@ -1,10 +1,10 @@
 ###############################################################################################################
-#    timeCodes.py   Copyright (C) <2020-22>  <Kevin Scott>                                                    #
+#    timeCodes.py   Copyright (C) <2017-22>  <Kevin Scott>                                                    #
 #                                                                                                             #
 #    GLOBAL variables used in several functions                                                               #
 #                                                                                                             #
 ###############################################################################################################
-#    Copyright (C) <2020>  <Kevin Scott>                                                                      #
+#    Copyright (C) <2017-2020>  <Kevin Scott>                                                                      #
 #                                                                                                             #
 #    This program is free software: you can redistribute it and/or modify it under the terms of the           #
 #    GNU General Public License as published by the Free Software Foundation, either Version 3 of the         #

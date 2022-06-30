@@ -66,9 +66,9 @@ class reminders():
     def add(self, items):
         """  Adds the reminder to the reminders database.
         """
-        database        = shelve.open(self.database_name, writeback=True)
-        no_of_reminders = str(len(database))           #  len() is not zero based.
-        items[ID]       = no_of_reminders
+        database           = shelve.open(self.database_name, writeback=True)
+        no_of_reminders    = str(len(database))           #  len() is not zero based.
+        items[REMINDER_ID] = no_of_reminders
 
         try:
             database[no_of_reminders] = items
@@ -82,8 +82,8 @@ class reminders():
         database = shelve.open(self.database_name, writeback=True)
 
         try:
-            items[DISPLAYED] = "False"       #  If reminder is saved, set displayed flag to false.
-            database[items[ID]] = items
+            items[REMINDER_DISPLAYED]    = "False"       #  If reminder is saved, set displayed flag to false.
+            database[items[REMINDER_ID]] = items
         finally:
             database.close()
 
@@ -182,14 +182,14 @@ class reminders():
                             y_pos += 65
 
                     case due_interval if due_interval < 0:                 #  Reminder is set to recurring
-                        if items[REMINDER_RECURRING] == "True":                     #  add one to the year.
+                        if items[REMINDER_RECURRING] == "True":            #  add one to the year.
                             new_date = ru.add_one_year(d)
                             items[REMINDER_DATE_DUE]  = new_date
 
-                        elif items[REMINDER_AUTO_DELETE] == "True":                 #  If auto delete is set to true
+                        elif items[REMINDER_AUTO_DELETE] == "True":        #  If auto delete is set to true
                             self.delete(items[0])                          #  items[0] should be the ID number
 
-                        elif items[DISPLAYED] == "False":
+                        elif items[REMINDER_DISPLAYED] == "False":
                             message = f"{items[REMINDER_EVENT]} : {items[REMINDER_DESCRIPTION]} :: Reminder is past please either delete or amend."
                             notification.popup(message, x_pos, y_pos, RED)
                             items[REMINDER_DISPLAYED] = "True"

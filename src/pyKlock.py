@@ -1,5 +1,5 @@
 ###############################################################################################################
-#    pyKlock   Copyright (C) <2022>  <Kevin Scott>                                                            #                                                                                                             #                                                                                                             #
+#    pyKlock   Copyright (C) <2017-2022>  <Kevin Scott>                                                       #                                                                                                             #                                                                                                             #
 #     Display the current local time in many forms.                                                           #
 #                                                                                                             #
 #     For changes see history.txt                                                                             #

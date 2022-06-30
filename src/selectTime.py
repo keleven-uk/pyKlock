@@ -1,12 +1,12 @@
 ###############################################################################################################
-#    selectTime.py   Copyright (C) <2020-22>  <Kevin Scott>                                                      #
+#    selectTime.py   Copyright (C) <2017-22>  <Kevin Scott>                                                      #
 #                                                                                                             #
 #    A class which allows the current time to be displays in various formats.                                 #
 #                                                                                                             #
 #    If the module is run direct [not imported] a small tkinter program is loaded for testing purposes.       #
 #                                                                                                             #
 ###############################################################################################################
-#    Copyright (C) <2020-22>  <Kevin Scott>                                                                      #
+#    Copyright (C) <2017-22>  <Kevin Scott>                                                                      #
 #                                                                                                             #
 #    This program is free software: you can redistribute it and/or modify it under the terms of the           #
 #    GNU General Public License as published by the Free Software Foundation, either Version 3 of the         #
