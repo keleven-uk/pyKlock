@@ -26,6 +26,17 @@
 ###############################################################################################################
 
 
+V2022.64
+
+    Corrected a bug where the notification would not close.
+    Corrected a bug where the year was not being incremented on a reminder,
+        if the date was current year but before today.
+    Corrected a bug where the year was not being incremented on a recurring reminder.
+    In the reminder add form, set the input time to the current time and to none editable.
+        Hopefully this will only allow valid input values.
+    Corrected son buss on the reminder add form, input keys being incorrect.
+
+
 V2022.63
 
     The display of the contacts had been altered so that they where shown in last name order.

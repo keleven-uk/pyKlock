@@ -21,7 +21,7 @@
 
 import PySimpleGUI as sg
 
-from datetime import date
+from datetime import datetime
 
 import src.reminder.reminder as reminder
 import src.reminder.reminder_utils as ru
@@ -50,6 +50,9 @@ def run_reminders(window, reminder_db, mode="", line_no=-1):
 
     """
 
+    current_hour   = datetime.now().hour
+    current_minute = datetime.now().minute
+
     if window:
         #  Create the reminder event type list.
         events = ru.get_events()
@@ -63,8 +66,8 @@ def run_reminders(window, reminder_db, mode="", line_no=-1):
             [sg.Text("Date Due",    size=(15, 1)), sg.Input(key="-REMINDER_DATE_DUE-", size=(20,1)),
              sg.CalendarButton("Choose Date",      target="-REMINDER_DATE_DUE-",       format="%d %B %Y")],
             [sg.Text("Time Due",    size =(15, 1)),
-             sg.Spin([x+1 for x in range(23)], key="-REMINDER_DUE_TIME_HOURS-", size=(6,1),  font=("TkDefaultFont", 12), initial_value=0),
-             sg.Spin([x+1 for x in range(59)], key="-REMINDER_DUE_TIME_MINS-",  size=(6,1),  font=("TkDefaultFont", 12), initial_value=0)],
+             sg.Spin([x for x in range(24)], key="-REMINDER_DUE_TIME_HOURS-", size=(6,1),  font=("TkDefaultFont", 12), initial_value=current_hour,   readonly=True),
+             sg.Spin([x for x in range(60)], key="-REMINDER_DUE_TIME_MINS-",  size=(6,1),  font=("TkDefaultFont", 12), initial_value=current_minute, readonly=True)],
             [sg.Text("Recurring reminder", size=(15, 1), justification="right"), sg.Checkbox("", key="-REMINDER_RECURRING-",   default=False),
              sg.Text("Auto Delete",        size=(15, 1), justification="right"), sg.Checkbox("", key="-REMINDER_AUTO_DELETE-", default=False)],
             [sg.Button("Delete", key="-DELETE-",  visible=False, pad=(1,1)), sg.Button("Submit", key="-SUBMIT-",  visible=True, pad=(1,1)), sg.Cancel(pad=(1,1))]
@@ -88,8 +91,8 @@ def run_reminders(window, reminder_db, mode="", line_no=-1):
             rem_window["-REMINDER_DATE_DUE-"].update(disp_reminder[REMINDER_DATE_DUE])
             rem_window["-REMINDER_DUE_TIME_HOURS-"].update(value=hrs)
             rem_window["-REMINDER_DUE_TIME_MINS-"].update(value=min)
-            rem_window["-REMINDER_AUTO_DELETE-"].update(REMINDER_auto_delete)
-            rem_window["-REMINDER_RECURRING-"].update(REMINDER_recurring)
+            rem_window["-REMINDER_AUTO_DELETE-"].update(REMINDER_AUTO_DELETE)
+            rem_window["-REMINDER_RECURRING-"].update(REMINDER_RECURRING)
 
         if mode == "DELETE":
             rem_window["-FORM_TEXT-"].update("Please chose your reminder to DELETE")

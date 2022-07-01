@@ -101,8 +101,8 @@ def run_klock(my_logger, my_config):
         if event == tray.key:
             event = values[event]       # use the System Tray's event as if was from the window
 
-
         match event:
+
             case (sg.WIN_CLOSED|"Exit"|"-EXIT-"):
                 break
 

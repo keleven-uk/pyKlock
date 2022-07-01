@@ -21,8 +21,10 @@
 ###############################################################################################################
 
 import shelve
-import datetime
 
+from datetime import datetime
+
+import src.reminder.reminder_utils as ru
 import src.reminder.notification as notification
 
 from src.projectPaths import *
@@ -69,6 +71,11 @@ class reminders():
         database           = shelve.open(self.database_name, writeback=True)
         no_of_reminders    = str(len(database))           #  len() is not zero based.
         items[REMINDER_ID] = no_of_reminders
+
+        old_date = datetime.strptime(items[REMINDER_DATE_DUE], "%d %B %Y")
+        if (old_date.year < datetime.now().year) or (old_date.month < datetime.now().month):
+            new_date                  = ru.add_one_year(old_date)
+            items[REMINDER_DATE_DUE]  = new_date
 
         try:
             database[no_of_reminders] = items
@@ -183,7 +190,8 @@ class reminders():
 
                     case due_interval if due_interval < 0:                 #  Reminder is set to recurring
                         if items[REMINDER_RECURRING] == "True":            #  add one to the year.
-                            new_date = ru.add_one_year(d)
+                            old_date = datetime.datetime.strptime(items[REMINDER_DATE_DUE], "%d %B %Y")
+                            new_date = ru.add_one_year(old_date)
                             items[REMINDER_DATE_DUE]  = new_date
 
                         elif items[REMINDER_AUTO_DELETE] == "True":        #  If auto delete is set to true
@@ -210,7 +218,7 @@ class reminders():
 
         due_date_time = f"{due_date} {due_time}"
 
-        target_date  = datetime.datetime.strptime(due_date_time, "%d %B %Y %H:%M")       #  Combine the date and time into one.
+        target_date  = datetime.strptime(due_date_time, "%d %B %Y %H:%M")                #  Combine the date and time into one.
 
         return round((target_date - _now).total_seconds() / 60)                          #  Return to minutes, rounded to nearest integer.
 

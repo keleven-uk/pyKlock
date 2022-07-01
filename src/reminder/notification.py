@@ -51,7 +51,7 @@ def popup(message, x_pos, y_pos, reminder_colour):
                        no_titlebar=True,
                        alpha_channel=0.6,
                        finalize=True,
-                       keep_on_top=True)
+                       keep_on_top=True).read(close=True)       #  The close=True, will close the window when the button is pressed.
 
 
 
