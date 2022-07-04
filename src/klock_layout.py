@@ -104,16 +104,17 @@ def win_layout(my_config, my_world_klock, win_location, win_size, timetypes, fon
 
     #  Reminder GUI definitions
     #  REMINDER_ID           = 0
-    #  REMINDER_EVENT        = 1
-    #  REMINDER_DESCRIPTION  = 2
-    #  REMINDER_DATE_DUE     = 3
-    #  REMINDER_TIME_DUE     = 4
-    #  REMINDER_AUTO_DELETE  = 5
-    #  REMINDER_RECURRING    = 6
-    #  REMINDER_DISPLAYED    = 7  - not displayed in table.
+    #  REMINDER_TIME_LEFT    = 1
+    #  REMINDER_EVENT        = 2
+    #  REMINDER_DESCRIPTION  = 3
+    #  REMINDER_DATE_DUE     = 4
+    #  REMINDER_TIME_DUE     = 5
+    #  REMINDER_AUTO_DELETE  = 6
+    #  REMINDER_RECURRING    = 7
+    #  REMINDER_DISPLAYED    = 8  - not displayed in table.
 
-    data = [['' for row in range(15)]for col in range(7)]
-    headings = ["ID", "Event", "Description", "Date Due", "Time Due", "Auto Delete", "Recurring"]
+    reminder_data     = [['' for row in range(5)]for col in range(8)]
+    reminder_headings = ["ID", "Time Left", "Event", "Description", "Date Due", "Time Due", "Auto Delete", "Recurring"]
 
     reminder_top_button     = [sg.Button("Add",    key="-REMINDER_ADD-",    size=(5,1), pad=(1,1))]
     reminder_middle_button  = [sg.Button("Edit",   key="-REMINDER_EDIT-",   size=(5,1), pad=(1,1))]
@@ -122,14 +123,15 @@ def win_layout(my_config, my_world_klock, win_location, win_size, timetypes, fon
 
     reminder_layout = [[sg.Column(reminder_button_layout),
                         sg.Text("      "),
-                        sg.Table(values=data,
-                                 headings=headings,
-                                 col_widths=[5, 12, 20, 12, 10, 10, 10],
+                        sg.Table(values=reminder_data,
+                                 headings=reminder_headings,
+                                 col_widths=[5, 8, 12, 20, 12, 10, 10, 10, 10],
                                  enable_events=True,
                                  select_mode=sg.TABLE_SELECT_MODE_BROWSE,
                                  background_color="light blue",
                                  auto_size_columns=False,
                                  display_row_numbers=False,
+                                 vertical_scroll_only=True,
                                  justification="left",
                                  num_rows=5,
                                  alternating_row_color="lightyellow",
@@ -155,8 +157,8 @@ def win_layout(my_config, my_world_klock, win_location, win_size, timetypes, fon
     #  CONTACT_COUNTRY     = 14
     #  CONTACT_NOTE        = 15
 
-    data = [['' for row in range(17)]for col in range(7)]
-    headings = ["ID", "Title", "Last Name", "Middle name", "First name", "Tel No", "eMail", "D.O.B", "House", "Street", "Add 1", "Add 2", "County", "Post Code", "Country", "Note"]
+    contact_data     = [['' for row in range(4)]for col in range(15)]
+    contact_headings = ["ID", "Title", "Last Name", "Middle name", "First name", "Tel No", "eMail", "D.O.B", "House", "Street", "Add 1", "Add 2", "County", "Post Code", "Country", "Note"]
 
     contact_top_button     = [sg.Button("Add",    key="-CONTACT_ADD-",    size=(5,1), pad=(1,1))]
     contact_middle_button  = [sg.Button("Edit",   key="-CONTACT_EDIT-",   size=(5,1), pad=(1,1))]
@@ -165,9 +167,9 @@ def win_layout(my_config, my_world_klock, win_location, win_size, timetypes, fon
 
     contact_layout = [[sg.Column(contact_button_layout),
                         sg.Text("      "),
-                        sg.Table(values=data,
-                                 headings=headings,
-                                 col_widths=[4, 5, 10, 10, 10, 12, 17, 13, 6, 12, 12, 12, 12, 10, 10, 20],
+                        sg.Table(values=contact_data,
+                                 headings=contact_headings,
+                                 col_widths=[4, 5, 12, 10, 10, 12, 17, 13, 6, 13, 12, 12, 12, 10, 10, 20],
                                  enable_events=True,
                                  select_mode=sg.TABLE_SELECT_MODE_BROWSE,
                                  background_color="light blue",
@@ -220,8 +222,14 @@ def win_layout(my_config, my_world_klock, win_location, win_size, timetypes, fon
 
     win.finalize()
 
-    table = win["-CONTACT_TABLE-"]                                #  Code to remove the ID column from the table display.
-    displaycolumns = deepcopy(headings)                           #  The ID is still needed for deleting, but doesn't need to be shown.
+    table = win["-REMINDER_TABLE-"]                                #  Code to remove the ID column from the caantacts table display.
+    displaycolumns = deepcopy(reminder_headings)                   #  The ID is still needed for deleting, but doesn't need to be shown.
+    displaycolumns.remove("ID")
+    table.ColumnsToDisplay = displaycolumns                       #  Again found and used from the internet.
+    table.Widget.configure(displaycolumns=displaycolumns)         #  https://stackoverflow.com/questions/70263893/deleting-hiding-a-column-of-a-table-in-pysimplegui
+
+    table = win["-CONTACT_TABLE-"]                                #  Code to remove the ID column from the caantacts table display.
+    displaycolumns = deepcopy(contact_headings)                   #  The ID is still needed for deleting, but doesn't need to be shown.
     displaycolumns.remove("ID")
     table.ColumnsToDisplay = displaycolumns                       #  Again found and used from the internet.
     table.Widget.configure(displaycolumns=displaycolumns)         #  https://stackoverflow.com/questions/70263893/deleting-hiding-a-column-of-a-table-in-pysimplegui

@@ -120,7 +120,7 @@ def run_reminders(window, reminder_db, mode="", line_no=-1):
                     if recurring == "True":                                         #  If recurring, check date is in the past,
                         date_due = ru.check_date(values["-REMINDER_DATE_DUE-"])     #  if so add one year.
 
-                    items = [str(line_no), event, description, date_due, time_due, auto_delete, recurring, reminder_displayed]
+                    items = [str(line_no), "00", event, description, date_due, time_due, auto_delete, recurring, reminder_displayed]
 
                     if mode == "EDIT":
                         reminder_db.save(items)

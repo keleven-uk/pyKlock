@@ -2,7 +2,7 @@ About Klock
 
 Klock - a clock with a k.
 
-Written in Python 3.10.4
+Written in Python 3.10.5
 
 Klock will consist of a number of views, selected by a row of buttons along the bottom.
 
@@ -26,10 +26,10 @@ The fourth view is a World Klock.
     This displays the time in a given time zone, that is selected from a drop down list.
 
 The fifth view is reminders.
-    This allows a reminder to be entered with eiter a due date or due time [or both].
+    This allows a reminder to be entered with either a due date or due time [or both].
     A notification is displayed when the reminder is due.
 
-The sixth view is concacts.
+The sixth view is contacts.
     The allows a contact to be entered with name, tel no, email & address.
 
 

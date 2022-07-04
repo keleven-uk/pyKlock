@@ -118,7 +118,7 @@ def run_klock(my_logger, my_config):
                 else:
                     refresh_reminder_table = True
 
-                if not "-REMINDER-":                                                                #  Tries to stop the table refresh for every event loop.
+                if not "-CONTACT-":                                                                #  Tries to stop the table refresh for every event loop.
                     refresh_contacts_table = False
                 else:
                     refresh_contacts_table = True
@@ -243,7 +243,8 @@ def run_klock(my_logger, my_config):
             window["-WORLD_TEXT-"].update(my_world_klock.get_local_time(timezone))
         if pressed == "-REMINDER-":
             if refresh_reminder_table:                                                 #  Should fire first time around.
-                reminder_list = reminder_gui.run_reminders(False, reminder_db)
+                reminder_db.check_due()
+                reminder_list = reminder_db.list_reminders()
                 window["-REMINDER_TABLE-"].update(values=reminder_list)
                 refresh_reminder_table = False
         if pressed == "-CONTACT-":
@@ -257,7 +258,8 @@ def run_klock(my_logger, my_config):
         sec_now = datetime.datetime.now().second
         if sec_now == 0:
             reminder_db.check_due()
-            refresh_reminder_table = True
+            reminder_list = reminder_db.list_reminders()
+            window["-REMINDER_TABLE-"].update(values=reminder_list)
 
         if tray_displayed and (min_now % 10 == 0) and (sec_now == 0):
             tray.show_message(title="PyKlock - Current Time", message=current_time.getTime(time_type))

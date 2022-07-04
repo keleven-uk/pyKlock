@@ -23,6 +23,7 @@
 import shelve
 
 from datetime import datetime
+from operator import itemgetter
 
 import src.reminder.reminder_utils as ru
 import src.reminder.notification as notification
@@ -34,14 +35,15 @@ class reminders():
          The reminders are stored as pickles on a shelve.
 
          The reminders are saved as a list of attributes.
-                REMINDER_ID           = 0
-                REMINDER_EVENT        = 1
-                REMINDER_DESCRIPTION  = 2
-                REMINDER_DATE_DUE     = 3
-                REMINDER_TIME_DUE     = 4
-                REMINDER_AUTO_DELETE  = 5
-                REMINDER_RECURRING    = 6
-                REMINDER_DISPLAYED    = 7
+            REMINDER_ID           = 0
+            REMINDER_TIME_LEFT    = 1
+            REMINDER_EVENT        = 2
+            REMINDER_DESCRIPTION  = 3
+            REMINDER_DATE_DUE     = 4
+            REMINDER_TIME_DUE     = 5
+            REMINDER_AUTO_DELETE  = 6
+            REMINDER_RECURRING    = 7
+            REMINDER_DISPLAYED    = 8
 
 
          NOTE - key and all fields in shelve are strings
@@ -55,12 +57,8 @@ class reminders():
     def no_of_reminders(self):
         """  Return the number of contacts, length of database.
         """
-        database = shelve.open(self.database_name)
-
-        try:
+        with shelve.open(self.database_name, writeback=True) as database:
             _length = str(len(database))
-        finally:
-            database.close()
 
         return _length
 
@@ -68,58 +66,54 @@ class reminders():
     def add(self, items):
         """  Adds the reminder to the reminders database.
         """
-        database           = shelve.open(self.database_name, writeback=True)
         no_of_reminders    = str(len(database))           #  len() is not zero based.
         items[REMINDER_ID] = no_of_reminders
+
+        if items[REMINDER_DATE_DUE] == "":
+            items[REMINDER_DATE_DUE] = datetime.now().strftime("%d %B %Y")
+
+        due_interval              = self.get_interval(items[REMINDER_DATE_DUE], items[REMINDER_TIME_DUE])
+        items[REMINDER_TIME_LEFT] = due_interval
 
         old_date = datetime.strptime(items[REMINDER_DATE_DUE], "%d %B %Y")
         if (old_date.year < datetime.now().year) or (old_date.month < datetime.now().month):
             new_date                  = ru.add_one_year(old_date)
             items[REMINDER_DATE_DUE]  = new_date
 
-        try:
+        with shelve.open(self.database_name, writeback=True) as database:
             database[no_of_reminders] = items
-        finally:
-            database.close()
 
 
     def save(self, items):
         """  Saves an existing reminder with amended data.
         """
-        database = shelve.open(self.database_name, writeback=True)
-
-        try:
+        with shelve.open(self.database_name, writeback=True) as database:
             items[REMINDER_DISPLAYED]    = "False"       #  If reminder is saved, set displayed flag to false.
             database[items[REMINDER_ID]] = items
-        finally:
-            database.close()
 
 
     def delete(self, line_no):
         """  Deletes an existing reminder at position line_no.
              After delete, which creates a hole, the reminders are renumbered.
         """
-        database = shelve.open(self.database_name, writeback=True)
-
-        try:
+        with shelve.open(self.database_name, writeback=True) as database:
             database.pop(line_no)       #  DELETE.
-        finally:
-            database.close()
 
         self.renumber_reminders()   #  Renumber.
 
 
     def list_reminders(self):
         """  Creates a list of the individual reminder items for display.
+
+             The list is sorted on time interval before returned.
         """
-        database      = shelve.open(self.database_name, writeback=True)
         reminder_list = []
 
-        try:
+        with shelve.open(self.database_name, writeback=True) as database:
             for items in database.items():
                 reminder_list.append(items[1])
-        finally:
-            database.close()
+
+        reminder_list = sorted(reminder_list, key=itemgetter(REMINDER_TIME_LEFT))      #  I love python, oh and the internet as well :-)
 
         return reminder_list
 
@@ -130,12 +124,9 @@ class reminders():
              If an error occurs on read, will return an empty list.
         """
         rem      = []
-        database = shelve.open(self.database_name)
 
-        try:
+        with shelve.open(self.database_name, writeback=True) as database:
             rem = database[line_no]
-        finally:
-            database.close()
 
         return rem
 
@@ -145,15 +136,14 @@ class reminders():
              This method is called to readdress that problem.
              It goes through all the reminders in order and sets ID back in order.
         """
-        database = shelve.open(self.database_name, writeback=True)
         new_db  = {}
         db_keys = database.keys()
         new_id  = 0
 
-        try:
+        with shelve.open(self.database_name, writeback=True) as database:
             for _id in db_keys:
-                items = database[_id]
-                items[ID] = str(new_id)
+                items               = database[_id]
+                items[REMINDER_ID]  = str(new_id)
                 new_db[str(new_id)] = items
 
                 new_id += 1
@@ -161,8 +151,6 @@ class reminders():
             #  Dangerous stuff.
             database.clear()
             database.update(new_db)
-        finally:
-            database.close()
 
 
     def check_due(self):
@@ -170,16 +158,17 @@ class reminders():
              Issue a warning if any are due now.
              Unless auto delete is checked, then delete reminder.
         """
-        database = shelve.open(self.database_name)
-        db_keys  = database.keys()
         x_pos    = 10
         y_pos    = 10
 
-        try:
+        with shelve.open(self.database_name, writeback=True) as database:
+            db_keys  = database.keys()
             for _id in db_keys:
                 items = database[_id]
 
-                due_interval = self.get_interval(items[REMINDER_DATE_DUE], items[REMINDER_TIME_DUE])
+                due_interval              = self.get_interval(items[REMINDER_DATE_DUE], items[REMINDER_TIME_DUE])
+                items[REMINDER_TIME_LEFT] = due_interval
+                self.save(items)
 
                 match due_interval:
                     case due_interval if due_interval == 0:
@@ -193,6 +182,7 @@ class reminders():
                             old_date = datetime.datetime.strptime(items[REMINDER_DATE_DUE], "%d %B %Y")
                             new_date = ru.add_one_year(old_date)
                             items[REMINDER_DATE_DUE]  = new_date
+                            self.save(items)
 
                         elif items[REMINDER_AUTO_DELETE] == "True":        #  If auto delete is set to true
                             self.delete(items[0])                          #  items[0] should be the ID number
@@ -204,14 +194,12 @@ class reminders():
                             if y_pos > 10:          #  Only increase y_pos if a reminder has already been displayed.
                                 y_pos += 65
                             self.save(items)
-        finally:
-            database.close()
 
 
     def get_interval(self, due_date, due_time):
         """  Return the interval in minutes between the due date and now.
         """
-        _now = datetime.datetime.now()
+        _now = datetime.now()
 
         if due_date == "":
             due_date = _now.strftime("%d %B %Y")

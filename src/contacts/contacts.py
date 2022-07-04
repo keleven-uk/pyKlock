@@ -111,6 +111,8 @@ class contacts():
         finally:
             database.close()
 
+        self.renumber_contacts()        #  Resort and renumber contacts, to maintain last name sort order.
+
 
     def delete(self, line_no):
         """  Deletes an existing contact at position line_no.
@@ -158,7 +160,7 @@ class contacts():
 
 
     def renumber_contacts(self):
-        """  When a contact has either been added or deleted, the sorted order is now incorrect.
+        """  When a contact has either been added, edited or deleted, the sorted order is now incorrect.
              So, a list is made of the contacts and re-sorted and this is re-written to the shelve.
         """
         contacts_list = self.list_contacts()

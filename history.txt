@@ -26,6 +26,15 @@
 ###############################################################################################################
 
 
+V2022.65
+
+    Applied the hack to the reminders table to hide the ID column.
+    Added the column to the reminder table for time due interval in minutes.
+    The reminder table is not sorted by time due interval.
+    Added the time interval to the reminder item list.
+    Amended all the methods in the reminder class to use context managers instead of try clauses.
+
+
 V2022.64
 
     Corrected a bug where the notification would not close.
@@ -34,7 +43,7 @@ V2022.64
     Corrected a bug where the year was not being incremented on a recurring reminder.
     In the reminder add form, set the input time to the current time and to none editable.
         Hopefully this will only allow valid input values.
-    Corrected son buss on the reminder add form, input keys being incorrect.
+    Corrected some labels on the reminder add form, input keys being incorrect.
 
 
 V2022.63
