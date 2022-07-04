@@ -68,7 +68,6 @@ class contacts():
          all methods open and close the shelve, the shelve is not left open between method calling.
     """
 
-
     def __init__(self):
         self.database_name = contacts_data_file
 
@@ -76,12 +75,8 @@ class contacts():
     def no_of_contacts(self):
         """  Return the number of contacts, length of database.
         """
-        database = shelve.open(self.database_name)
-
-        try:
+        with shelve.open(self.database_name, writeback=True) as database:
             _length = str(len(database))
-        finally:
-            database.close()
 
         return _length
 
@@ -89,14 +84,10 @@ class contacts():
     def add(self, items):
         """  Adds the contact to the contacts database.
         """
-        database          = shelve.open(self.database_name, writeback=True)
-        _no_of_contacts   = str(len(database))           #  len() is not zero based.
-        items[CONTACT_ID] = _no_of_contacts
-
-        try:
+        with shelve.open(self.database_name, writeback=True) as database:
+            _no_of_contacts   = str(len(database))           #  len() is not zero based.
+            items[CONTACT_ID] = _no_of_contacts
             database[_no_of_contacts] = items
-        finally:
-            database.close()
 
         self.renumber_contacts()        #  Resort and renumber contacts, to maintain last name sort order.
 
@@ -104,12 +95,8 @@ class contacts():
     def save(self, items):
         """  Saves an existing contact with amended data.
         """
-        database = shelve.open(self.database_name, writeback=True)
-
-        try:
+        with shelve.open(self.database_name, writeback=True) as database:
             database[items[CONTACT_ID]] = items
-        finally:
-            database.close()
 
         self.renumber_contacts()        #  Resort and renumber contacts, to maintain last name sort order.
 
@@ -118,12 +105,8 @@ class contacts():
         """  Deletes an existing contact at position line_no.
              After delete, which creates a hole, the contacts are renumbered.
         """
-        database = shelve.open(self.database_name, writeback=True)
-
-        try:
+        with shelve.open(self.database_name, writeback=True) as database:
             database.pop(line_no)       #  DELETE.
-        finally:
-            database.close()
 
         self.renumber_contacts()        #  Resort and renumber contacts, to maintain last name sort order.
 
@@ -131,14 +114,10 @@ class contacts():
     def list_contacts(self):
         """  Creates a list of the individual contacts items for display.
         """
-        database      = shelve.open(self.database_name, writeback=True)
-        contacts_list = []
-
-        try:
+        with shelve.open(self.database_name, writeback=True) as database:
+            contacts_list = []
             for items in database.items():
                 contacts_list.append(items[1])
-        finally:
-            database.close()
 
         return contacts_list
 
@@ -148,13 +127,8 @@ class contacts():
 
              If an error occurs on read, will return an empty list.
         """
-        contact      = []
-        database = shelve.open(self.database_name)
-
-        try:
+        with shelve.open(self.database_name, writeback=True) as database:
             contact = database[line_no]
-        finally:
-            database.close()
 
         return contact
 
@@ -165,16 +139,14 @@ class contacts():
         """
         contacts_list = self.list_contacts()
         contacts_list = sorted(contacts_list, key=itemgetter(CONTACT_LAST_NAME))      #  I love python, oh and the internet as well :-)
-        database = shelve.open(self.database_name, writeback=True)
         new_id   = 0
 
-        try:
+        with shelve.open(self.database_name, writeback=True) as database:
             for items in contacts_list:
                 items[CONTACT_ID]     = str(new_id)
                 database[str(new_id)] = items
 
                 new_id += 1
-        finally:
-            database.close()
+
 
 

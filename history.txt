@@ -26,6 +26,11 @@
 ###############################################################################################################
 
 
+V2022.66
+
+    Amended all the methods in the contacts class to use context managers instead of try clauses.
+
+
 V2022.65
 
     Applied the hack to the reminders table to hide the ID column.

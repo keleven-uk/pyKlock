@@ -66,22 +66,21 @@ class reminders():
     def add(self, items):
         """  Adds the reminder to the reminders database.
         """
-        no_of_reminders    = str(len(database))           #  len() is not zero based.
-        items[REMINDER_ID] = no_of_reminders
-
-        if items[REMINDER_DATE_DUE] == "":
-            items[REMINDER_DATE_DUE] = datetime.now().strftime("%d %B %Y")
-
-        due_interval              = self.get_interval(items[REMINDER_DATE_DUE], items[REMINDER_TIME_DUE])
-        items[REMINDER_TIME_LEFT] = due_interval
-
-        old_date = datetime.strptime(items[REMINDER_DATE_DUE], "%d %B %Y")
-        if (old_date.year < datetime.now().year) or (old_date.month < datetime.now().month):
-            new_date                  = ru.add_one_year(old_date)
-            items[REMINDER_DATE_DUE]  = new_date
-
         with shelve.open(self.database_name, writeback=True) as database:
-            database[no_of_reminders] = items
+            no_of_reminders    = str(len(database))           #  len() is not zero based.
+            items[REMINDER_ID] = no_of_reminders
+
+            if items[REMINDER_DATE_DUE] == "":
+                items[REMINDER_DATE_DUE] = datetime.now().strftime("%d %B %Y")
+
+            due_interval              = self.get_interval(items[REMINDER_DATE_DUE], items[REMINDER_TIME_DUE])
+            items[REMINDER_TIME_LEFT] = due_interval
+
+            old_date = datetime.strptime(items[REMINDER_DATE_DUE], "%d %B %Y")
+            if (old_date.year < datetime.now().year) or (old_date.month < datetime.now().month):
+                new_date                  = ru.add_one_year(old_date)
+                items[REMINDER_DATE_DUE]  = new_date
+                database[no_of_reminders] = items
 
 
     def save(self, items):
@@ -107,9 +106,8 @@ class reminders():
 
              The list is sorted on time interval before returned.
         """
-        reminder_list = []
-
         with shelve.open(self.database_name, writeback=True) as database:
+            reminder_list = []
             for items in database.items():
                 reminder_list.append(items[1])
 
@@ -123,8 +121,6 @@ class reminders():
 
              If an error occurs on read, will return an empty list.
         """
-        rem      = []
-
         with shelve.open(self.database_name, writeback=True) as database:
             rem = database[line_no]
 
@@ -136,11 +132,11 @@ class reminders():
              This method is called to readdress that problem.
              It goes through all the reminders in order and sets ID back in order.
         """
-        new_db  = {}
-        db_keys = database.keys()
         new_id  = 0
+        new_db  = {}
 
         with shelve.open(self.database_name, writeback=True) as database:
+            db_keys = database.keys()
             for _id in db_keys:
                 items               = database[_id]
                 items[REMINDER_ID]  = str(new_id)
