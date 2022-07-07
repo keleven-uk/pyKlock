@@ -24,12 +24,7 @@ import winsound
 
 import PySimpleGUI as sg
 
-
-GREEN  = "#B9DA8C"
-YELLOW = "#D7DA97"
-BLUE   = "#00FDFF"
-RED    = "#DA8C8C"
-BLACK  = "#000000"
+from src.projectPaths import *
 
 
 """  Displays a toast [pop up] notification.

@@ -40,13 +40,14 @@ def run_reminders(window, reminder_db, mode="", line_no=-1):
 
         #  fields in the reminder items list.
             REMINDER_ID           = 0
-            REMINDER_EVENT        = 1
-            REMINDER_DESCRIPTION  = 2
-            REMINDER_DATE_DUE     = 3
-            REMINDER_TIME_DUE     = 4
-            REMINDER_AUTO_DELETE  = 5
-            REMINDER_RECURRING    = 6
-            REMINDER_DISPLAYED    = 7
+            REMINDER_TIME_LEFT    = 1
+            REMINDER_EVENT        = 2
+            REMINDER_DESCRIPTION  = 3
+            REMINDER_DATE_DUE     = 4
+            REMINDER_TIME_DUE     = 5
+            REMINDER_AUTO_DELETE  = 6
+            REMINDER_RECURRING    = 7
+            REMINDER_DISPLAYED    = 8
 
     """
 
@@ -91,8 +92,8 @@ def run_reminders(window, reminder_db, mode="", line_no=-1):
             rem_window["-REMINDER_DATE_DUE-"].update(disp_reminder[REMINDER_DATE_DUE])
             rem_window["-REMINDER_DUE_TIME_HOURS-"].update(value=hrs)
             rem_window["-REMINDER_DUE_TIME_MINS-"].update(value=min)
-            rem_window["-REMINDER_AUTO_DELETE-"].update(REMINDER_AUTO_DELETE)
-            rem_window["-REMINDER_RECURRING-"].update(REMINDER_RECURRING)
+            rem_window["-REMINDER_AUTO_DELETE-"].update(auto_delete)
+            rem_window["-REMINDER_RECURRING-"].update(recurring)
 
         if mode == "DELETE":
             rem_window["-FORM_TEXT-"].update("Please chose your reminder to DELETE")
@@ -117,10 +118,8 @@ def run_reminders(window, reminder_db, mode="", line_no=-1):
                     recurring          = str(values["-REMINDER_RECURRING-"])
                     reminder_displayed = "False"
 
-                    if recurring == "True":                                         #  If recurring, check date is in the past,
-                        date_due = ru.check_date(values["-REMINDER_DATE_DUE-"])     #  if so add one year.
-
-                    items = [str(line_no), "00", event, description, date_due, time_due, auto_delete, recurring, reminder_displayed]
+                    interval = reminder_db.get_interval(date_due, time_due)
+                    items    = [str(line_no), interval, event, description, date_due, time_due, auto_delete, recurring, reminder_displayed]
 
                     if mode == "EDIT":
                         reminder_db.save(items)

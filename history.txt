@@ -26,6 +26,17 @@
 ###############################################################################################################
 
 
+V2022.67
+
+    Corrected bug is reminder GUI, auto delete & recurring not populating correctly in edit form.
+    Corrected bug in reminder GUI, when resaving items the time interval should be an int and not a string.
+    In reminder class, removed writeback=try when opening the database from methods that don't need it.
+    In reminder class, re-wrote the add logic for cases with no date or date prior to today.
+    In reminder class, added line to sort the reminder list.
+    In reminder class, re-wrote the remumber method.  it now works on the reminder list and re-creates the database.
+    In reminder class, in check_due - if a reminder is deleted, then renumber is called.
+
+
 V2022.66
 
     Amended all the methods in the contacts class to use context managers instead of try clauses.

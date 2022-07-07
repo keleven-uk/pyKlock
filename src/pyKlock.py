@@ -209,7 +209,6 @@ def run_klock(my_logger, my_config):
             case ("-REMINDER_EDIT-"|"-REMINDER_DELETE-"):
                 if values["-REMINDER_TABLE-"] != []:                                    #  Check a row has been selected.
                     line_number = values["-REMINDER_TABLE-"][0]
-
                     if event == "-REMINDER_EDIT-":
                         item_list = reminder_gui.run_reminders(True, reminder_db, "EDIT", line_number)
                     else:  # must be delete.

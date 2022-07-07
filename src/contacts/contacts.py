@@ -142,6 +142,7 @@ class contacts():
         new_id   = 0
 
         with shelve.open(self.database_name, writeback=True) as database:
+            database.clear()                                                          #  clear, so we rebuild afresh.
             for items in contacts_list:
                 items[CONTACT_ID]     = str(new_id)
                 database[str(new_id)] = items
