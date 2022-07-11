@@ -26,6 +26,17 @@
 ###############################################################################################################
 
 
+V2022.68
+
+    Added an option to check_due, so that reminders that are due when the app is not running are picked
+        up at start up and not lost.
+    Added an option to the reminder add form to zero the due time, mainly for birthdays etc.
+        This is so they will fire at midnight of the previous day.
+    In reminder class, re-defined the add logic for cases with no date or date prior to today.
+    Started to add the logic for staging of reminders, so notifications are displayed at
+        30, 15 and 5 days previous to the event.
+
+
 V2022.67
 
     Corrected bug is reminder GUI, auto delete & recurring not populating correctly in edit form.
@@ -33,7 +44,7 @@ V2022.67
     In reminder class, removed writeback=try when opening the database from methods that don't need it.
     In reminder class, re-wrote the add logic for cases with no date or date prior to today.
     In reminder class, added line to sort the reminder list.
-    In reminder class, re-wrote the remumber method.  it now works on the reminder list and re-creates the database.
+    In reminder class, re-wrote the renumber method.  it now works on the reminder list and re-creates the database.
     In reminder class, in check_due - if a reminder is deleted, then renumber is called.
 
 

@@ -68,8 +68,9 @@ def run_reminders(window, reminder_db, mode="", line_no=-1):
              sg.CalendarButton("Choose Date",      target="-REMINDER_DATE_DUE-",       format="%d %B %Y")],
             [sg.Text("Time Due",    size =(15, 1)),
              sg.Spin([x for x in range(24)], key="-REMINDER_DUE_TIME_HOURS-", size=(6,1),  font=("TkDefaultFont", 12), initial_value=current_hour,   readonly=True),
-             sg.Spin([x for x in range(60)], key="-REMINDER_DUE_TIME_MINS-",  size=(6,1),  font=("TkDefaultFont", 12), initial_value=current_minute, readonly=True)],
-            [sg.Text("Recurring reminder", size=(15, 1), justification="right"), sg.Checkbox("", key="-REMINDER_RECURRING-",   default=False),
+             sg.Spin([x for x in range(60)], key="-REMINDER_DUE_TIME_MINS-",  size=(6,1),  font=("TkDefaultFont", 12), initial_value=current_minute, readonly=True),
+             sg.Text("Zero Time",          size=(15, 1), justification="left"), sg.Checkbox("", key="-REMINDER_ZERO_TIME-",   default=False, enable_events=True)],
+            [sg.Text("Recurring reminder", size=(15, 1), justification="left"),  sg.Checkbox("", key="-REMINDER_RECURRING-",   default=False),
              sg.Text("Auto Delete",        size=(15, 1), justification="right"), sg.Checkbox("", key="-REMINDER_AUTO_DELETE-", default=False)],
             [sg.Button("Delete", key="-DELETE-",  visible=False, pad=(1,1)), sg.Button("Submit", key="-SUBMIT-",  visible=True, pad=(1,1)), sg.Cancel(pad=(1,1))]
             ]
@@ -103,10 +104,20 @@ def run_reminders(window, reminder_db, mode="", line_no=-1):
         # Event Loop to process "events" and get the "values" of the inputs
         while True:
             event, values = rem_window.read(timeout=1000)
-
             match event:
                 case (sg.WIN_CLOSED|"Cancel"):
                     break
+
+                case "-REMINDER_ZERO_TIME-":
+                    if values["-REMINDER_ZERO_TIME-"]:
+                        rem_window["-REMINDER_DUE_TIME_HOURS-"].update(value=0)
+                        rem_window["-REMINDER_DUE_TIME_MINS-"].update(value=0)
+                    else:
+                        current_hour   = datetime.now().hour
+                        current_minute = datetime.now().minute
+                        rem_window["-REMINDER_DUE_TIME_HOURS-"].update(value=current_hour)
+                        rem_window["-REMINDER_DUE_TIME_MINS-"].update(value=current_minute)
+
                 case "-SUBMIT-":
                     event              = values["-REMIDER_EVENT-"]
                     description        = values["-REMINDER_DESCRIPTION-"].capitalize()
@@ -118,14 +129,15 @@ def run_reminders(window, reminder_db, mode="", line_no=-1):
                     recurring          = str(values["-REMINDER_RECURRING-"])
                     reminder_displayed = "False"
 
-                    interval = reminder_db.get_interval(date_due, time_due)
-                    items    = [str(line_no), interval, event, description, date_due, time_due, auto_delete, recurring, reminder_displayed]
+                    interval = reminder_db.get_minute_interval(date_due, time_due)
+                    items    = [str(line_no), interval, event, description, date_due, time_due, auto_delete, recurring, reminder_displayed, True, True, True]
 
                     if mode == "EDIT":
                         reminder_db.save(items)
                     else:
                         reminder_db.add(items)
                     break
+
                 case "-DELETE-":
                     choice = sg.popup_ok_cancel('Do you really want to delete?')
                     if choice == "OK":

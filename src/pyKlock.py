@@ -81,7 +81,7 @@ def run_klock(my_logger, my_config):
 
     #  Create reminders database
     reminder_db = reminder.reminders()
-    reminder_db.check_due()
+    reminder_db.check_due(start_up=True)
 
     #  Create contacts database.
     contacts_db = contacts.contacts()
