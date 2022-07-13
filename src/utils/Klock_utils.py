@@ -167,6 +167,7 @@ def run_action(action):
         case "Log Out PC":
             os.system("shutdown /l")
 
+
 def right_alignment_tables(window):
     """  Right aligns the table headers.
     """

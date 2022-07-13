@@ -74,41 +74,29 @@ class reminders():
         if items[REMINDER_DATE_DUE] == "":                #  If date is blank, insert today's date'
             items[REMINDER_DATE_DUE] = datetime.now().strftime("%d %B %Y")
 
-        old_date = datetime.strptime(items[REMINDER_DATE_DUE], "%d %B %Y")  #  If date is before today, assume meant next year.
+        old_date = datetime.strptime(items[REMINDER_DATE_DUE], "%d %B %Y")
         cur_date = datetime.now().date()
-        if (old_date.date() < cur_date):
+        if (old_date.date() < cur_date):                  #  If date is before today, assume meant next year.
             new_date                  = ru.add_one_year(old_date)
             items[REMINDER_DATE_DUE]  = new_date
 
-        _days = self.get_day_interval(items[REMINDER_DATE_DUE])
-        print(f"days = {_days}")
-        match _days:
-            case _days if 5 >= _days < 15:
-                print("5 - 15")
-                items[REMINDER_05_DAYS]  = False
-            case _days if 15 >= _days < 30:
-                print("15 - 30")
-                items[REMINDER_15_DAYS] = False
-                items[REMINDER_30_DAYS] = False
-            case _days if _days > 30:
-                print("30")
-                items[REMINDER_30_DAYS] = False
-
-
-        #current_hour   = datetime.now().hour
-        #current_minute = datetime.now().minute
-
-        #hrs, mns = items[REMINDER_TIME_DUE].split(":")              #  Get the reminder due time.
-                                                                    ##
-        #if int(hrs) < current_hour:                                 #  Is the house less then the current hour.
-            #hrs = current_hour                                      #  If so, make the hours equal to the current hour.
-        #elif int(mns) < current_minute:                             #  Is the mins less then the current minute
-            #mns = current_minute                                    #  if so, make the minute equal to the current minute
+        #_days = self.get_day_interval(items[REMINDER_DATE_DUE])
+        #print(f"days = {_days}")
+        #match _days:
+            #case _days if 5 >= _days < 15:
+                #print("5 - 15")
+                #items[REMINDER_05_DAYS]  = False
+            #case _days if 15 >= _days < 30:
+                #print("15 - 30")
+                #items[REMINDER_15_DAYS] = False
+                #items[REMINDER_30_DAYS] = False
+            #case _days if _days > 30:
+                #print("30")
+                #items[REMINDER_30_DAYS] = False
 
         with shelve.open(self.database_name, writeback=True) as database:
-            no_of_reminders    = str(len(database))           #  len() is not zero based.
-            items[REMINDER_ID] = no_of_reminders
-
+            no_of_reminders           = str(len(database))           #  len() is not zero based.
+            items[REMINDER_ID]        = no_of_reminders
             database[no_of_reminders] = items
 
         self.renumber_reminders()       #  Renumber.
@@ -184,80 +172,16 @@ class reminders():
              Then instead of deleting the auto_delele reminders, show then first.
              If they had matured when the pyKlock wad not running, they could be just deleted.
         """
-        deleted  = False
-        x_pos    = 10
-        y_pos    = 10
+        x_pos = 10
+        y_pos = 10
 
         with shelve.open(self.database_name, writeback=True) as database:
             db_keys  = database.keys()
             for _id in db_keys:
                 items = database[_id]
+                x_pos, y_pos = self.check_minute_interval(database, items, start_up, x_pos, y_pos)
 
-                due_interval              = self.get_minute_interval(items[REMINDER_DATE_DUE], items[REMINDER_TIME_DUE])
-                items[REMINDER_TIME_LEFT] = due_interval
-                self.save(items)
-
-                print(f"{due_interval}  :: {items}")
-                match due_interval:
-                    case due_interval if MINUTES_05_DAYS >= due_interval < MINUTES_15_DAYS:                #  Reminder in 5 days.
-                        if items[REMINDER_05_DAYS] == "False":
-                            _day = self.get_day_interval(items[REMINDER_DATE_DUE])
-                            message = f"{items[REMINDER_EVENT]} : {items[REMINDER_DESCRIPTION]} :: Reminder is Due in {_day} days."
-                            notification.popup(message, x_pos, y_pos, YELLOW)
-                            items[REMINDER_05_DAYS] == "True"
-                            self.save(items)
-                            y_pos += 65
-
-                    case due_interval if MINUTES_15_DAYS >= due_interval < MINUTES_30_DAYS:                #  Reminder in 15 days.
-                        if items[REMINDER_15_DAYS] == "False":
-                            _day = self.get_day_interval(items[REMINDER_DATE_DUE])
-                            message = f"{items[REMINDER_EVENT]} : {items[REMINDER_DESCRIPTION]} :: Reminder is Due in {_day} days."
-                            notification.popup(message, x_pos, y_pos, YELLOW)
-                            items[REMINDER_15_DAYS] == "True"
-                            self.save(items)
-                            y_pos += 65
-
-                    case due_interval if _days > MINUTES_30_DAYS:                                   #  Reminder in 30 days.
-                        if items[REMINDER_30_DAYS] == "False":
-                            _day = self.get_day_interval(items[REMINDER_DATE_DUE])
-                            message = f"{items[REMINDER_EVENT]} : {items[REMINDER_DESCRIPTION]} :: Reminder is Due in {_day} days."
-                            notification.popup(message, x_pos, y_pos, YELLOW)
-                            items[REMINDER_30_DAYS] == "True"
-                            self.save(items)
-                            y_pos += 65
-
-                    case due_interval if due_interval == 0:
-                        if items[REMINDER_DISPLAYED] == "False":
-                            message = f"{items[REMINDER_EVENT]} : {items[REMINDER_DESCRIPTION]} :: Reminder is Due."
-                            notification.popup(message, x_pos, y_pos, YELLOW)
-                            y_pos += 65
-
-                    case due_interval if due_interval < 0:                 #  Reminder is set to recurring
-                        if items[REMINDER_RECURRING] == "True":            #  add one to the year.
-                            old_date = datetime.datetime.strptime(items[REMINDER_DATE_DUE], "%d %B %Y")
-                            new_date = ru.add_one_year(old_date)
-                            items[REMINDER_DATE_DUE]  = new_date
-                            self.save(items)
-
-                        elif items[REMINDER_AUTO_DELETE] == "True":        #  If auto delete is set to true
-                            if start_up:
-                                message = f"{items[REMINDER_EVENT]} : {items[REMINDER_DESCRIPTION]} :: Reminder is Due."
-                                notification.popup(message, x_pos, y_pos, YELLOW)
-                                y_pos += 65
-                            else:
-                                database.pop(items[REMINDER_ID])           #  Need to do a hard delete and renumber at the end of the loop.
-                                deleted = True
-
-                        elif items[REMINDER_DISPLAYED] == "False":
-                            message = f"{items[REMINDER_EVENT]} : {items[REMINDER_DESCRIPTION]} :: Reminder is past please either delete or amend."
-                            notification.popup(message, x_pos, y_pos, RED)
-                            items[REMINDER_DISPLAYED] = "True"
-                            if y_pos > 10:          #  Only increase y_pos if a reminder has already been displayed.
-                                y_pos += 65
-                            self.save(items)
-
-        if deleted:                         #  Items have been delete, so renumber
-            self.renumber_reminders()       #  Renumber.
+        self.renumber_reminders()       #  Renumber.
 
 
     def get_minute_interval(self, due_date, due_time):
@@ -282,6 +206,85 @@ class reminders():
         delta = old_date.date() - cur_date
 
         return delta.days
+
+
+    def check_minute_interval(self, database, items, start_up, x_pos, y_pos):
+        _due_interval = self.get_minute_interval(items[REMINDER_DATE_DUE], items[REMINDER_TIME_DUE])
+        items[REMINDER_TIME_LEFT] = _due_interval
+        _disp_interval = ru.format_minutes(_due_interval)
+        items[REMINDER_DISP_LEFT] =  _disp_interval
+        self.save(items)
+
+        match _due_interval:
+            case _due_interval if _due_interval > 0:
+                x_pos, y_pos = self.check_day_interval(items, x_pos, y_pos)
+
+            case _due_interval if _due_interval == 0:
+                if items[REMINDER_DISPLAYED] == "False":
+                    message = f"{items[REMINDER_EVENT]} : {items[REMINDER_DESCRIPTION]} :: Reminder is Due."
+                    notification.popup(message, x_pos, y_pos, YELLOW)
+                    y_pos += 65
+
+            case _due_interval if _due_interval < 0:                 #  Reminder is set to recurring
+                if items[REMINDER_RECURRING] == "True":              #  add one to the year.
+                    old_date = datetime.datetime.strptime(items[REMINDER_DATE_DUE], "%d %B %Y")
+                    new_date = ru.add_one_year(old_date)
+                    items[REMINDER_DATE_DUE] = new_date
+                    items[REMINDER_05_DAYS]  = "False"               #  Reset reminder notification stages.
+                    items[REMINDER_15_DAYS]  = "False"
+                    items[REMINDER_30_DAYS]  = "False"
+                    self.save(items)
+
+                elif items[REMINDER_AUTO_DELETE] == "True":        #  If auto delete is set to true
+                    if start_up:
+                        message = f"{items[REMINDER_EVENT]} : {items[REMINDER_DESCRIPTION]} :: Reminder is Due."
+                        notification.popup(message, x_pos, y_pos, YELLOW)
+                        y_pos += 65
+                    else:
+                        database.pop(items[REMINDER_ID])           #  Need to do a hard delete and renumber at the end of the loop.
+
+                elif items[REMINDER_DISPLAYED] == "False":
+                    message = f"{items[REMINDER_EVENT]} : {items[REMINDER_DESCRIPTION]} :: Reminder is past please either delete or amend."
+                    notification.popup(message, x_pos, y_pos, RED)
+                    items[REMINDER_DISPLAYED] = "True"
+                    if y_pos > 10:          #  Only increase y_pos if a reminder has already been displayed.
+                        y_pos += 65
+                    self.save(items)
+
+        return x_pos, y_pos
+
+
+    def check_day_interval(self, items, x_pos, y_pos):
+        _days = self.get_day_interval(items[REMINDER_DATE_DUE])
+
+        match _days:
+
+            case _days if 5 >= _days >15:
+                if items[REMINDER_05_DAYS] == "False":
+                    message = f"{items[REMINDER_EVENT]} : {items[REMINDER_DESCRIPTION]} :: Reminder is Due in {_days} days."
+                    notification.popup(message, x_pos, y_pos, YELLOW)
+                    items[REMINDER_05_DAYS] = "True"
+                    self.save(items)
+                    y_pos += 65
+
+            case _days if 15 > _days >30:
+                if items[REMINDER_15_DAYS] == "False":
+                    message = f"{items[REMINDER_EVENT]} : {items[REMINDER_DESCRIPTION]} :: Reminder is Due in {_days} days."
+                    notification.popup(message, x_pos, y_pos, YELLOW)
+                    items[REMINDER_15_DAYS] = "True"
+                    self.save(items)
+                    y_pos += 65
+
+            case _days if _days == 30:
+                if items[REMINDER_30_DAYS] == "False":
+                    _day = self.get_day_interval(items[REMINDER_DATE_DUE])
+                    message = f"{items[REMINDER_EVENT]} : {items[REMINDER_DESCRIPTION]} :: Reminder is Due in {_days} days."
+                    notification.popup(message, x_pos, y_pos, YELLOW)
+                    items[REMINDER_30_DAYS] = "True"
+                    self.save(items)
+                    y_pos += 65
+
+        return x_pos, y_pos
 
 
 

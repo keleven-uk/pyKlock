@@ -26,6 +26,16 @@
 ###############################################################################################################
 
 
+V2022.69
+
+    In reminder class, re-wote the check due method, moves the check on tinerval to a seperate method.
+        Actually split into two, one to check in minutes and one to check in days.
+        The minutes check determine if a reminder is due.
+        The days check determine if a reminder is at 5, 15 30 days stage.
+    Added another item to the reminders items - time due in days:hours:minutes.
+        This used for display, time due in minutes is still used for the sort order.
+
+
 V2022.68
 
     Added an option to check_due, so that reminders that are due when the app is not running are picked

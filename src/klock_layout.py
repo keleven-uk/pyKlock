@@ -105,16 +105,20 @@ def win_layout(my_config, my_world_klock, win_location, win_size, timetypes, fon
     #  Reminder GUI definitions
     #  REMINDER_ID           = 0
     #  REMINDER_TIME_LEFT    = 1
-    #  REMINDER_EVENT        = 2
-    #  REMINDER_DESCRIPTION  = 3
-    #  REMINDER_DATE_DUE     = 4
-    #  REMINDER_TIME_DUE     = 5
-    #  REMINDER_AUTO_DELETE  = 6
-    #  REMINDER_RECURRING    = 7
-    #  REMINDER_DISPLAYED    = 8  - not displayed in table.
+    #  REMINDER_DISP_LEFT    = 2
+    #  REMINDER_EVENT        = 3
+    #  REMINDER_DESCRIPTION  = 4
+    #  REMINDER_DATE_DUE     = 5
+    #  REMINDER_TIME_DUE     = 6
+    #  REMINDER_AUTO_DELETE  = 7
+    #  REMINDER_RECURRING    = 8
+    #  REMINDER_DISPLAYED    = 9  - not displayed in table.
+    #  REMINDER_05_DAYS      = 10
+    #  REMINDER_15_DAYS      = 11
+    #  REMINDER_30_DAYS      = 12
 
     reminder_data     = [['' for row in range(5)]for col in range(8)]
-    reminder_headings = ["ID", "Time Left", "Event", "Description", "Date Due", "Time Due", "Auto Delete", "Recurring"]
+    reminder_headings = ["ID", "Time Mins", "Time Left", "Event", "Description", "Date Due", "Time Due", "Auto Delete", "Recurring"]
 
     reminder_top_button     = [sg.Button("Add",    key="-REMINDER_ADD-",    size=(5,1), pad=(1,1))]
     reminder_middle_button  = [sg.Button("Edit",   key="-REMINDER_EDIT-",   size=(5,1), pad=(1,1))]
@@ -125,7 +129,7 @@ def win_layout(my_config, my_world_klock, win_location, win_size, timetypes, fon
                         sg.Text("      "),
                         sg.Table(values=reminder_data,
                                  headings=reminder_headings,
-                                 col_widths=[5, 8, 12, 20, 12, 10, 10, 10, 10],
+                                 col_widths=[5, 8, 11, 13, 20, 12, 10, 10, 10, 10],
                                  enable_events=True,
                                  select_mode=sg.TABLE_SELECT_MODE_BROWSE,
                                  background_color="light blue",
@@ -225,6 +229,7 @@ def win_layout(my_config, my_world_klock, win_location, win_size, timetypes, fon
     table = win["-REMINDER_TABLE-"]                                #  Code to remove the ID column from the caantacts table display.
     displaycolumns = deepcopy(reminder_headings)                   #  The ID is still needed for deleting, but doesn't need to be shown.
     displaycolumns.remove("ID")
+    displaycolumns.remove("Time Mins")
     table.ColumnsToDisplay = displaycolumns                       #  Again found and used from the internet.
     table.Widget.configure(displaycolumns=displaycolumns)         #  https://stackoverflow.com/questions/70263893/deleting-hiding-a-column-of-a-table-in-pysimplegui
 

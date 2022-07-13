@@ -73,3 +73,22 @@ def str_to_bool(s):
          return False
 
 
+def format_minutes(minutes):
+    """  Formats number of minutes into a human readable form i.e. days:hours:minutes
+    """
+
+    days  = int (minutes / 1440)
+    hours = int (minutes % 1440 / 60)
+    mins  = int (minutes % 60)
+
+    return f"{days:03}d:{hours:02}h:{mins:02}m"
+
+    if days:
+        return f"{days:03}d:{hours:02}h:{mins:02}m"
+    elif hours:
+        return f"{hours}h:{mins}m"
+    else:
+        return f"{mins}m"
+
+
+

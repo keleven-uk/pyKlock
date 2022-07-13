@@ -129,8 +129,9 @@ def run_reminders(window, reminder_db, mode="", line_no=-1):
                     recurring          = str(values["-REMINDER_RECURRING-"])
                     reminder_displayed = "False"
 
-                    interval = reminder_db.get_minute_interval(date_due, time_due)
-                    items    = [str(line_no), interval, event, description, date_due, time_due, auto_delete, recurring, reminder_displayed, True, True, True]
+                    interval      = reminder_db.get_minute_interval(date_due, time_due)
+                    disp_interval = ru.format_minutes(interval)
+                    items         = [str(line_no), interval, disp_interval, event, description, date_due, time_due, auto_delete, recurring, reminder_displayed, "False", "False", "False"]
 
                     if mode == "EDIT":
                         reminder_db.save(items)
