@@ -141,7 +141,8 @@ def win_layout(my_config, my_world_klock, win_location, win_size, timetypes, fon
                                  alternating_row_color="lightyellow",
                                  key="-REMINDER_TABLE-",
                                  row_height=15,
-                                 tooltip="Reminders Entered")]]
+                                 tooltip="Reminders Entered",
+                                 font=("Courier", 10))]]
 
     #  Contacts GUI definitions
     #  CONTACT_ID          = 0

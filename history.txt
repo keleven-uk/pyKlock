@@ -26,9 +26,16 @@
 ###############################################################################################################
 
 
+V2022.70
+
+    Changed the font for the reminder table to Courier, a mono spaced font, so that the sorted time left line up.
+    Changed the format to the time left field.
+    Slight changes to the reminder stages logic.
+
+
 V2022.69
 
-    In reminder class, re-wote the check due method, moves the check on tinerval to a seperate method.
+    In reminder class, re-wrote the check due method, moves the check on tinerval to a seperate method.
         Actually split into two, one to check in minutes and one to check in days.
         The minutes check determine if a reminder is due.
         The days check determine if a reminder is at 5, 15 30 days stage.

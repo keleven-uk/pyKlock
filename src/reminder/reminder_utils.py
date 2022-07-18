@@ -81,14 +81,8 @@ def format_minutes(minutes):
     hours = int (minutes % 1440 / 60)
     mins  = int (minutes % 60)
 
-    return f"{days:03}d:{hours:02}h:{mins:02}m"
+    return f"{days:3}:{hours:2}:{mins:2}"
 
-    if days:
-        return f"{days:03}d:{hours:02}h:{mins:02}m"
-    elif hours:
-        return f"{hours}h:{mins}m"
-    else:
-        return f"{mins}m"
 
 
 
